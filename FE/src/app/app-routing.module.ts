@@ -1,5 +1,5 @@
 import {RouterModule, Routes} from "@angular/router";
-import  {NgModule} from "@angular/core";
+import {NgModule} from "@angular/core";
 import {LoginComponent} from "./auth/login/login.component";
 import {HomeComponent} from "./first-page/first-component/home-component";
 import {AboutUsComponent} from "./first-page/about-us/about-us.component";
@@ -10,12 +10,15 @@ import {RegisterComponent} from "./auth/register/register.component";
 import {UserManagementComponent} from "./admin/user-management/user-management.component";
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'first-page', component: HomeComponent, children:[
+  {path:"", redirectTo:"first-page", pathMatch:"full"},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+  {
+    path: 'first-page', component: HomeComponent, children: [
       {path: 'aboutUs', component: AboutUsComponent}
-    ]},
-  { path: 'create-card', component: CreateCoachCardComponent},
+    ]
+  },
+  {path: 'create-card', component: CreateCoachCardComponent},
   {path: 'contact', component: ContactSectionComponent},
   {path: 'management-clients', component: UserManagementComponent},
   {path: 'page-not-found', component: PageNotFoundComponent},
@@ -27,4 +30,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
