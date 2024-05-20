@@ -1,0 +1,45 @@
+<div id='create-card'>
+<div id="enter-data">
+<form #creatCardForm="ngForm">
+    <div class="form-group" class="input-container">
+      <label>Nume & prenume</label>
+      <input type="text"
+             ngModel
+             name="Nume complet"
+             required
+             maxlength="27"
+             [(ngModel)]="coachCardService.coachData.fullName"
+             (ngModelChange)="updateFullName($event)">
+    </div>
+
+    <div class="form-group" class="input-container">
+      <label>Varsta</label>
+      <input type="number"
+             ngModel
+             name="varsta"
+             required
+             pattern="^(1[89]|[2-9][0-9])$"
+             (ngModelChange)="updateAge($event)">
+    </div>
+
+    <div class="form-group" class="input-container">
+      <label>Descriere</label>
+      <input type="text"
+             ngModel
+             name="description"
+             required
+             maxlength="150"
+             (ngModelChange)="updateDescription($event)">
+    </div>
+    <div class="form-group" class="input-container">
+      <label>Select image:</label>
+      <app-file-uploader (filesChange)="updateImg($event)" [uploadMultipleFiles]="false"></app-file-uploader>
+    </div>
+  </form>
+</div>
+<div id="display-data">
+<app-coach-card></app-coach-card>
+</div>
+
+</div>
+

@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form>
+        <div ngModelGroup="userData">
+          <div class="form-group" class="input-container">
+            <input type="email"
+                   ngModel
+                   name="email"
+                   required
+                   email
+                   [(ngModel)]="user.email"
+                   placeholder="Email">
+          </div>
+          <div class="form-group" class="input-container">
+            <input type="text"
+                   ngModel
+                   name="fullName"
+                   required
+                   placeholder="Full name"
+                   [(ngModel)]="user.fullName">
+          </div>
+          <div class="form-group" class="input-container">
+            <input type="text"
+                   ngModel
+                   name="phoneNumber"
+                   required
+                   [(ngModel)]="user.phoneNumber"
+                   placeholder="Phone number">
+          </div>
+          <div class="form-group" class="input-container" *ngIf="awsLinks.length > 0">
+            <label>Role</label>
+            <select class="form-control" name="coach" required  [(ngModel)]="user.roles">
+              <option>CLIENT</option>
+              <option>COACH</option>
+            </select>
+          </div>
+
+        </div>
+        <button type="submit" (click)="updateRecords()">Update</button>
+      </form>
+      <div *ngFor="let link of awsLinks">
+        <p>Link AWS: <a [href]="link">{{ link }}</a></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<h2>New Users</h2>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Email</th>
+    <th>Full Name</th>
+    <th>Phone number</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of newPossibleCoaches; let i=index">
+    <td>{{user.email}}</td>
+    <td>{{user.fullName| uppercase}}</td>
+    <td>{{user.phoneNumber}}</td>
+    <td>{{user.newCoach ? "new" : "old" }}</td>
+    <td>
+
+      <button type="button" (click)="setUser(user)">Edit</button>
+      <button type="button" (click)="setDelete(user.id)">Delete</button>
+    </td>
+  </tr>
+
+  </tbody>
+</table>
+
+<hr>
+<hr>
+<h2>Users</h2>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Email</th>
+    <th>Full Name</th>
+    <th>Phone number</th>
+    <th>Roles</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of users; let i=index">
+    <td>{{user.email}}</td>
+    <td>{{user.fullName| uppercase}}</td>
+    <td>{{user.phoneNumber}}</td>
+    <td>{{user.roles}}</td>
+    <td>
+
+      <button type="button" (click)="setUser(user)">Edit</button>
+      <button type="button" (click)="setDelete(user.id)">Delete</button>
+    </td>
+  </tr>
+
+  </tbody>
+</table>
+
+

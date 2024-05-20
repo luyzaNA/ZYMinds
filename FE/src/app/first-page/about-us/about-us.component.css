@@ -1,0 +1,20 @@
+header {
+  text-align: center;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0px 20px;
+}
+body{
+  padding-top: 50px;
+}
+
+img{
+  opacity: 0.7;
+}
+
+p {
+  line-height: 1.6;
+}

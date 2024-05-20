@@ -1,0 +1,54 @@
+
+ #card{
+   width: 510px;
+   height: 300px;
+   border: 1px solid #4C34E2;
+   border-radius: 8px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+ }
+
+  #about{
+    width: 451px;
+    height: 183px;
+    display: grid;
+    grid-template-columns: 90px 355px;
+    column-gap: 6px;
+    grid-template-rows: 75px 108px;
+    word-wrap: break-word;
+  }
+
+  img{
+    width: 90px;
+    height: 140px;
+    grid-column: 1/2;
+    grid-row: 1/3;
+    justify-self: center;
+    align-self: center;
+  }
+  #description{
+    width: 300px;
+    padding-top: 17px;
+    grid-row: 2/3;
+    grid-column: 2/3;
+  }
+#title{
+  width: 317px;
+  grid-column: 2/3;
+}
+
+ #smt{
+   width: 251px;
+   grid-column: 2/3;
+   padding: 0px 29px;
+ }
+
+
+
+
+
+
+
+
+
