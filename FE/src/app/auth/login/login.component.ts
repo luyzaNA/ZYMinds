@@ -13,7 +13,10 @@ export class LoginComponent {
   login(email: string, password: string): void {
     this.authService.loginUser(email, password).subscribe(
       user => {
-              console.log('Login successful!', user);
+        if (user.roles === 'COACH')
+          this.router.navigate(['/coach/dashboard']);
+        else
+          this.router.navigate(['/first-page']);
         console.log('SUCES');
 
       },

@@ -18,6 +18,7 @@ import {NgOptimizedImage} from "@angular/common";
 import {CoachCardService} from "./services/coach-card.service";
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import {AppRoutingModule} from "./app-routing.module";
+import { CoachDashboardComponent } from './coach/coach-dashboard/coach-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {AppRoutingModule} from "./app-routing.module";
     AboutUsComponent,
     CreateCoachCardComponent,
     CoachCardComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    CoachDashboardComponent
   ],
   imports: [
     BrowserModule,
