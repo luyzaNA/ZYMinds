@@ -20,6 +20,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import {AppRoutingModule} from "./app-routing.module";
 import { CoachDashboardComponent } from './coach/coach-dashboard/coach-dashboard.component';
 import { ClientsComponent } from './coach/clients/clients.component';
+import { MenuComponent } from './menu/menu.component';
+import { ClientDashbordComponent } from './Client/client-dashbord/client-dashbord.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { ClientsComponent } from './coach/clients/clients.component';
     CoachCardComponent,
     PageNotFoundComponent,
     CoachDashboardComponent,
-    ClientsComponent
+    ClientsComponent,
+    MenuComponent,
+    ClientDashbordComponent
   ],
   imports: [
     BrowserModule,

@@ -16,7 +16,7 @@ export class LoginComponent {
         if (user.roles === 'COACH')
           this.router.navigate(['/coach/dashboard']);
         else
-          this.router.navigate(['/first-page']);
+          this.router.navigate(['/client/dashboard']);
         console.log('SUCES');
 
       },

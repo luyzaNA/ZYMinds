@@ -11,6 +11,8 @@ import {UserManagementComponent} from "./admin/user-management/user-management.c
 import {RoleGuard} from "./services/auth.guard.service";
 import {CoachDashboardComponent} from "./coach/coach-dashboard/coach-dashboard.component";
 import {ClientsComponent} from "./coach/clients/clients.component";
+import {MenuComponent} from "./menu/menu.component";
+import {ClientDashbordComponent} from "./Client/client-dashbord/client-dashbord.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "first-page", pathMatch: "full"},
@@ -25,9 +27,17 @@ const routes: Routes = [
     path: 'coach', canActivate: [RoleGuard], data: {expectedRole: 'COACH'}, children: [
       {path: 'create-coach-card', component: CreateCoachCardComponent},
       {path: 'dashboard', component: CoachDashboardComponent},
-      {path: 'clients', component: ClientsComponent}
+      {path: 'clients', component: ClientsComponent},
+      {path: 'menus', component: MenuComponent}
     ]
   },
+  {
+    path: 'client', canActivate: [RoleGuard], data: {expectedRole: 'CLIENT'}, children: [
+      {path: 'dashboard', component: ClientDashbordComponent},
+      {path: 'menus', component: MenuComponent}
+    ]
+  },
+
   {path: 'contact', component: ContactSectionComponent},
   {
     path: 'management-clients', component: UserManagementComponent,
