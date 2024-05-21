@@ -19,6 +19,7 @@ import {CoachCardService} from "./services/coach-card.service";
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import {AppRoutingModule} from "./app-routing.module";
 import { CoachDashboardComponent } from './coach/coach-dashboard/coach-dashboard.component';
+import { ClientsComponent } from './coach/clients/clients.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CoachDashboardComponent } from './coach/coach-dashboard/coach-dashboard
     CreateCoachCardComponent,
     CoachCardComponent,
     PageNotFoundComponent,
-    CoachDashboardComponent
+    CoachDashboardComponent,
+    ClientsComponent
   ],
   imports: [
     BrowserModule,
