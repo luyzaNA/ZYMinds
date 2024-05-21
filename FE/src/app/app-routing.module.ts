@@ -10,6 +10,7 @@ import {RegisterComponent} from "./auth/register/register.component";
 import {UserManagementComponent} from "./admin/user-management/user-management.component";
 import {RoleGuard} from "./services/auth.guard.service";
 import {CoachDashboardComponent} from "./coach/coach-dashboard/coach-dashboard.component";
+import {ClientsComponent} from "./coach/clients/clients.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "first-page", pathMatch: "full"},
@@ -23,7 +24,8 @@ const routes: Routes = [
   {
     path: 'coach', canActivate: [RoleGuard], data: {expectedRole: 'COACH'}, children: [
       {path: 'create-coach-card', component: CreateCoachCardComponent},
-      {path: 'dashboard', component: CoachDashboardComponent}
+      {path: 'dashboard', component: CoachDashboardComponent},
+      {path: 'clients', component: ClientsComponent}
     ]
   },
   {path: 'contact', component: ContactSectionComponent},
