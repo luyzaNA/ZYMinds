@@ -13,6 +13,7 @@ import {CoachDashboardComponent} from "./coach/coach-dashboard/coach-dashboard.c
 import {ClientsComponent} from "./coach/clients/clients.component";
 import {MenuComponent} from "./menu/menu.component";
 import {ClientDashbordComponent} from "./Client/client-dashbord/client-dashbord.component";
+import {ProfileComponent} from "./profile/profile.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "first-page", pathMatch: "full"},
@@ -28,13 +29,15 @@ const routes: Routes = [
       {path: 'create-coach-card', component: CreateCoachCardComponent},
       {path: 'dashboard', component: CoachDashboardComponent},
       {path: 'clients', component: ClientsComponent},
-      {path: 'menus', component: MenuComponent}
+      {path: 'menus', component: MenuComponent},
+      {path: 'profile', component: ProfileComponent},
     ]
   },
   {
     path: 'client', canActivate: [RoleGuard], data: {expectedRole: 'CLIENT'}, children: [
       {path: 'dashboard', component: ClientDashbordComponent},
-      {path: 'menus', component: MenuComponent}
+      {path: 'menus', component: MenuComponent},
+      {path: 'profile', component: ProfileComponent},
     ]
   },
 
