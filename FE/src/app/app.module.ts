@@ -22,6 +22,7 @@ import { CoachDashboardComponent } from './coach/coach-dashboard/coach-dashboard
 import { ClientsComponent } from './coach/clients/clients.component';
 import { MenuComponent } from './menu/menu.component';
 import { ClientDashbordComponent } from './Client/client-dashbord/client-dashbord.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ClientDashbordComponent } from './Client/client-dashbord/client-dashbor
     CoachDashboardComponent,
     ClientsComponent,
     MenuComponent,
-    ClientDashbordComponent
+    ClientDashbordComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
