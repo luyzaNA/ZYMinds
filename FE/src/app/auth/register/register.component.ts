@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import {  User } from "../../shared/user";
-import { FileUploadService } from "../../services/upload.service";
-import { FileI } from "../../shared/file";
+import {Component, ViewChild} from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {AuthService} from '../../services/auth.service';
+import {User} from "../../shared/user";
+import {FileUploadService} from "../../services/upload.service";
+import {FileI} from "../../shared/file";
 import {AdminService} from "../../services/admin.service";
 
 @Component({
@@ -18,22 +18,23 @@ export class RegisterComponent {
   private userId: string = '';
   selectedRole: boolean = false;
 
-  userData:User = {
-    email : '',
-    fullName : '',
-    phoneNumber : 0,
-    password : '',
+  userData: User = {
+    email: '',
+    fullName: '',
+    phoneNumber: 0,
+    password: '',
     newCoach: false,
-    roles : '',
+    roles: '',
     id: ''
   };
+
   constructor(private authService: AuthService,
               private fileService: FileUploadService,
-              private adminService: AdminService) {}
+              private adminService: AdminService) {
+  }
 
-
-  protected filesUp(files: File[]){
-    this.files=files;
+  protected filesUp(files: File[]) {
+    this.files = files;
   }
 
   private uploadFiles() {
@@ -51,7 +52,10 @@ export class RegisterComponent {
           (response: any) => {
             this.adminService.updateUserStatus(this.userData, true).subscribe(
               (response: Object) => {
-                console.log(response);
+
+                console.log(
+                  "AICI INTRA si user id ", this.userData.id
+                );
               },
               (error: any) => {
                 console.log("Cannot update user status", error);
@@ -70,19 +74,18 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.form.valid) {
-        this.userData.email= this.form.value.userData.email,
-        this.userData.fullName= this.form.value.userData.fullName,
-        this.userData.phoneNumber= this.form.value.userData.phoneNumber,
-        this.userData.password= this.form.value.userData.password,
-        this.userData.roles= this.form.value.roles,
-        this.userData.newCoach= false,
-        this.userData.id= this.userId,
-
+      this.userData.email = this.form.value.userData.email,
+        this.userData.fullName = this.form.value.userData.fullName,
+        this.userData.phoneNumber = this.form.value.userData.phoneNumber,
+        this.userData.password = this.form.value.userData.password,
+        this.userData.roles = this.form.value.roles,
+        this.userData.newCoach = false
 
       this.authService.registerUser(this.userData).subscribe({
         next: (response) => {
-          this.userId =response;
-          console.log("USER ID",this.userId);
+          this.userId = response;
+          this.userData.id = this.userId;
+          console.log("USER ID", this.userId);
           this.uploadFiles();
 
           console.log('Răspunsul primit:', response);
@@ -91,11 +94,8 @@ export class RegisterComponent {
           console.error('Eroare la înregistrare:', error);
         }
       });
-    }
-
-    else {
+    } else {
       console.error('Formularul nu este valid.');
-      return;
     }
   }
 }

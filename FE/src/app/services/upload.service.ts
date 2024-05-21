@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FileI } from '../shared/file';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {FileI} from '../shared/file';
 import {Observable} from "rxjs";
 import {environment} from "../shared/environment";
 
@@ -19,16 +19,13 @@ export class FileUploadService {
     formData.append('file', file);
     formData.append('fileData', JSON.stringify(fileData));
 
-    return this.http.post<any>( `${this.baseUrl}/upload`, formData, {
+    return this.http.post<any>(environment.apiUrl + '/upload', formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
 
-
   getFile(userId: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/files?userId=${userId}`);
   }
-
-
 }

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import { User} from "../../shared/user";
+import {User} from "../../shared/user";
 import {FileUploadService} from "../../services/upload.service";
 import {AdminService} from "../../services/admin.service";
 
@@ -10,19 +10,17 @@ import {AdminService} from "../../services/admin.service";
   styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent {
-  user!:User;
-
+  user!: User;
   awsLinks: string[] = [];
+  newPossibleCoaches: User[] = [];
+  users: User[] = [];
 
   constructor(private http: HttpClient,
               private fileService: FileUploadService,
               private adminService: AdminService) {
-    this.user = { email: '', fullName: '', phoneNumber: 0, roles: '', id: '' , password: '', newCoach: false};
+    this.user = {email: '', fullName: '', phoneNumber: 0, roles: '', id: '', password: '', newCoach: false};
     this.getAllUsers();
   }
-
-  newPossibleCoaches: User[] = [];
-  users: User[] = [];
 
   getAllUsers() {
     this.adminService.getAllUser().subscribe({
@@ -73,7 +71,9 @@ export class UserManagementComponent {
   }
 
   updateRecords() {
-    this.adminService.updateUser(this.user).subscribe(
+    this.adminService.updateUser(this.user.id, this.user.email,
+      this.user.fullName, this.user.phoneNumber,
+      this.user.roles).subscribe(
       (resultUser: Object) => {
         console.log(resultUser);
         this.getAllUsers();
@@ -84,14 +84,14 @@ export class UserManagementComponent {
   }
 
   setDelete(id: string): void {
-      this.adminService.deleteUser(id).subscribe(
-        (response) => {
-          this.getAllUsers();
-          console.log("User deleted successfully", response);
-        },
-        (error) => {
-          console.error("Error deleting user", error);
-        }
-      );
-    }
+    this.adminService.deleteUser(id).subscribe(
+      (response) => {
+        this.getAllUsers();
+        console.log("User deleted successfully", response);
+      },
+      (error) => {
+        console.error("Error deleting user", error);
+      }
+    );
+  }
 }
