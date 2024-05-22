@@ -67,6 +67,7 @@ export class AuthService {
       map(response => {
         console.log('Logout successful');
         localStorage.removeItem('token');
+        this.currentUser= null;
         return response;
       })
     );

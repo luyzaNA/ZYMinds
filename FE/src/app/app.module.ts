@@ -24,7 +24,8 @@ import {MenuComponent} from './menu/menu.component';
 import {ClientDashbordComponent} from './Client/client-dashbord/client-dashbord.component';
 import {ProfileComponent} from './profile/profile.component';
 import {MenuDetailsComponent} from './menu/menu-details/menu-details.component';
-import {CustomInterceptor} from './services/custom.interceptor'
+import {CustomInterceptor} from './services/custom.interceptor';
+import { ConversationComponent } from './conversation/conversation.component'
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {CustomInterceptor} from './services/custom.interceptor'
     MenuComponent,
     ClientDashbordComponent,
     ProfileComponent,
-    MenuDetailsComponent
+    MenuDetailsComponent,
+    ConversationComponent
   ],
   imports: [
     BrowserModule,

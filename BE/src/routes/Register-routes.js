@@ -7,6 +7,10 @@ import jwt from 'jsonwebtoken'
 import RoleAuhorization from "../models/role-auhorization.js";
 import validateRequest from "../middlewares/validate-request.js";
 import RoleAuthorization from "../models/role-auhorization.js";
+import requireAuth from "../middlewares/require-auth.js";
+import currentUser from "../middlewares/current-user.js";
+import roleAuhorization from "../models/role-auhorization.js";
+import NotAuthorizedError from "../errors/not-authorized-errors.js";
 
 const userRouter = express.Router();
 
@@ -106,11 +110,14 @@ userRouter.patch('/users/new/:id', async (req, res) => {
     }
 });
 
-userRouter.patch('/users/:id', async (req, res) => {
+userRouter.patch('/users/:id', currentUser, requireAuth,async (req, res) => {
     try {
         const _id = req.params.id;
         const body = req.body;
-        new RoleAuthorization(req.body.roles);
+        const role = new RoleAuthorization(req.body.roles);
+        if(role.name !== 'ADMIN') {
+            throw  new NotAuthorizedError();
+        }
         const updateUsers = await User.findByIdAndUpdate(_id, body, {new: true});
         if (!updateUsers) {
             return res.status(404).json({message: `User with id ${_id} not found`});
