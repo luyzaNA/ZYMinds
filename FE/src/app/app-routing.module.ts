@@ -15,6 +15,7 @@ import {MenuComponent} from "./menu/menu.component";
 import {ClientDashbordComponent} from "./Client/client-dashbord/client-dashbord.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {MenuDetailsComponent} from "./menu/menu-details/menu-details.component";
+import {ConversationComponent} from "./conversation/conversation.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "first-page", pathMatch: "full"},
@@ -30,6 +31,7 @@ const routes: Routes = [
       {path: 'create-coach-card', component: CreateCoachCardComponent},
       {path: 'dashboard', component: CoachDashboardComponent},
       {path: 'clients', component: ClientsComponent},
+      {path: 'conversation', component: ConversationComponent},
       {
         path: 'menus', component: MenuComponent, children: [
           {path: 'menu-details', component: MenuDetailsComponent}
@@ -47,6 +49,7 @@ const routes: Routes = [
         ]
       },
       {path: 'profile', component: ProfileComponent},
+      {path: 'conversation', component: ConversationComponent},
     ]
   },
 
