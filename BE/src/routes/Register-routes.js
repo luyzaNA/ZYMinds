@@ -9,7 +9,7 @@ import validateRequest from "../middlewares/validate-request.js";
 import RoleAuthorization from "../models/role-auhorization.js";
 import requireAuth from "../middlewares/require-auth.js";
 import currentUser from "../middlewares/current-user.js";
-import roleAuhorization from "../models/role-auhorization.js";
+import Profile from '../models/Profile.js';
 import NotAuthorizedError from "../errors/not-authorized-errors.js";
 
 const userRouter = express.Router();
@@ -56,6 +56,18 @@ userRouter.post("/users/create", [
             });
 
             const savedUser = await newUser.save();
+
+            const defaultPhotoUrl = 'https://zyminds-upload-files.s3.eu-central-1.amazonaws.com/8245486.png';
+            const newProfile = new Profile({
+                userId: savedUser._id,
+                photo: defaultPhotoUrl,
+                rating: 5
+            });
+
+            await newProfile.save();
+
+            console.log("PROFILUL CREAT PENTRU", savedUser.fullName + " " + newProfile);
+
             const userJwt = jwt.sign({
                     id: newUser.id,
                     email: newUser.email,
@@ -110,13 +122,13 @@ userRouter.patch('/users/new/:id', async (req, res) => {
     }
 });
 
-userRouter.patch('/users/:id', currentUser, requireAuth,async (req, res) => {
+userRouter.patch('/users/:id', currentUser, requireAuth, async (req, res) => {
     try {
         const _id = req.params.id;
         const body = req.body;
         const role = new RoleAuthorization(req.body.roles);
-        if(role.name !== 'ADMIN') {
-            throw  new NotAuthorizedError();
+        if (role.name !== 'ADMIN') {
+            throw new NotAuthorizedError();
         }
         const updateUsers = await User.findByIdAndUpdate(_id, body, {new: true});
         if (!updateUsers) {
