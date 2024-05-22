@@ -14,6 +14,7 @@ import {ClientsComponent} from "./coach/clients/clients.component";
 import {MenuComponent} from "./menu/menu.component";
 import {ClientDashbordComponent} from "./Client/client-dashbord/client-dashbord.component";
 import {ProfileComponent} from "./profile/profile.component";
+import {MenuDetailsComponent} from "./menu/menu-details/menu-details.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "first-page", pathMatch: "full"},
@@ -29,23 +30,32 @@ const routes: Routes = [
       {path: 'create-coach-card', component: CreateCoachCardComponent},
       {path: 'dashboard', component: CoachDashboardComponent},
       {path: 'clients', component: ClientsComponent},
-      {path: 'menus', component: MenuComponent},
+      {
+        path: 'menus', component: MenuComponent, children: [
+          {path: 'menu-details', component: MenuDetailsComponent}
+        ]
+      },
       {path: 'profile', component: ProfileComponent},
     ]
   },
   {
     path: 'client', canActivate: [RoleGuard], data: {expectedRole: 'CLIENT'}, children: [
       {path: 'dashboard', component: ClientDashbordComponent},
-      {path: 'menus', component: MenuComponent},
+      {
+        path: 'menus', component: MenuComponent, children: [
+          {path: 'menu-details', component: MenuDetailsComponent}
+        ]
+      },
       {path: 'profile', component: ProfileComponent},
     ]
   },
 
   {path: 'contact', component: ContactSectionComponent},
+
   {
-    path: 'management-clients', component: UserManagementComponent,
-    canActivate: [RoleGuard],
-    data: {roles: ['ADMIN']}
+    path: 'admin', canActivate: [RoleGuard], data: {expectedRole: 'ADMIN'}, children: [
+      {path: 'management-clients', component: UserManagementComponent},
+    ]
   },
   {path: 'page-not-found', component: PageNotFoundComponent},
   {path: '**', redirectTo: 'page-not-found'}
