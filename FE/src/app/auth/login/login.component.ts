@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 
@@ -9,15 +9,18 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
+
   login(email: string, password: string): void {
     this.authService.loginUser(email, password).subscribe(
       user => {
-        if (user.roles === 'COACH')
+        if (user.roles === 'COACH') {
           this.router.navigate(['/coach/dashboard']);
-        else
+        } else if (user.roles === 'CLIENT')
           this.router.navigate(['/client/dashboard']);
-        console.log('SUCES');
+        else if (user.roles === 'ADMIN')
+          this.router.navigate(['/admin/management-clients']);
 
       },
       error => {
@@ -25,6 +28,7 @@ export class LoginComponent {
       }
     );
   }
+
   logout(): void {
     this.authService.logout().subscribe(
       () => {
