@@ -3,7 +3,6 @@ import {NgModule} from "@angular/core";
 import {LoginComponent} from "./auth/login/login.component";
 import {HomeComponent} from "./first-page/first-component/home-component";
 import {AboutUsComponent} from "./first-page/about-us/about-us.component";
-import {CreateCoachCardComponent} from "./coach/create-coach-card/create-coach-card.component";
 import {ContactSectionComponent} from "./first-page/contact-section/contact-section.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 import {RegisterComponent} from "./auth/register/register.component";
@@ -16,6 +15,7 @@ import {ClientDashbordComponent} from "./Client/client-dashbord/client-dashbord.
 import {ProfileComponent} from "./profile/profile.component";
 import {MenuDetailsComponent} from "./menu/menu-details/menu-details.component";
 import {ConversationComponent} from "./conversation/conversation.component";
+import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "first-page", pathMatch: "full"},
@@ -28,7 +28,6 @@ const routes: Routes = [
   },
   {
     path: 'coach', canActivate: [RoleGuard], data: {expectedRole: 'COACH'}, children: [
-      {path: 'create-coach-card', component: CreateCoachCardComponent},
       {path: 'dashboard', component: CoachDashboardComponent},
       {path: 'clients', component: ClientsComponent},
       {path: 'conversation', component: ConversationComponent},
@@ -37,7 +36,8 @@ const routes: Routes = [
           {path: 'menu-details', component: MenuDetailsComponent}
         ]
       },
-      {path: 'profile', component: ProfileComponent},
+      {path: 'profile', component: ProfileComponent, children:[
+          {path: 'edit-profile', component: EditProfileComponent}]},
     ]
   },
   {
@@ -48,7 +48,9 @@ const routes: Routes = [
           {path: 'menu-details', component: MenuDetailsComponent}
         ]
       },
-      {path: 'profile', component: ProfileComponent},
+      {path: 'profile', component: ProfileComponent, children: [
+          {path: 'edit-profile', component: EditProfileComponent}
+        ]},
       {path: 'conversation', component: ConversationComponent},
     ]
   },

@@ -12,10 +12,9 @@ import {NavigationBarComponent} from './first-page/navigation-bar/navigation-bar
 import {ContactSectionComponent} from './first-page/contact-section/contact-section.component';
 import {AboutUsComponent} from './first-page/about-us/about-us.component';
 import {RouterModule} from "@angular/router";
-import {CreateCoachCardComponent} from './coach/create-coach-card/create-coach-card.component';
 import {CoachCardComponent} from './coach/coach-card/coach-card.component';
 import {NgOptimizedImage} from "@angular/common";
-import {CoachCardService} from "./services/coach-card.service";
+// import {CoachCardService} from "./services/coach-card.service";
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {CoachDashboardComponent} from './coach/coach-dashboard/coach-dashboard.component';
@@ -25,7 +24,8 @@ import {ClientDashbordComponent} from './Client/client-dashbord/client-dashbord.
 import {ProfileComponent} from './profile/profile.component';
 import {MenuDetailsComponent} from './menu/menu-details/menu-details.component';
 import {CustomInterceptor} from './services/custom.interceptor';
-import { ConversationComponent } from './conversation/conversation.component'
+import { ConversationComponent } from './conversation/conversation.component';
+import { EditProfileComponent } from './profile/edit-profile/edit-profile.component'
 
 @NgModule({
   declarations: [
@@ -38,7 +38,6 @@ import { ConversationComponent } from './conversation/conversation.component'
     NavigationBarComponent,
     ContactSectionComponent,
     AboutUsComponent,
-    CreateCoachCardComponent,
     CoachCardComponent,
     PageNotFoundComponent,
     CoachDashboardComponent,
@@ -47,7 +46,8 @@ import { ConversationComponent } from './conversation/conversation.component'
     ClientDashbordComponent,
     ProfileComponent,
     MenuDetailsComponent,
-    ConversationComponent
+    ConversationComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +56,7 @@ import { ConversationComponent } from './conversation/conversation.component'
     NgOptimizedImage,
     AppRoutingModule
   ],
-  providers: [CoachCardService, provideHttpClient(withInterceptors([CustomInterceptor]))],
+  providers: [ provideHttpClient(withInterceptors([CustomInterceptor]))],
   bootstrap: [AppComponent],
   exports: [RouterModule]
 })
