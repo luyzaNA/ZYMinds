@@ -12,7 +12,10 @@ import {Router} from "@angular/router";
 export class AuthService {
 
   private baseUrl = environment.apiUrl;
-  private currentUser: User = {email: '', fullName: '', phoneNumber: 0, roles: '', id: '', password: '', newCoach: false};
+  private currentUser: User =
+      {email: '', fullName: '',
+      phoneNumber: 0, roles: '', id: '', password: '',
+      newCoach: false};
 
 
   constructor(private http: HttpClient, private router: Router) {

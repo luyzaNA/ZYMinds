@@ -9,15 +9,9 @@ import {AuthService} from "../../services/auth.service";
 })
 export class EditProfileComponent {
 
-  currentUser: User| null=null;
-  name: string='';
+  currentUser!: User;
 
   constructor(private authService: AuthService) {
     this.currentUser = this.authService.getCurrentUser();
-    if(this.currentUser !== null) {
-      this.name=this.currentUser.fullName;
-      console.log(this.currentUser);
-
-    }
   }
 }

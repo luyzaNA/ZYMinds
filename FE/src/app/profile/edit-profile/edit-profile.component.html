@@ -8,7 +8,7 @@
                name="Nume complet"
                required
                maxlength="27"
-               [(ngModel)]="name">
+               [(ngModel)]="currentUser.fullName">
       </div>
 
       <div class="form-group" class="input-container">
@@ -20,7 +20,7 @@
                pattern="^(1[89]|[2-9][0-9])$">
       </div>
 
-      <div *ngIf="currentUser?.roles=='COACH'" form-group  class="input-container">
+      <div *ngIf="currentUser.roles=='COACH'" form-group  class="input-container">
         <label>Descriere</label>
         <input type="text"
                ngModel
@@ -34,7 +34,7 @@
       </div>
     </form>
   </div>
-  <div *ngIf="currentUser?.roles=='COACH'" id="display-data" >
+  <div *ngIf="currentUser.roles=='COACH'" id="display-data" >
     <app-coach-card></app-coach-card>
   </div>
 
