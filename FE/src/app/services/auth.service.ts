@@ -3,7 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {map, switchMap} from 'rxjs/operators';
 import {User} from "../shared/user";
 import {environment} from "../shared/environment"
-import {Observable} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,10 @@ import {Observable} from "rxjs";
 export class AuthService {
 
   private baseUrl = environment.apiUrl;
-  private currentUser: User | null = null;
+  private currentUser: User = {email: '', fullName: '', phoneNumber: 0, roles: '', id: '', password: '', newCoach: false};
 
-  constructor(private http: HttpClient) {
+
+  constructor(private http: HttpClient, private router: Router) {
     const token = localStorage.getItem('token');
     if (token) {
       this.fetchCurrentUser().subscribe();
@@ -54,11 +56,17 @@ export class AuthService {
       map(response => {
         this.currentUser = response;
         return this.currentUser;
+      }),
+      catchError(error => {
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
+        return throwError(error);
       })
     );
   }
 
-  getCurrentUser(): User | null {
+  getCurrentUser(): User{
     return this.currentUser;
   }
 
@@ -67,7 +75,6 @@ export class AuthService {
       map(response => {
         console.log('Logout successful');
         localStorage.removeItem('token');
-        this.currentUser= null;
         return response;
       })
     );
