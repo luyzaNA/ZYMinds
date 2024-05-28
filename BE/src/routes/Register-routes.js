@@ -126,8 +126,8 @@ userRouter.patch('/users/:id', currentUser, requireAuth, async (req, res) => {
     try {
         const _id = req.params.id;
         const body = req.body;
-        const role = new RoleAuthorization(req.body.roles);
-        if (role.name !== 'ADMIN') {
+        const role = new RoleAuthorization(req.currentUser.roles);
+        if (role.name !== "ADMIN") {
             throw new NotAuthorizedError();
         }
         const updateUsers = await User.findByIdAndUpdate(_id, body, {new: true});

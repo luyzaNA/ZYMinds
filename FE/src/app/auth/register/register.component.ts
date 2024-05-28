@@ -45,14 +45,14 @@ export class RegisterComponent {
           awsLink: '',
           filename: file.name,
           mimetype: file.type,
-          size: file.size
+          size: file.size,
+          context: "CERTIFICATE"
         };
 
         this.fileService.uploadFile(file, fileData).subscribe(
           (response: any) => {
             this.adminService.updateUserStatus(this.userData, true).subscribe(
               (response: Object) => {
-
                 console.log(
                   "AICI INTRA si user id ", this.userData.id
                 );
@@ -83,10 +83,11 @@ export class RegisterComponent {
 
       this.authService.registerUser(this.userData).subscribe({
         next: (response) => {
-          this.userId = response;
+          this.userId = this.authService.getCurrentUser().id;
           this.userData.id = this.userId;
           console.log("USER ID", this.userId);
           this.uploadFiles();
+
 
           console.log('Răspunsul primit:', response);
         },

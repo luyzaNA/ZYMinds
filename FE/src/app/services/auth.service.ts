@@ -25,13 +25,11 @@ export class AuthService {
     }
   }
 
-  registerUser(userData: User): Observable<string> {
+  registerUser(userData: User): Observable<User> {
     return this.http.post<any>(`${this.baseUrl}/users/create`, userData).pipe(
       switchMap(() => {
         if (userData.email !== null && userData.password !== null) {
-          return this.loginUser(userData.email, userData.password).pipe(
-            map(() => userData.email)
-          );
+          return this.loginUser(userData.email, userData.password);
         } else {
           throw new Error('Email is null.');
         }

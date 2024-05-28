@@ -51,13 +51,15 @@ export class UserManagementComponent {
         console.error('Cannot set user');
       }
     )
+    console.log("USER ID UL E", this.user.id);
 
     this.awsLinks = [];
 
-    this.fileService.getFile(this.user.id).subscribe(
+    this.fileService.getFile(this.user.id, "CERTIFICATE").subscribe(
       (response) => {
         if (Array.isArray(response)) {
           response.forEach((file: any) => {
+            console.log(file.awsLink);
             this.awsLinks.push(file.awsLink);
           });
         } else {

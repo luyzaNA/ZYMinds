@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import File from '../models/File.js';
 import AWS from '../db/aws-config.js';
+import ContextFileAuthorization from "../models/file-context.js";
 
 const fileRouter = express.Router();
 
@@ -10,15 +11,19 @@ const upload = multer({ storage });
 
 fileRouter.post('/upload', upload.single('file'), async (req, res) => {
     try {
+
         console.log(req.body.fileData);
-        const { userId } = JSON.parse(req.body.fileData);
+        const { userId, context } = JSON.parse(req.body.fileData);
         const { originalname, mimetype, buffer } = req.file;
+
+        const contextAuth = new ContextFileAuthorization(context);
 
         const s3 = new AWS.S3();
         const params = {
             Bucket: 'zyminds-upload-files',
             Key: originalname,
-            Body: buffer
+            Body: buffer,
+            context: contextAuth.name
         };
 
         const uploadedFile = await s3.upload(params).promise();
@@ -28,7 +33,8 @@ fileRouter.post('/upload', upload.single('file'), async (req, res) => {
             awsLink: uploadedFile.Location,
             filename: originalname,
             mimetype,
-            size: buffer.length
+            size: buffer.length,
+            context: context
         });
 
         res.status(201).json({ message: 'Fișier încărcat cu succes!', fileId: newFile._id, awsLink: uploadedFile.Location });
@@ -47,15 +53,26 @@ fileRouter.get('/upload', async (req, res) => {
     }
 });
 
-
-fileRouter.get('/files', async (req, res) => {
+fileRouter.get('/files/:userId/:context', async (req, res) => {
     try {
-        const userId = req.query.userId;
+        const { userId, context } = req.params;
 
-        const files = await File.find({ userId });
-        res.json(files);
+        if (!userId || !context) {
+            return res.status(400).json({ message: 'userId și context sunt necesare' });
+        }
+
+        const contextAuth = new ContextFileAuthorization(context);
+
+        const files = await File.find({ userId, context: contextAuth.name });
+
+        res.status(200).json(files);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        if (error instanceof InvalidParamError) {
+            return res.status(400).json({ message: error.message });
+        }
+        console.error('Eroare la obținerea fișierelor:', error);
+        res.status(500).json({ message: 'Eroare la obținerea fișierelor!' });
     }
 });
+
 export default fileRouter;

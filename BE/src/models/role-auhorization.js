@@ -10,7 +10,7 @@ class RoleAuthorization {
 
         this.category = category;
     }
-    get name() {
+    get name(){
         return this.category;
     }
 }
