@@ -14,7 +14,6 @@ import {AboutUsComponent} from './first-page/about-us/about-us.component';
 import {RouterModule} from "@angular/router";
 import {CoachCardComponent} from './coach/coach-card/coach-card.component';
 import {NgOptimizedImage} from "@angular/common";
-// import {CoachCardService} from "./services/coach-card.service";
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {CoachDashboardComponent} from './coach/coach-dashboard/coach-dashboard.component';

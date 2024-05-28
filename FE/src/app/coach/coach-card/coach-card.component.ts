@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-// import {CoachCardService} from "../../services/coach-card.service";
 import {AuthService} from "../../services/auth.service";
 import {User} from "../../shared/user";
 
@@ -9,11 +8,8 @@ import {User} from "../../shared/user";
   styleUrls: ['./coach-card.component.css']
 })
 export class CoachCardComponent {
-  userName: string='';
-  currentUser: User | null = null;
-  constructor(public authService: AuthService) {
+  currentUser!: User;
+  constructor(private authService: AuthService) {
     this.currentUser= authService.getCurrentUser()
-    if(this.currentUser)
-        this.userName =this.currentUser.fullName;
   }
 }
