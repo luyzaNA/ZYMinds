@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import ContextFileAuthorization from "./file-context.js";
 
 const FileSchema = new mongoose.Schema({
     userId: {
@@ -21,6 +22,10 @@ const FileSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    context: {
+        type: String,
+        required: true
+    }
 }, { collection: 'files' });
 
 const File = mongoose.model('File', FileSchema);

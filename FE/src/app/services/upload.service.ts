@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {FileI} from '../shared/file';
 import {Observable} from "rxjs";
 import {environment} from "../shared/environment";
+import {User} from "../shared/user";
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +15,16 @@ export class FileUploadService {
   }
 
   uploadFile(file: File, fileData: FileI) {
-    console.log('MERGE');
     const formData: FormData = new FormData();
     formData.append('file', file);
     formData.append('fileData', JSON.stringify(fileData));
-
     return this.http.post<any>(environment.apiUrl + '/upload', formData, {
       reportProgress: true,
       observe: 'events'
     });
   }
-
-  getFile(userId: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/files?userId=${userId}`);
+  getFile(userId: string, context: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/files/${userId}/${context}`);
   }
+
 }
