@@ -20,7 +20,8 @@
                pattern="^(1[89]|[2-9][0-9])$">
       </div>
 
-      <div *ngIf="currentUser.roles=='COACH'" form-group  class="input-container">
+      <div *ngIf="currentUser.roles=='COACH'">
+      <div form-group  class="input-container">
         <label>Descriere</label>
         <input type="text"
                ngModel
@@ -28,6 +29,15 @@
                required
                maxlength="150">
         </div>
+        <div form-group  class="input-container">
+          <label>Pret</label>
+          <input type="number"
+                 ngModel
+                 name="price"
+                 required
+                 maxlength="150">
+        </div>
+      </div>
       <div class="form-group" class="input-container">
         <label>Select image:</label>
         <app-file-uploader [uploadMultipleFiles]="false"></app-file-uploader>
