@@ -35,7 +35,7 @@ userRouterLog.post("/login",
             const userJwt = jwt.sign({
                     id: existingUser.id,
                     email: existingUser.email,
-                    fullname: existingUser.fullName,
+                    fullName: existingUser.fullName,
                     phoneNumber: existingUser.phoneNumber,
                     roles: existingUser.roles
                 },
