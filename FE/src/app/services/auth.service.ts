@@ -16,10 +16,6 @@ export class AuthService {
 
 
   constructor(private http: HttpClient, private router: Router) {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.fetchCurrentUser().subscribe();
-    }
   }
 
   registerUser(userData: User): Observable<User> {
@@ -65,6 +61,12 @@ export class AuthService {
   }
 
   getCurrentUser(): User{
+    if(!this.currentUser.id){
+      this.fetchCurrentUser().pipe(map(response => {
+        this.currentUser = response;
+        return this.currentUser;
+      }));
+    }
     return this.currentUser;
   }
 
