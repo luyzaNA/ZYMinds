@@ -24,6 +24,10 @@ const ProfileSchema = new mongoose.Schema({
     photo: {
         type: String,
         required: true
+    },
+    fullName: {
+        type: String,
+        required: true
     }
 });
 

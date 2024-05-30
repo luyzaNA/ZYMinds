@@ -61,7 +61,8 @@ userRouter.post("/users/create", [
             const newProfile = new Profile({
                 userId: savedUser._id,
                 photo: defaultPhotoUrl,
-                rating: 5
+                rating: 5,
+                fullName: savedUser.fullName
             });
 
             await newProfile.save();
