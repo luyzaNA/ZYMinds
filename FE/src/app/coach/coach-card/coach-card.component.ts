@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import {AuthService} from "../../services/auth.service";
 import {User} from "../../shared/user";
+import {ProfileService} from "../../services/profile.service";
+import {AuthService} from "../../services/auth.service";
+import {ProfileI} from "../../shared/Profile";
 
 @Component({
   selector: 'app-coach-card',
@@ -9,7 +11,10 @@ import {User} from "../../shared/user";
 })
 export class CoachCardComponent {
   currentUser!: User;
-  constructor(private authService: AuthService) {
-    this.currentUser= authService.getCurrentUser()
+  constructor(protected profileService: ProfileService, protected authService: AuthService) {
+
+this.currentUser = this.authService.getCurrentUser();
+
   }
+
 }

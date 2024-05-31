@@ -20,14 +20,6 @@ const ProfileSchema = new mongoose.Schema({
     rating: {
         type: Number,
         required: true
-    },
-    photo: {
-        type: String,
-        required: true
-    },
-    fullName: {
-        type: String,
-        required: true
     }
 });
 

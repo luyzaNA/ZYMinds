@@ -19,12 +19,25 @@ export class FileUploadService {
     formData.append('file', file);
     formData.append('fileData', JSON.stringify(fileData));
     return this.http.post<any>(environment.apiUrl + '/upload', formData, {
-      reportProgress: true,
       observe: 'events'
     });
   }
-  getFile(userId: string, context: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/files/${userId}/${context}`);
+  getFiles(userId: string, context: string): Observable<FileI[]> {
+    return this.http.get<FileI[]>(`${this.baseUrl}/files/${userId}/${context}`);
+  }
+
+  deleteFile(fileId: string): Observable<FileI> {
+    return this.http.delete<FileI>(`${this.baseUrl}/files/${fileId}`);
+  }
+
+  updateFile(fileId: string, file: File, fileData: FileI): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    formData.append('fileData', JSON.stringify(fileData));
+    return this.http.put<"any">(`${this.baseUrl}/files/update/${fileId}`, formData,
+    {
+      observe: 'events'
+    })
   }
 
 }

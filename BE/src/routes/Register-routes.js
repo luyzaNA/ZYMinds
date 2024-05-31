@@ -4,13 +4,17 @@ import {body, validationResult} from 'express-validator';
 import {Password} from '../services/Password.js';
 import BadRequestError from '../errors/bad-request-error.js'
 import jwt from 'jsonwebtoken'
-import RoleAuhorization from "../models/role-auhorization.js";
 import validateRequest from "../middlewares/validate-request.js";
 import RoleAuthorization from "../models/role-auhorization.js";
 import requireAuth from "../middlewares/require-auth.js";
 import currentUser from "../middlewares/current-user.js";
 import Profile from '../models/Profile.js';
-import NotAuthorizedError from "../errors/not-authorized-errors.js";
+import RoleAuhorization from "../models/role-auhorization.js";
+import AWS from "../db/aws-config.js";
+import File from "../models/File.js";
+import fs from "fs"
+import * as path from "node:path";
+import { v4 as uuiv4 } from 'uuid';
 
 const userRouter = express.Router();
 
@@ -57,29 +61,68 @@ userRouter.post("/users/create", [
 
             const savedUser = await newUser.save();
 
-            const defaultPhotoUrl = 'https://zyminds-upload-files.s3.eu-central-1.amazonaws.com/8245486.png';
             const newProfile = new Profile({
                 userId: savedUser._id,
-                photo: defaultPhotoUrl,
                 rating: 5,
                 fullName: savedUser.fullName
             });
 
             await newProfile.save();
 
-            console.log("PROFILUL CREAT PENTRU", savedUser.fullName + " " + newProfile);
+            const s3 = new AWS.S3();
 
-            const userJwt = jwt.sign({
-                    id: newUser.id,
-                    email: newUser.email,
-                    fullName: newUser.fullName,
-                    phoneNumber: newUser.phoneNumber,
-                    roles: newUser.roles,
-                    newCoach: newUser.newCoach
-                },
-                process.env.JWT_SECRET)
+            if(typeof __dirname==="undefined")
+            {
+                global.__dirname = path.resolve();
+            }
 
-            res.status(201).send(newUser);
+            fs.readFile(path.join(__dirname, 'src', 'utlis', 'assets', 'img.jpeg'),
+                async (err, data) => {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
+
+                    const buffer = data;
+
+                    const originalname = 'img.jpeg';
+                    const mimetype = 'image/jpeg';
+                    const awsSecretKey = uuiv4();
+                    const params = {
+                        Bucket: 'zyminds-upload-files',
+                        Key: awsSecretKey,
+                        Body: buffer,
+                    };
+
+                    const uploadedFile = await s3.upload(params).promise();
+
+                    const newFile = await File.create({
+                        userId: savedUser.id,
+                        awsLink: uploadedFile.Location,
+                        filename: originalname,
+                        mimetype: mimetype,
+                        size: buffer.length,
+                        context: "PROFILE",
+                        awsSecretKey: awsSecretKey
+                    });
+
+                    console.log("PROFILUL CREAT PENTRU", savedUser.fullName + " " + newProfile);
+
+                    const userJwt = jwt.sign({
+                            id: newUser.id,
+                            email: newUser.email,
+                            fullName: newUser.fullName,
+                            phoneNumber: newUser.phoneNumber,
+                            roles: newUser.roles,
+                            newCoach: newUser.newCoach
+                        },
+                        process.env.JWT_SECRET)
+
+                    res.status(201).send(newUser);
+                })
+
+
+
             // res.status(201).send({token: userJwt});
         } catch (error) {
             res.status(400).json({message: error.message});
@@ -122,24 +165,33 @@ userRouter.patch('/users/new/:id', async (req, res) => {
         res.status(500).json({message: error.message});
     }
 });
-
-userRouter.patch('/users/:id', currentUser, requireAuth, async (req, res) => {
+userRouter.put('/users/:id', currentUser, requireAuth, async (req, res) => {
     try {
         const _id = req.params.id;
         const body = req.body;
         const role = new RoleAuthorization(req.currentUser.roles);
         if (role.name !== "ADMIN") {
-            throw new NotAuthorizedError();
+            delete body.roles;
         }
-        const updateUsers = await User.findByIdAndUpdate(_id, body, {new: true});
-        if (!updateUsers) {
+        const updateUser = await User.findByIdAndUpdate(_id, body, {new: true});
+        if (!updateUser) {
             return res.status(404).json({message: `User with id ${_id} not found`});
         }
-        return res.status(200).json(updateUsers);
+
+        const userJwt = jwt.sign({
+            id: updateUser.id,
+            email: updateUser.email,
+            fullName: updateUser.fullName,
+            phoneNumber: updateUser.phoneNumber,
+            roles: updateUser.roles,
+        }, "g2Trf%LPZ9CqQsRb&D@J$u*p8@X#yE7H");
+
+        return res.status(200).json({updateUser, token: userJwt});
     } catch (error) {
         res.status(500).json({message: error.message});
     }
 });
+
 
 userRouter.delete('/users/:id', async (req, res) => {
     try {
@@ -153,5 +205,6 @@ userRouter.delete('/users/:id', async (req, res) => {
         res.status(500).json({message: error.message});
     }
 });
+
 
 export default userRouter;

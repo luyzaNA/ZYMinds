@@ -43,7 +43,10 @@
    grid-column: 2/3;
    padding: 0px 29px;
  }
-
+#price{
+  padding-left: 230px;
+  width: 300px
+}
 
 
 

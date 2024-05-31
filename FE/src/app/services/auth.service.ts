@@ -14,11 +14,12 @@ export class AuthService {
   private baseUrl = environment.apiUrl;
   private currentUser: User =
       {email: '', fullName: '',
-      phoneNumber: 0, roles: '', id: '', password: '',
+      phoneNumber: '', roles: '', id: '', password: '',
       newCoach: false};
 
 
   constructor(private http: HttpClient, private router: Router) {
+
   }
 
   registerUser(userData: User): Observable<User> {
