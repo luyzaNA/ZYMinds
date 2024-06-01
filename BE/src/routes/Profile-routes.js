@@ -1,5 +1,6 @@
 import express from "express";
 import Profile from "../models/Profile.js";
+import User from "../models/User.js";
 
 const profileRouter = express.Router();
 
@@ -11,6 +12,20 @@ profileRouter.get('/profiles', async (req, res) => {
         res.status(500).json({message: error.message});
     }
 });
+
+
+profileRouter.get('/profiles/coach', async (req, res) => {
+    try {
+        const coaches = await User.find({ roles: 'COACH' });
+        const coachIds = coaches.map(coach => coach.id);
+        const coachProfiles = await Profile.find({ userId: { $in: coachIds } });
+
+        res.json(coachProfiles);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 
 profileRouter.put('/profile/update/:userId', async (req, res) => {
     const { userId } = req.params;
