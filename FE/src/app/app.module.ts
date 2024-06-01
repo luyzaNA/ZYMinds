@@ -6,7 +6,7 @@ import {LoginComponent} from './auth/login/login.component';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {FileUploaderComponent} from './auth/register/file-uploader/file-uploader.component';
-import {HomeComponent} from "./first-page/first-component/home-component";
+import {HomeComponent} from "./first-page/home/home-component";
 import {UserManagementComponent} from './admin/user-management/user-management.component';
 import {NavigationBarComponent} from './first-page/navigation-bar/navigation-bar.component';
 import {ContactSectionComponent} from './first-page/contact-section/contact-section.component';

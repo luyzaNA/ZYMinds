@@ -1,36 +1,37 @@
-
-
-#nav-bar{
+#nav-bar {
   background-color: rgba(242, 240, 255, 1);
   padding: 20px 15px 0px 15px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   position: fixed;
-  top: 0;  /*top: 0px;*/
+  top: 0; /*top: 0px;*/
   border-bottom: 1px solid rgba(76, 52, 226, 7%);
+  width: 100%;
 }
 
-button{
-  background-color:transparent;
+button {
+  background-color: transparent;
   color: #2C18A3;
   border: none;
+  margin-right: 40px;
 }
 
-#menu-list{
+#menu-list {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-#auth{
+#auth {
   box-shadow: 1px 2px 4px #4C34E2;
-
 }
-button:hover{
+
+button:hover {
   border: 1px solid #2C18A3;
 }
-img{
+
+img {
   margin-top: -25px;
 }
 
