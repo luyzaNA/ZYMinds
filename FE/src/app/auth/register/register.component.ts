@@ -4,7 +4,7 @@ import {AuthService} from '../../services/auth.service';
 import {User} from "../../shared/user";
 import {FileUploadService} from "../../services/upload.service";
 import {FileI} from "../../shared/file";
-import {AdminService} from "../../services/admin.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-register',
@@ -21,7 +21,7 @@ export class RegisterComponent {
   userData: User = {
     email: '',
     fullName: '',
-    phoneNumber: 0,
+    phoneNumber: '',
     password: '',
     newCoach: false,
     roles: '',
@@ -30,7 +30,7 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService,
               private fileService: FileUploadService,
-              private adminService: AdminService) {
+              private userService: UserService) {
   }
 
   protected filesUp(files: File[]) {
@@ -46,12 +46,13 @@ export class RegisterComponent {
           filename: file.name,
           mimetype: file.type,
           size: file.size,
-          context: "CERTIFICATE"
+          context: "CERTIFICATE",
+          _id: ''
         };
 
         this.fileService.uploadFile(file, fileData).subscribe(
           (response: any) => {
-            this.adminService.updateUserStatus(this.userData, true).subscribe(
+            this.userService.updateUserStatus(this.userData, true).subscribe(
               (response: Object) => {
                 console.log(
                   "AICI INTRA si user id ", this.userData.id

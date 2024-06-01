@@ -25,7 +25,11 @@ const FileSchema = new mongoose.Schema({
     context: {
         type: String,
         required: true
-    }
+    },
+    awsSecretKey:{
+        type: String,
+        required: true
+   }
 }, { collection: 'files' });
 
 const File = mongoose.model('File', FileSchema);

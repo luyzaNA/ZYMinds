@@ -12,7 +12,7 @@ profileRouter.get('/profiles', async (req, res) => {
     }
 });
 
-profileRouter.put('/profile/:userId', async (req, res) => {
+profileRouter.put('/profile/update/:userId', async (req, res) => {
     const { userId } = req.params;
     const updateData = req.body;
 
@@ -29,4 +29,19 @@ profileRouter.put('/profile/:userId', async (req, res) => {
     }
 });
 
+profileRouter.get('/profile/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const profile = await Profile.findOne({ userId: userId });
+
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+        res.json(profile);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
 export default profileRouter;

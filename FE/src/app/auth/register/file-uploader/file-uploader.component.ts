@@ -8,6 +8,8 @@ import {Component, Output, EventEmitter, Input} from "@angular/core";
 export class FileUploaderComponent {
   @Output() filesChange: EventEmitter<File[]> = new EventEmitter<File[]>();
   @Input() uploadMultipleFiles: boolean = false;
+  @Output() filesChangeSingle: EventEmitter<File> = new EventEmitter<File>();
+
 
   files: File[] = [];
 
@@ -18,6 +20,7 @@ export class FileUploaderComponent {
       console.log(event.target.files);
       this.files = Array.from(event.target.files);
       this.filesChange.emit(this.files);
+      this.filesChangeSingle.emit(this.files[0]);
     }
   }
 }

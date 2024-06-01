@@ -36,8 +36,8 @@ const routes: Routes = [
           {path: 'menu-details', component: MenuDetailsComponent}
         ]
       },
-      {path: 'profile', component: ProfileComponent, children:[
-          {path: 'edit-profile', component: EditProfileComponent}]},
+      {path: 'profile', component: ProfileComponent},
+       {path: 'edit-profile', component: EditProfileComponent},
     ]
   },
   {
@@ -48,9 +48,8 @@ const routes: Routes = [
           {path: 'menu-details', component: MenuDetailsComponent}
         ]
       },
-      {path: 'profile', component: ProfileComponent, children: [
-          {path: 'edit-profile', component: EditProfileComponent}
-        ]},
+      {path: 'profile', component: ProfileComponent},
+          {path: 'edit-profile', component: EditProfileComponent},
       {path: 'conversation', component: ConversationComponent},
     ]
   },

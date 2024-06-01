@@ -2,7 +2,7 @@
 export interface User {
   email: string;
   fullName: string;
-  phoneNumber: number;
+  phoneNumber: string;
   password: string | null;
   newCoach: boolean;
   roles: string;

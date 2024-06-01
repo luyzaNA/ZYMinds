@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../../shared/user";
 import {FileUploadService} from "../../services/upload.service";
-import {AdminService} from "../../services/admin.service";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-user-management',
@@ -17,13 +17,13 @@ export class UserManagementComponent {
 
   constructor(private http: HttpClient,
               private fileService: FileUploadService,
-              private adminService: AdminService) {
-    this.user = {email: '', fullName: '', phoneNumber: 0, roles: '', id: '', password: '', newCoach: false};
+              private userService: UserService) {
+    this.user = {email: '', fullName: '', phoneNumber: '', roles: '', id: '', password: '', newCoach: false};
     this.getAllUsers();
   }
 
   getAllUsers() {
-    this.adminService.getAllUser().subscribe({
+    this.userService.getAllUser().subscribe({
       next: (resultData) => {
         console.log(resultData);
         this.newPossibleCoaches = resultData.filter((result: { newCoach: boolean; }) => result.newCoach === true);
@@ -43,7 +43,7 @@ export class UserManagementComponent {
     this.user.roles = userData.roles;
     this.user.id = userData.id;
 
-    this.adminService.updateUserStatus(this.user, false).subscribe(
+    this.userService.updateUserStatus(this.user, false).subscribe(
       (response: Object) => {
         console.log(response);
       },
@@ -55,7 +55,7 @@ export class UserManagementComponent {
 
     this.awsLinks = [];
 
-    this.fileService.getFile(this.user.id, "CERTIFICATE").subscribe(
+    this.fileService.getFiles(this.user.id, "CERTIFICATE").subscribe(
       (response) => {
         if (Array.isArray(response)) {
           response.forEach((file: any) => {
@@ -73,7 +73,7 @@ export class UserManagementComponent {
   }
 
   updateRecords() {
-    this.adminService.updateUser(this.user.id, this.user.email,
+    this.userService.updateUser(this.user.id, this.user.email,
       this.user.fullName, this.user.phoneNumber,
       this.user.roles).subscribe(
       (resultUser: Object) => {
@@ -86,7 +86,7 @@ export class UserManagementComponent {
   }
 
   setDelete(id: string): void {
-    this.adminService.deleteUser(id).subscribe(
+    this.userService.deleteUser(id).subscribe(
       (response) => {
         this.getAllUsers();
         console.log("User deleted successfully", response);

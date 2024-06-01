@@ -5,4 +5,5 @@ export interface FileI{
   mimetype?: string;
   size: number;
   context: string;
+  _id: string;
 }
