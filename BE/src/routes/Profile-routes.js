@@ -59,4 +59,21 @@ profileRouter.get('/profile/:userId', async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
+
+profileRouter.patch('/rating/update/:_id', async (req, res) => {
+    const { _id } = req.params;
+    const {rating} = req.body
+
+    try {
+        const updateProfileRating = await Profile.findOneAndUpdate({ _id: _id }, {rating}, { new: true });
+
+        if (!updateProfileRating) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }
+        res.json(updateProfileRating);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
 export default profileRouter;
