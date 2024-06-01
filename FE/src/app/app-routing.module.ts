@@ -16,6 +16,7 @@ import {ProfileComponent} from "./profile/profile.component";
 import {MenuDetailsComponent} from "./menu/menu-details/menu-details.component";
 import {ConversationComponent} from "./conversation/conversation.component";
 import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
+import {CoachListComponent} from "./coach/coach-list/coach-list.component";
 
 const routes: Routes = [
   {path: "", redirectTo: "first-page", pathMatch: "full"},
@@ -25,6 +26,9 @@ const routes: Routes = [
     path: 'first-page', component: HomeComponent, children: [
       {path: 'aboutUs', component: AboutUsComponent}
     ]
+  },
+  {
+    path: 'coach-list', component: CoachListComponent
   },
   {
     path: 'coach', canActivate: [RoleGuard], data: {expectedRole: 'COACH'}, children: [

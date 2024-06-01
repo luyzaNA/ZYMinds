@@ -27,12 +27,12 @@ profileRouter.get('/profiles/coach', async (req, res) => {
 });
 
 
-profileRouter.put('/profile/update/:userId', async (req, res) => {
-    const { userId } = req.params;
+profileRouter.put('/profile/update/:_id', async (req, res) => {
+    const { _id } = req.params;
     const updateData = req.body;
 
     try {
-        const updatedProfile = await Profile.findOneAndUpdate({ userId: userId }, updateData, { new: true });
+        const updatedProfile = await Profile.findOneAndUpdate({ _id: _id }, updateData, { new: true });
 
         if (!updatedProfile) {
             return res.status(404).json({ message: 'Profile not found' });
