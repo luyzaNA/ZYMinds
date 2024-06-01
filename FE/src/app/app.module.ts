@@ -25,7 +25,9 @@ import {MenuDetailsComponent} from './menu/menu-details/menu-details.component';
 import {CustomInterceptor} from './services/custom.interceptor';
 import { ConversationComponent } from './conversation/conversation.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
-import { CoachListComponent } from './coach/coach-list/coach-list.component'
+import { CoachListComponent } from './coach/coach-list/coach-list.component';
+import { RatingComponent } from './profile/rating/rating.component'
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   declarations: [
@@ -48,14 +50,16 @@ import { CoachListComponent } from './coach/coach-list/coach-list.component'
     MenuDetailsComponent,
     ConversationComponent,
     EditProfileComponent,
-    CoachListComponent
+    CoachListComponent,
+    RatingComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     NgOptimizedImage,
-    AppRoutingModule
+    AppRoutingModule,
+    FaIconComponent
   ],
   providers: [ provideHttpClient(withInterceptors([CustomInterceptor]))],
   bootstrap: [AppComponent],

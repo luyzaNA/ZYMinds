@@ -4,6 +4,7 @@
     <div id="smt">
     <div id="title">
       <h4>{{ userProfileInformation.fullName |  uppercase }} - {{ userProfileInformation.age }} ANI</h4>
+      <app-rating [rating]="userProfileInformation.rating" [readonly]="true"></app-rating>
     </div>
     <div id="description">
       <p>{{ userProfileInformation.description }}</p>
@@ -12,7 +13,6 @@
         <h4>{{ userProfileInformation.price }} LEI</h4>
       </div>
     </div>
-</div>
 </div>
 
 
