@@ -1,0 +1,24 @@
+img {
+  border-radius: 100%;
+  width: 150px;
+  height: 150px;
+}
+.profile-image-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: grab;
+}
+
+
+#create-card{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  }
+
+#enter-data{
+  width: 500px
+}

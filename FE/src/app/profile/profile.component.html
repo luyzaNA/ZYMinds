@@ -1,3 +1,36 @@
-<p>profile works!</p>
-  <a routerLink="edit-profile">Edit</a>
-<router-outlet></router-outlet>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile with Zoom and Pan</title>
+</head>
+<body>
+<div class="profile-container" *ngIf="!isEditing">
+  <div class="profile-header">
+    <div class="profile-image-container">
+      <img [src]=profileService.photoUrl alt="Profile Picture" id="profileImage">
+    </div>
+    <div class="profile-details">
+      <h1 id="fullName">{{currentUser.fullName}}</h1>
+      <p id="phoneNumber">Phone: {{currentUser.phoneNumber}}</p>
+    </div>
+    <div class="edit-profile">
+      <button type="button" (click)="toToEdit() ">Edit</button>
+    </div>
+  </div>
+  <div class="profile-info">
+    <p><strong>Age:</strong> <span id="age">30</span></p>
+    <p><strong>Email:</strong> <span id="email">{{currentUser.email}}</span></p>
+  </div>
+</div>
+<div class="edit-tab">
+<!--<router-outlet></router-outlet>-->
+<!--<app-edit-profile *ngIf="isEditing"></app-edit-profile>-->
+
+<button type="button" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+</div>
+
+
+</body>
+</html>

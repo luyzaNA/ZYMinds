@@ -1,5 +1,7 @@
+
 <div id="create-card">
   <div id="enter-data">
+    <img [src] = profileService.photoUrl alt="profile photo">
     <form #createCardForm="ngForm" (ngSubmit)="editProfile()">
       <div class="form-group input-container">
         <label>Nume & prenume</label>
@@ -18,7 +20,8 @@
                ngModel
                name="phoneNumber"
                required
-               maxlength="27"
+               maxlength="10"
+               minlength="10"
                [(ngModel)]="currentUser.phoneNumber"
                (ngModelChange)="updatePhoneNumber($event)">
       </div>
@@ -64,7 +67,6 @@
       <button type="submit">Update</button>
     </form>
   </div>
-
   <div *ngIf="currentUser.roles === 'COACH'" id="display-data">
     <app-coach-card></app-coach-card>
   </div>
