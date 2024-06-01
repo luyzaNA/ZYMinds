@@ -20,8 +20,7 @@ export class ProfileComponent {
               private authService: AuthService,
               private router: Router) {
     this.currentUser = this.authService.getCurrentUser()
-
-    this.currentUser = this.authService.getCurrentUser()
+console.log(this.currentUser)
     this.fileService.getFiles(this.currentUser.id, "PROFILE").subscribe(
       (response) => {
         this.profileService.photoUrl = response[0].awsLink;
@@ -29,7 +28,6 @@ export class ProfileComponent {
     );
 
   }
-
 
 
   toToEdit(): void {

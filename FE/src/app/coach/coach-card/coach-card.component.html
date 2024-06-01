@@ -1,18 +1,17 @@
 <div id="card">
   <div id="about">
-      <img [src]="profileService.photoUrl" alt="Image Preview">
+      <img [src]="userProfileInformation.photoUrl" alt="Image Preview">
     <div id="smt">
     <div id="title">
-      <h4>{{ currentUser.fullName |  uppercase }} - {{ profileService.profileI.age }} ANI</h4>
+      <h4>{{ userProfileInformation.fullName |  uppercase }} - {{ userProfileInformation.age }} ANI</h4>
     </div>
     <div id="description">
-      <p>{{ profileService.profileI.description }}</p>
+      <p>{{ userProfileInformation.description }}</p>
     </div>
       <div id="price">
-        <h4>{{ profileService.profileI.price }} LEI</h4>
+        <h4>{{ userProfileInformation.price }} LEI</h4>
       </div>
     </div>
-
 </div>
 </div>
 

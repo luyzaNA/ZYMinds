@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
-import {User} from "../../shared/user";
-import {AuthService} from "../../services/auth.service";
-import {ProfileService} from "../../services/profile.service";
-import {UserService} from "../../services/user.service";
-import {FileI} from "../../shared/file";
-import {FileUploadService} from "../../services/upload.service";
-
+import { Component } from '@angular/core';
+import { User, UserInformation } from "../../shared/user";
+import { AuthService } from "../../services/auth.service";
+import { ProfileService } from "../../services/profile.service";
+import { UserService } from "../../services/user.service";
+import { FileI } from "../../shared/file";
+import { FileUploadService } from "../../services/upload.service";
+import { ProfileI } from "../../shared/Profile";
 
 @Component({
   selector: 'app-edit-profile',
@@ -16,85 +16,120 @@ export class EditProfileComponent {
 
   currentUser!: User;
   files!: File;
-  id = ''
   fileId = '';
+  profile: ProfileI = {
+    _id: '',
+    age: 0,
+    description: '',
+    price: 0,
+    rating: 0,
+    userId: ''
+  };
 
+  profileInformation: UserInformation = {
+    email: '',
+    fullName: '',
+    phoneNumber: '',
+    description: '',
+    age: 0,
+    price: 0,
+    userId: '',
+    rating: 0,
+    photoUrl: ''
+  };
 
-  constructor(protected profileService: ProfileService,
-              private authService: AuthService,
-              private userService: UserService,
-              private fileService: FileUploadService) {
+  constructor(
+    protected profileService: ProfileService,
+    private authService: AuthService,
+    private userService: UserService,
+    private fileService: FileUploadService
+  ) {
+    // Get current user
     this.currentUser = this.authService.getCurrentUser();
-    this.profileService.profileI.userId = this.currentUser.id;
 
-    this.profileService.getProfile(this.currentUser.id).subscribe((profile) => {
-      this.profileService.profileI = profile;
-    })
+    this.profileInformation.userId = this.currentUser.id;
+    this.profileInformation.fullName = this.currentUser.fullName;
+    this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
 
-    this.fileService.getFiles(this.currentUser.id, "PROFILE").subscribe(
-      (response) => {
-        this.fileId = response[0]._id;
+    // Fetch profile data
+    this.profileService.getProfile(this.profileInformation.userId).subscribe((profile) => {
+        this.profileInformation.description = profile.description;
+        this.profileInformation.age = profile.age;
+        this.profileInformation.price = profile.price;
+        this.profileInformation.rating = profile.rating;
+        console.log("descrierea", this.profileInformation.description)
 
-        this.profileService.photoUrl = response[0].awsLink;
-      }
-    );
+        this.profile._id = profile._id;
 
-  }
-
-
-  updateFullName(value: string): void {
-    this.currentUser.fullName = value;
-  }
-
-  updateAge(value: number) {
-    this.profileService.profileI.age = value;
-  }
-
-  updateDescription(value: string) {
-    this.profileService.profileI.description = value;
-  }
-
-  updatePrice(value: number) {
-    this.profileService.profileI.price = value;
-  }
-
-  updateRating(value: number) {
-    this.profileService.profileI.rating = value;
-  }
-
-  updatePhoneNumber(value: string) {
-    this.currentUser.phoneNumber = value;
-  }
-
-
-  editProfile() {
-    //update age description, price, description
-    this.profileService.updateProfile(this.profileService.profileI)
-      .subscribe((profile) => {
-        },
-        (error) => {
-          console.error('Eroare la actualizarea profilului:', error);
-        });
-
-
-    //update phone number and full name
-    this.userService.updateUser(this.currentUser.id, this.currentUser.email,
-      this.currentUser.fullName, this.currentUser.phoneNumber, this.currentUser.roles).subscribe(() => {
+        // Fetch files
+        this.fileService.getFiles(this.profileInformation.userId, "PROFILE").subscribe(
+          (response) => {
+            if (response.length > 0) {
+              this.fileId = response[0]._id;
+              this.profileInformation.photoUrl = response[0].awsLink;
+            }
+          },
+          (error) => {
+            console.error('Error fetching files:', error);
+          }
+        );
       },
       (error) => {
-        console.error('Eroare la actualizarea profilului:', error);
-      })
+        console.error('Error fetching profile:', error);
+      });
+  }
 
-    this.uploadFile();
+  updateFullName(value: string): void {
+    this.profileInformation.fullName = value;
+  }
 
-    this.fileService.getFiles(this.currentUser.id, "PROFILE").subscribe(
-      (response) => {
-        this.fileId = response[0]._id;
-        this.profileService.photoUrl = response[0].awsLink;
+  updateAge(value: number): void {
+    this.profileInformation.age = value;
+  }
+
+  updateDescription(value: string): void {
+    this.profileInformation.description = value;
+  }
+
+  updatePrice(value: number): void {
+    this.profileInformation.price = value;
+  }
+
+  updateRating(value: number): void {
+    this.profileInformation.rating = value;
+  }
+
+  updatePhoneNumber(value: string): void {
+    this.profileInformation.phoneNumber = value;
+  }
+
+  editProfile(): void {
+    // Update profile
+    this.profile.price = this.profileInformation.price;
+    this.profile.rating = this.profileInformation.rating;
+    this.profile.age = this.profileInformation.age;
+    this.profile.description = this.profileInformation.description;
+    this.profile.userId = this.profileInformation.userId;
+
+    this.profileService.updateProfile(this.profile).subscribe(
+      () => {
+        // Update user information
+        console.log("ce vreau sa modific", this.profile)
+
+        this.userService.updateUser(this.profileInformation.userId, this.currentUser.email,
+          this.profileInformation.fullName, this.profileInformation.phoneNumber, this.currentUser.roles).subscribe(
+          () => {
+            this.uploadFile();
+          },
+          (error) => {
+            console.error('Error updating user:', error);
+          }
+        );
+      },
+      (error) => {
+        console.error('Error updating profile:', error);
       }
     );
-
-
   }
 
   fileData: FileI = {
@@ -107,40 +142,29 @@ export class EditProfileComponent {
     _id: this.fileId
   };
 
-
-  protected filesUp(files: File) {
+  protected filesUp(files: File): void {
     this.files = files;
   }
 
-  private uploadFile() {
-
-
+  private uploadFile(): void {
     if (this.files) {
-
-      this.fileData.userId = this.currentUser.id;
-      this.fileData.awsLink = '';
+      this.fileData.userId = this.profileInformation.userId;
       this.fileData.filename = this.files.name;
       this.fileData.mimetype = this.files.type;
       this.fileData.size = this.files.size;
-      this.fileData.context = "PROFILE"
 
-
-      console.log("FILE ID E", this.fileId)
       this.fileService.updateFile(this.fileId, this.files, this.fileData).subscribe(
         (response: any) => {
-          if (!response.body)
-            return;
-          console.log("raspunsul din edit e", response)
-          this.profileService.photoUrl = response.body.awsLink;
+          if (response.body) {
+            this.profileInformation.photoUrl = response.body.awsLink;
+          }
         },
         (error: any) => {
-          console.error('Eroare la încărcarea fișierului:', error);
+          console.error('Error uploading file:', error);
         }
       );
     } else {
-      console.error('Nu există fișiere de încărcat.');
+      console.log('No files to upload.'); // Changed from error to log
     }
   }
-
-
 }

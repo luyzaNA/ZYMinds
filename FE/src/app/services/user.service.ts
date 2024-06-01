@@ -38,7 +38,6 @@ export class UserService {
     );
   }
 
-
   getAllUser(): Observable<User[]> {
     return this.http.get<User[]>(environment.apiUrl + '/users');
   }
@@ -46,5 +45,9 @@ export class UserService {
   updateUserStatus(user: User, newStatus: boolean): Observable<Object> {
     user.newCoach = newStatus;
     return this.http.patch(environment.apiUrl + '/users/new/' + user.id, {newCoach: newStatus});
+  }
+
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/users/${userId}`);
   }
 }

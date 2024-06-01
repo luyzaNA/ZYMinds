@@ -4,6 +4,7 @@ import {ProfileI} from "../shared/Profile";
 import {environment} from "../shared/environment";
 import {Observable} from "rxjs";
 import {AuthService} from "./auth.service";
+import {User, UserInformation} from "../shared/user";
 
 @Injectable({
   providedIn: 'root'
@@ -21,22 +22,21 @@ export class ProfileService {
 
   photoUrl : string =''
   constructor(private http: HttpClient, private auth: AuthService) {
-   // this.auth.fetchCurrentUser().subscribe();
   }
 
   updateProfile(profile: ProfileI):Observable<Object> {
-  return this.http.put<ProfileI>(`${environment.apiUrl}/profile/update/${profile.userId}/`, profile);
-  }
-
-
-updateUserFullName(userId: string, fullName: string): Observable<any> {
-    const url = `${environment.apiUrl}/users/${userId}/update-name`;
-    return this.http.put(url, { fullName });
+  return this.http.put<ProfileI>(`${environment.apiUrl}/profile/update/${profile._id}`, profile);
   }
 
 
   getProfile(id: string): Observable<ProfileI> {
     return this.http.get<ProfileI>(`${environment.apiUrl}/profile/${id}`);
+  }
+
+
+
+  getProfiles(): Observable<UserInformation[]> {
+    return this.http.get<UserInformation[]>(`${environment.apiUrl}/profiles/coach`);
   }
 
 

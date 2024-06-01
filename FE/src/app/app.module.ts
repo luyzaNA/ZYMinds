@@ -24,7 +24,8 @@ import {ProfileComponent} from './profile/profile.component';
 import {MenuDetailsComponent} from './menu/menu-details/menu-details.component';
 import {CustomInterceptor} from './services/custom.interceptor';
 import { ConversationComponent } from './conversation/conversation.component';
-import { EditProfileComponent } from './profile/edit-profile/edit-profile.component'
+import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
+import { CoachListComponent } from './coach/coach-list/coach-list.component'
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
     ProfileComponent,
     MenuDetailsComponent,
     ConversationComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    CoachListComponent
   ],
   imports: [
     BrowserModule,
