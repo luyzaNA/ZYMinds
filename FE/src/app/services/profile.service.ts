@@ -33,7 +33,9 @@ export class ProfileService {
     return this.http.get<ProfileI>(`${environment.apiUrl}/profile/${id}`);
   }
 
-
+  updateRating(profileId: string, rating: number):Observable<ProfileI> {
+    return this.http.put<ProfileI>(`${environment.apiUrl}/rating/update/${profileId}`, rating);
+  }
 
   getProfiles(): Observable<UserInformation[]> {
     return this.http.get<UserInformation[]>(`${environment.apiUrl}/profiles/coach`);
