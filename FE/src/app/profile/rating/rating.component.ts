@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { faStar } from '@fortawesome/free-solid-svg-icons/faStar';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {Component, Input} from '@angular/core';
+import {faStar} from '@fortawesome/free-solid-svg-icons/faStar';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-rating',
