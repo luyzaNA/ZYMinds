@@ -1,0 +1,28 @@
+#container {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+
+  fa-icon {
+    color: gray;
+    font-size: 14px;
+    cursor: pointer;
+    &.rated,
+    &:hover,
+    &:hover ~ fa-icon {
+      color: #25148D;
+    }
+  margin-bottom: 10px;
+    transition: color 0.3s ease-in-out;
+  }
+
+  &.readOnly {
+    fa-icon {
+      cursor: default;
+      &:hover:not(.rated),
+      &:hover ~ fa-icon:not(.rated) {
+        color: gray;
+      }
+    }
+  }
+}

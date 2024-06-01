@@ -15,7 +15,8 @@ export class CoachCardComponent {
   constructor(protected profileService: ProfileService, protected authService: AuthService) {
 
 this.currentUser = this.authService.getCurrentUser();
-
   }
+
+
 
 }
