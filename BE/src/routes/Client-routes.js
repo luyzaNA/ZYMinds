@@ -7,6 +7,7 @@ import Client from "../models/Client.js";
 import Profile from "../models/Profile.js";
 import User from "../models/User.js";
 import File from "../models/File.js";
+import userRouter from "./Register-routes.js";
 
 const clientRouter = express.Router();
 clientRouter.post("/connect/:coachId", currentUser, requireAuth, async (req, res) => {
@@ -81,6 +82,19 @@ clientRouter.delete("/delete/connection", currentUser, requireAuth, async (req, 
         return res.status(200).json(deleteConnection);
     } catch (error) {
         res.status(500).json({message: error.message});
+    }
+});
+clientRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
+    try {
+        const coachId = req.currentUser.id;
+        const role = new RoleAuthorization(req.currentUser.roles);
+        if (role.name !== "COACH") {
+            return res.status(403).json({message: "Access denied"});
+        }
+        const clients = await Client.find( { coachId} );
+        res.json(clients);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 export default clientRouter;
