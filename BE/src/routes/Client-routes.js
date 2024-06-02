@@ -53,7 +53,7 @@ clientRouter.get('/application/client', currentUser, requireAuth, async (req, re
             return res.status(404).json({message: 'User, Profile or Photo not found'});
         }
 
-        const { statusApplication} = client
+        const {statusApplication} = client
         const {fullName} = user;
         const {description, age, price, rating} = profile;
         const {awsLink} = photo;
@@ -62,6 +62,25 @@ clientRouter.get('/application/client', currentUser, requireAuth, async (req, re
     } catch (error) {
         console.error(error);
         res.status(500).json({message: 'Server error', error: error.message});
+    }
+});
+
+clientRouter.delete("/delete/connection", currentUser, requireAuth, async (req, res) => {
+    try {
+        const clientId = req.currentUser.id;
+        const {coachId} = req.params;
+
+        const role = new RoleAuthorization(req.currentUser.roles);
+        if (role.name !== "CLIENT") {
+            return res.status(403).json({message: "Access denied"});
+        }
+        const deleteConnection = await Client.findOneAndDelete({clientId: clientId});
+        if (!deleteConnection) {
+            return res.status(404).json({message: 'Client not found'});
+        }
+        return res.status(200).json(deleteConnection);
+    } catch (error) {
+        res.status(500).json({message: error.message});
     }
 });
 export default clientRouter;
