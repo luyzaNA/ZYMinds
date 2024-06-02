@@ -13,6 +13,10 @@ const ClientSchema = new MongooseSchema({
     statusApplication: {
         type:  ['pending', 'approved', 'rejected'],
         required: true
+    },
+    message:{
+        type: String,
+        required: false
     }
 }, { collection: 'clients' })
 
