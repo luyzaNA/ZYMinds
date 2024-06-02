@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="eyes" [class.closed]="isPassword">
+    <div class="eye left-eye">
+      <div class="eyelash"></div> <!-- Top eyelash -->
+      <div class="pupil" [ngStyle]="{'left': leftPupilPositionX + '%', 'top': leftPupilPositionY + '%'}"></div>
+    </div>
+    <div class="eye right-eye">
+      <div class="eyelash"></div> <!-- Top eyelash -->
+      <div class="pupil" [ngStyle]="{'left': rightPupilPositionX + '%', 'top': rightPupilPositionY + '%'}"></div>
+    </div>
+  </div>
+</div>

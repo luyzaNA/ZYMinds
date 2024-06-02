@@ -28,6 +28,7 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
 import { CoachListComponent } from './coach/coach-list/coach-list.component';
 import { RatingComponent } from './profile/rating/rating.component'
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import { EyeTrackingComponent } from './auth/eye-tracking/eye-tracking.component';
 
 @NgModule({
   declarations: [
@@ -51,8 +52,8 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
     ConversationComponent,
     EditProfileComponent,
     CoachListComponent,
-    RatingComponent
-  ],
+    RatingComponent,
+    EyeTrackingComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
