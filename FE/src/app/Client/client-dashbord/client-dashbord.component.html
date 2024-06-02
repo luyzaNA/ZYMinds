@@ -1,5 +1,8 @@
 <div id="application">
   <app-navigation-bar></app-navigation-bar>
+  <h1>Conexiuni</h1>
+  <hr>
+  <div *ngIf="connection">
   <h2>Ai aplicat pentru:</h2>
   <div class="coach-card-container">
     <app-coach-card [userProfileInformation]="profileInformation" [applied]="true"></app-coach-card>
@@ -9,4 +12,11 @@
     </span>
   </div>
   <h2>Status : {{statusRequest}}</h2>
+</div>
+</div>
+<div *ngIf="!connection">
+  <h2>Ai 0 conexiuni .</h2>
+  <a routerLink='../../coach-list'>
+   VREAU ANTRENOR
+  </a>
 </div>
