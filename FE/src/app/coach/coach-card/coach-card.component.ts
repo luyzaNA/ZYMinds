@@ -1,8 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {User, UserInformation} from "../../shared/user";
+import {User} from "../../shared/user";
 import {AuthService} from "../../services/auth.service";
 import {ClientService} from "../../shared/Client/client.service";
 import {Router} from "@angular/router";
+import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
 
 @Component({
   selector: 'app-coach-card',
@@ -16,7 +17,8 @@ export class CoachCardComponent {
   isTextareaVisible: boolean = false;
   isApplyButtonVisible: boolean= true
 
-  @Input() userProfileInformation!: UserInformation;
+  @Input() userProfileInformation!: ProfileInformation;
+  @Input() applied: boolean = false;
 
   constructor(private clientService: ClientService,
               protected authService: AuthService,

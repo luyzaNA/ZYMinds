@@ -4,7 +4,7 @@ import {ProfileI} from "../shared/Profile";
 import {environment} from "../shared/environment";
 import {Observable} from "rxjs";
 import {AuthService} from "./auth.service";
-import {User, UserInformation} from "../shared/user";
+import {ProfileInformationI} from "../shared/ProfileInformation/ProfileInformationI";
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +37,8 @@ export class ProfileService {
     return this.http.put<ProfileI>(`${environment.apiUrl}/rating/update/${profileId}`, rating);
   }
 
-  getProfiles(): Observable<UserInformation[]> {
-    return this.http.get<UserInformation[]>(`${environment.apiUrl}/profiles/coach`);
+  getProfiles(): Observable<ProfileInformationI[]> {
+    return this.http.get<ProfileInformationI[]>(`${environment.apiUrl}/profiles/coach`);
   }
 
 
