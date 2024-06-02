@@ -4,15 +4,14 @@
     <div id="smt">
     <div id="title">
       <h4>{{ userProfileInformation.fullName |  uppercase }} - {{ userProfileInformation.age }} ANI</h4>
-      <app-rating [rating]="userProfileInformation.rating" [readonly]="true"></app-rating>
     </div>
     <div id="description">
       <p>{{ userProfileInformation.description }}</p>
     </div>
       <div id="price">
         <h4>{{ userProfileInformation.price }} LEI</h4>
+        <app-rating [rating]="userProfileInformation.rating" [readonly]="true"></app-rating>
       </div>
     </div>
+    <button type="button" (click)="applApplForCoaching()">Apply</button>
 </div>
-
-
