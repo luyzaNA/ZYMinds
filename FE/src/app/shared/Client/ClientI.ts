@@ -1,18 +1,18 @@
 export interface ClientI{
-  userId: string;
+  clientId: string;
   coachId: string;
   status: 'pending' | 'approved' | 'rejected';
   message: string;
 }
 
 export class Client implements ClientI {
-  userId: string;
+  clientId: string;
   coachId: string;
   status: 'pending' | 'approved' | 'rejected';
   message:string;
 
   constructor() {
-    this.userId = '';
+    this.clientId = '';
     this.coachId = '';
     this.status = 'pending';
     this.message = '';
