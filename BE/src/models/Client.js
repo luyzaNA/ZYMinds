@@ -1,8 +1,8 @@
-import {Mongoose} from "mongoose";
+import mongoose from "mongoose";
 
-const ClientSchema = new MongooseSchema({
+const ClientSchema = new mongoose.Schema({
 
-    userId:{
+    clientId:{
         type: String,
         required: true
     },
@@ -20,6 +20,6 @@ const ClientSchema = new MongooseSchema({
     }
 }, { collection: 'clients' })
 
-const Client = Mongoose.model('Client', ClientSchema);
+const Client = mongoose.model('Client', ClientSchema);
 
 export default Client;
