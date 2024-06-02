@@ -26,5 +26,9 @@ export class ClientService {
                           statusApplication: string, rating: number, awsLink: string }>(`${environment.apiUrl}/application/client`);
   }
 
+  deleteConnection(): Observable<ClientI> {
+    return this.http.delete<ClientI>(`${environment.apiUrl}/delete/connection`);
+  }
+
 
 }

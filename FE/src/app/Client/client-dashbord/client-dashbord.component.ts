@@ -9,7 +9,7 @@ import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInforma
 })
 export class ClientDashbordComponent {
 
-  statusRequest= 'pending'
+  statusRequest :string ='pending'
   profileInformation = new ProfileInformation();
   constructor(private clientService: ClientService) {
     this.getConnection()
@@ -18,7 +18,7 @@ export class ClientDashbordComponent {
   getConnection(): void {
     this.clientService.getClientConnection().subscribe(
       (profileInfo) => {
-        this.statusRequest = profileInfo.statusApplication;
+        this.statusRequest = profileInfo.statusApplication[0];
         this.profileInformation.age=profileInfo.age;
         this.profileInformation.description=profileInfo.description;
         this.profileInformation.rating=profileInfo.rating;
@@ -32,4 +32,20 @@ export class ClientDashbordComponent {
     );
   }
 
+  revokeConnection(){
+    console.log(this.statusRequest)
+    if(this.statusRequest==='pending'){
+      this.clientService.deleteConnection().subscribe(
+        (response) => {
+          alert("Cererrea de conectare a fost incheieta cu succes");
+        },
+        (error) => {
+          console.error('Eroare la crearea conexiunii:', error);
+        }
+      );
+    }
+  }
+  hideCard(){
+    alert("Eroare la crearea conexiun")
+  }
 }

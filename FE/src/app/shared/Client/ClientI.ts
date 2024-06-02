@@ -3,6 +3,7 @@ export interface ClientI{
   coachId: string;
   status: 'pending' | 'approved' | 'rejected';
   message: string;
+  id: string;
 }
 
 export class Client implements ClientI {
@@ -10,11 +11,13 @@ export class Client implements ClientI {
   coachId: string;
   status: 'pending' | 'approved' | 'rejected';
   message:string;
+  id: string;
 
   constructor() {
     this.clientId = '';
     this.coachId = '';
     this.status = 'pending';
     this.message = '';
+    this.id = '';
   }
 }

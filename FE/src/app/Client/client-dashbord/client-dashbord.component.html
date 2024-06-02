@@ -1,9 +1,12 @@
-<!--<a class="align-self-center" routerLink="../menus">Menus</a>-->
-<!--<a class="align-self-center" routerLink="../profile">Profile</a>-->
-<!--<a class="align-self-center" routerLink="../conversation">Conversation</a>-->
 <div id="application">
-<app-navigation-bar></app-navigation-bar>
+  <app-navigation-bar></app-navigation-bar>
   <h2>Ai aplicat pentru:</h2>
-  <app-coach-card [userProfileInformation]="profileInformation" [applied]="true"></app-coach-card>
+  <div class="coach-card-container">
+    <app-coach-card [userProfileInformation]="profileInformation" [applied]="true"></app-coach-card>
+    <span class="close-container" (click)="revokeConnection()">
+      <span class="close-button">&times;</span>
+      <span class="close-text">Anulează conectarea</span>
+    </span>
+  </div>
   <h2>Status : {{statusRequest}}</h2>
 </div>
