@@ -1,8 +1,7 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {User, UserInformation} from "../../shared/user";
 import {ProfileService} from "../../services/profile.service";
 import {AuthService} from "../../services/auth.service";
-import {ProfileI} from "../../shared/Profile";
 
 @Component({
   selector: 'app-coach-card',
@@ -12,11 +11,12 @@ import {ProfileI} from "../../shared/Profile";
 export class CoachCardComponent {
   currentUser!: User;
   @Input() userProfileInformation!: UserInformation;
-  constructor(protected profileService: ProfileService, protected authService: AuthService) {
 
-this.currentUser = this.authService.getCurrentUser();
+  constructor(protected profileService: ProfileService, protected authService: AuthService) {
+    this.currentUser = this.authService.getCurrentUser();
   }
 
-
-
+  applApplForCoaching() {
+    console.log("Hei");
+  }
 }
