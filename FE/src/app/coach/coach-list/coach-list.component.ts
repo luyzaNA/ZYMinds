@@ -1,10 +1,8 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
-import {Observable} from "rxjs";
-import {environment} from "../../shared/environment";
 import {UserService} from "../../services/user.service";
-import {UserInformation} from "../../shared/user";
 import {FileUploadService} from "../../services/upload.service";
+import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
 
 @Component({
   selector: 'app-coach-list',
@@ -13,9 +11,9 @@ import {FileUploadService} from "../../services/upload.service";
 })
 export class CoachListComponent {
   profile! :{name:string, phone:string, age:number, price:number,
-  description:string, rating:number, photoUrl:string, userId:string};
+  description:string, rating:number, awsLink:string, userId:string};
 
-  users: UserInformation[] = [];
+  users: ProfileInformation[] = [];
   constructor(private profileService: ProfileService,
               private userService: UserService,
               private fileService:  FileUploadService) {
@@ -35,7 +33,7 @@ export class CoachListComponent {
                 (files) => {
                   const photoUrl = files.length > 0 ? files[0].awsLink : 'defaultPhotoUrl'; // Use a default photo URL if no files found
 
-                  const userInformation: UserInformation = {
+                  const userInformation: ProfileInformation = {
                     email: user.email,
                     fullName: user.fullName,
                     phoneNumber: user.phoneNumber,
@@ -44,7 +42,7 @@ export class CoachListComponent {
                     price: profile.price,
                     userId: user.id,
                     rating: profile.rating,
-                    photoUrl: photoUrl,
+                    awsLink: photoUrl,
                   };
                   this.users.push(userInformation);
                 },

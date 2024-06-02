@@ -1,6 +1,6 @@
 <div id="card">
   <div id="about">
-    <img [src]="userProfileInformation.photoUrl" alt="Image Preview">
+    <img [src]="userProfileInformation.awsLink" alt="Image Preview">
     <div id="smt">
       <div id="title">
         <h4>{{ userProfileInformation.fullName |  uppercase }} - {{ userProfileInformation.age }} ANI</h4>
@@ -13,13 +13,15 @@
         <app-rating [rating]="userProfileInformation.rating" [readonly]="true"></app-rating>
       </div>
     </div>
-    <button *ngIf="isApplyButtonVisible" type="button" (click)="openForm()" id="apply">Apply</button>
-    <div *ngIf="isTextareaVisible" id="messageToCoah" class="apply-box">
-      <textarea [(ngModel)]="messageToCoach" placeholder="Enter your message here, if you want to"></textarea>
-      <div class="send-button-container">
-        <button type="button" (click)="applApplyForCoaching(userProfileInformation.userId)">Send</button>
+    <div *ngIf="!applied">
+      <button *ngIf="isApplyButtonVisible" type="button" (click)="openForm()" id="apply">Apply</button>
+      <div *ngIf="isTextareaVisible" id="messageToCoah" class="apply-box">
+        <textarea [(ngModel)]="messageToCoach" placeholder="Enter your message here, if you want to"></textarea>
+        <div class="send-button-container">
+          <button type="button" (click)="applApplyForCoaching(userProfileInformation.userId)">Send</button>
+        </div>
+        <span class="close-button" (click)="closeForm()">&times;</span>
       </div>
-      <span class="close-button" (click)="closeForm()">&times;</span>
     </div>
   </div>
 </div>

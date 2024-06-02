@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { User, UserInformation } from "../../shared/user";
+import { User } from "../../shared/user";
 import { AuthService } from "../../services/auth.service";
 import { ProfileService } from "../../services/profile.service";
 import { UserService } from "../../services/user.service";
 import { FileI } from "../../shared/file";
 import { FileUploadService } from "../../services/upload.service";
 import { ProfileI } from "../../shared/Profile";
+import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
 
 @Component({
   selector: 'app-edit-profile',
@@ -26,7 +27,7 @@ export class EditProfileComponent {
     userId: ''
   };
 
-  profileInformation: UserInformation = {
+  profileInformation: ProfileInformation = {
     email: '',
     fullName: '',
     phoneNumber: '',
@@ -35,7 +36,7 @@ export class EditProfileComponent {
     price: 0,
     userId: '',
     rating: 0,
-    photoUrl: ''
+    awsLink: ''
   };
 
   constructor(
@@ -66,7 +67,7 @@ export class EditProfileComponent {
           (response) => {
             if (response.length > 0) {
               this.fileId = response[0]._id;
-              this.profileInformation.photoUrl = response[0].awsLink;
+              this.profileInformation.awsLink = response[0].awsLink;
             }
           },
           (error) => {
@@ -156,7 +157,7 @@ export class EditProfileComponent {
       this.fileService.updateFile(this.fileId, this.files, this.fileData).subscribe(
         (response: any) => {
           if (response.body) {
-            this.profileInformation.photoUrl = response.body.awsLink;
+            this.profileInformation.awsLink = response.body.awsLink;
           }
         },
         (error: any) => {
