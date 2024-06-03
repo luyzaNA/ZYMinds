@@ -1,13 +1,11 @@
 import currentUser from "../middlewares/current-user.js";
 import requireAuth from "../middlewares/require-auth.js";
 import RoleAuthorization from "../models/role-auhorization.js";
-import ContextFileAuthorization from "../models/file-context.js";
 import express from "express";
 import Client from "../models/Client.js";
 import Profile from "../models/Profile.js";
 import User from "../models/User.js";
 import File from "../models/File.js";
-import userRouter from "./Register-routes.js";
 
 const clientRouter = express.Router();
 clientRouter.post("/connect/:coachId", currentUser, requireAuth, async (req, res) => {
@@ -84,17 +82,51 @@ clientRouter.delete("/delete/connection", currentUser, requireAuth, async (req, 
         res.status(500).json({message: error.message});
     }
 });
+
 clientRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
     try {
         const coachId = req.currentUser.id;
+
         const role = new RoleAuthorization(req.currentUser.roles);
         if (role.name !== "COACH") {
             return res.status(403).json({message: "Access denied"});
         }
-        const clients = await Client.find( { coachId} );
-        res.json(clients);
+
+        const clients = await Client.find({coachId});
+        const clientDetails = [];
+
+        for (const client of clients) {
+            const user = await User.findById(client.clientId);
+            if (user) {
+                clientDetails.push({
+                    email: user.email,
+                    fullName: user.fullName,
+                    phoneNumber: user.phoneNumber
+                });
+            }
+
+            const profile = await Profile.findOne({userId: client.clientId});
+            if (profile) {
+                clientDetails.push({
+                    age: profile.age
+                });
+            }
+
+            const photo = await File.findOne({userId: client.clientId});
+            if (photo) {
+                clientDetails.push({
+                    awsLink: photo.awsLink
+                });
+            } else {
+                clientDetails.push({
+                    awsLink: "https://zyminds-upload-files.s3.eu-central-1.amazonaws.com/profile.png"
+                });
+            }
+        }
+        return res.status(200).json(clientDetails);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({message: error.message});
     }
 });
+
 export default clientRouter;
