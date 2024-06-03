@@ -1,1 +1,21 @@
-<p>clients works!</p>
+<div class="container">
+  <h1>Client Details</h1>
+  <table>
+    <thead>
+    <tr>
+      <th>Profile Picture</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>Phone Number</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let client of clients">
+      <td><img [src]="client.awsLink" alt="Profile Picture"></td>
+      <td>{{ client.fullName }}</td>
+      <td>{{ client.email }}</td>
+      <td>{{ client.phoneNumber }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

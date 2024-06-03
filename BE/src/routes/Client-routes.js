@@ -96,32 +96,30 @@ clientRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
         const clientDetails = [];
 
         for (const client of clients) {
+            const clientDetail = {};
+            clientDetail.status = client.statusApplication[0];
+            clientDetail.message = client.message;
+
             const user = await User.findById(client.clientId);
             if (user) {
-                clientDetails.push({
-                    email: user.email,
-                    fullName: user.fullName,
-                    phoneNumber: user.phoneNumber
-                });
+                clientDetail.email = user.email;
+                clientDetail.fullName = user.fullName;
+                clientDetail.phoneNumber = user.phoneNumber;
             }
 
             const profile = await Profile.findOne({userId: client.clientId});
             if (profile) {
-                clientDetails.push({
-                    age: profile.age
-                });
+                clientDetail.age = profile.age;
             }
 
             const photo = await File.findOne({userId: client.clientId});
             if (photo) {
-                clientDetails.push({
-                    awsLink: photo.awsLink
-                });
+                clientDetail.awsLink = photo.awsLink;
             } else {
-                clientDetails.push({
-                    awsLink: "https://zyminds-upload-files.s3.eu-central-1.amazonaws.com/profile.png"
-                });
+                clientDetail.awsLink = "https://zyminds-upload-files.s3.eu-central-1.amazonaws.com/profile.png";
             }
+
+            clientDetails.push(clientDetail);
         }
         return res.status(200).json(clientDetails);
     } catch (error) {
