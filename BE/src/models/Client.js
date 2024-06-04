@@ -11,7 +11,7 @@ const ClientSchema = new mongoose.Schema({
         required: true
     },
     statusApplication: {
-        type:  ['pending', 'approved', 'rejected'],
+        type: String,
         required: true
     },
     message:{

@@ -1,5 +1,6 @@
 <div class="container">
   <h1>Client Details</h1>
+  <h2>In pending</h2>
   <table>
     <thead>
     <tr>
@@ -7,15 +8,86 @@
       <th>Full Name</th>
       <th>Email</th>
       <th>Phone Number</th>
+      <th>Message</th>
+      <th>Status</th>
+      <th>Edit Status</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let client of clients">
+    <tr *ngFor="let client of clientsInPending">
       <td><img [src]="client.awsLink" alt="Profile Picture"></td>
       <td>{{ client.fullName }}</td>
       <td>{{ client.email }}</td>
       <td>{{ client.phoneNumber }}</td>
+      <td>{{ client.message }}</td>
+      <td>
+        <select [(ngModel)]="client.status">
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn-save" (click)="editStatus(client)">
+          <i class="fas fa-save"></i> Save
+        </button>
+      </td>
     </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <h2>Approved</h2>
+  <table>
+  <thead>
+  <tr>
+    <th>Profile Picture</th>
+    <th>Full Name</th>
+    <th>Email</th>
+    <th>Phone Number</th>
+    <th>Message</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let client of clientsApproved">
+    <tr *ngIf="client.status === 'approved'">
+      <td><img [src]="client.awsLink" alt="Profile Picture"></td>
+      <td>{{ client.fullName }}</td>
+      <td>{{ client.email }}</td>
+      <td>{{ client.phoneNumber }}</td>
+      <td>{{ client.message }}</td>
+      <td [class.approved]="client.status === 'approved'">{{ client.status }}</td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>
+</div>
+<div class="container">
+  <h2>Rejected</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Profile Picture</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>Phone Number</th>
+      <th>Message</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let client of clientsRejected">
+      <tr *ngIf="client.status === 'rejected'">
+        <td><img [src]="client.awsLink" alt="Profile Picture"></td>
+        <td>{{ client.fullName }}</td>
+        <td>{{ client.email }}</td>
+        <td>{{ client.phoneNumber }}</td>
+        <td>{{ client.message }}</td>
+        <td [class.approved]="client.status === 'rejected'">{{ client.status }}</td>
+      </tr>
+    </ng-container>
     </tbody>
   </table>
 </div>

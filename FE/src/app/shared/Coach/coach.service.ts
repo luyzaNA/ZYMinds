@@ -14,4 +14,8 @@ export class CoachService {
   getClietsByCoach():Observable<CoachI[]>{
     return this.http.get<CoachI[]>(`${environment.apiUrl}/clients`);
   }
+
+  updateClientStatus(clientId: string, statusApplication: string): Observable<CoachI> {
+    return this.http.patch<CoachI>(`${environment.apiUrl}/update/status/client/${clientId}`, {statusApplication: statusApplication});
+  }
 }

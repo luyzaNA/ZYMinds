@@ -20,7 +20,7 @@ export class ClientDashbordComponent {
     this.clientService.getClientConnection().subscribe(
       (profileInfo) => {
         this.connection=true;
-        this.statusRequest = profileInfo.statusApplication[0];
+        this.statusRequest = profileInfo.statusApplication;
         this.profileInformation.age=profileInfo.age;
         this.profileInformation.description=profileInfo.description;
         this.profileInformation.rating=profileInfo.rating;

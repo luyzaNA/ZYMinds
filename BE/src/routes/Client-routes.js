@@ -6,6 +6,8 @@ import Client from "../models/Client.js";
 import Profile from "../models/Profile.js";
 import User from "../models/User.js";
 import File from "../models/File.js";
+import profileRouter from "./Profile-routes.js";
+import client from "../models/Client.js";
 
 const clientRouter = express.Router();
 clientRouter.post("/connect/:coachId", currentUser, requireAuth, async (req, res) => {
@@ -97,8 +99,9 @@ clientRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
 
         for (const client of clients) {
             const clientDetail = {};
-            clientDetail.status = client.statusApplication[0];
+            clientDetail.status = client.statusApplication;
             clientDetail.message = client.message;
+            clientDetail.clientId = client.clientId;
 
             const user = await User.findById(client.clientId);
             if (user) {
@@ -124,6 +127,29 @@ clientRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
         return res.status(200).json(clientDetails);
     } catch (error) {
         res.status(500).json({message: error.message});
+    }
+});
+
+clientRouter.patch('/update/status/client/:clientId', currentUser, requireAuth, async (req, res) => {
+    const {clientId} = req.params;
+    const {statusApplication} = req.body
+
+    try {
+        const role = new RoleAuthorization(req.currentUser.roles);
+
+        if (role.name !== "COACH") {
+            return res.status(403).json({message: "Access denied"});
+        }
+
+        const updateClientStatus = await Client.findOneAndUpdate({clientId: clientId}, {statusApplication: statusApplication}, {new: true});
+        if (!updateClientStatus) {
+            return res.status(404).json({message: 'Client not found'});
+        }
+
+        res.json(updateClientStatus);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Server error', error: error.message});
     }
 });
 
