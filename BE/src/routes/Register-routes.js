@@ -204,13 +204,12 @@ userRouter.delete('/users/:id', async (req, res) => {
     }
 });
 
-userRouter.get('/users/email/:email', async (req, res) => {
+userRouter.get('/users/search/:email', async (req, res) => {
     try {
         const email = req.params.email;
-
-        const users = await User.findOne({email: email});
-        if (!users) {
-            return res.status(404).json({message: `User with id ${email} not found`});
+        const users = await User.find({email: new RegExp(email, 'i')});
+        if (!users || users.length === 0) {
+            return res.status(404).json({message: `No users found with that email`});
         }
         return res.status(200).json(users);
     } catch (error) {
