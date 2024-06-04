@@ -50,4 +50,8 @@ export class UserService {
   getUserById(userId: string): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/users/${userId}`);
   }
+
+  searchUsersByEmail(email: string): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiUrl}/users/search/${email}`);
+  }
 }

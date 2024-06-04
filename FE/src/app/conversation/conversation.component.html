@@ -1,1 +1,11 @@
-<p>conversation works!</p>
+<div class="search-container">
+  <input type="text" placeholder="Search by email" class="input-container" [(ngModel)]="searchText" (input)="searchUsers()" />
+  <div class="suggestions" *ngIf="users.length > 0">
+    <ul>
+      <li *ngFor="let user of users">
+        {{ user.email }} - {{ user.fullName }}
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="isLoading">Loading...</div>
+</div>
