@@ -2,11 +2,10 @@ import currentUser from "../middlewares/current-user.js";
 import requireAuth from "../middlewares/require-auth.js";
 import RoleAuthorization from "../models/role-auhorization.js";
 import express from "express";
-import Client from "../models/Client.js";
 import Profile from "../models/Profile.js";
 import User from "../models/User.js";
 import File from "../models/File.js";
-import Link from "../models/Client.js";
+import Link from "../models/Link.js";
 
 const linkRouter = express.Router();
 linkRouter.post("/connect/:coachId", currentUser, requireAuth, async (req, res) => {
@@ -40,7 +39,7 @@ linkRouter.get('/application/client', currentUser, requireAuth, async (req, res)
             return res.status(403).json({message: "Access denied"});
         }
 
-        const link = await Client.findOne({clientId: clientId});
+        const link = await Link.findOne({clientId: clientId});
         if (!link) {
             return res.status(404).json({message: 'Link not found'});
         }
@@ -74,7 +73,7 @@ linkRouter.delete("/delete/connection", currentUser, requireAuth, async (req, re
         if (role.name !== "CLIENT") {
             return res.status(403).json({message: "Access denied"});
         }
-        const deleteConnection = await Client.findOneAndDelete({clientId: clientId});
+        const deleteConnection = await Link.findOneAndDelete({clientId: clientId});
         if (!deleteConnection) {
             return res.status(404).json({message: 'Link not found'});
         }
@@ -93,7 +92,7 @@ linkRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
             return res.status(403).json({message: "Access denied"});
         }
 
-        const links = await Client.find({coachId});
+        const links = await Link.find({coachId});
         const linkDetails = [];
 
         for (const link of links) {
