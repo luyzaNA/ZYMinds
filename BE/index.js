@@ -10,10 +10,11 @@ import errorHandler from "./src/middlewares/error-handler.js";
 import logOutRouter from "./src/routes/logout.js";
 import meRouter from "./src/routes/me.js";
 import profileRouter from "./src/routes/Profile-routes.js";
-import clientRouter from "./src/routes/Client-routes.js";
+import clientRouter from "./src/routes/Link-routes.js";
 import messageRouter from "./src/routes/Message-routes.js";
 import conversationRouter from "./src/routes/Conversation-routes.js";
-import linkRouter from "./src/routes/Client-routes.js";
+import linkRouter from "./src/routes/Link-routes.js";
+import prerequisitesRouter from "./src/routes/Prerequisites-routes.js";
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.use(clientRouter);
 app.use(messageRouter);
 app.use(conversationRouter);
 app.use(linkRouter);
+app.use(prerequisitesRouter);
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
