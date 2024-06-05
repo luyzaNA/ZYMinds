@@ -54,12 +54,12 @@ clientRouter.get('/application/client', currentUser, requireAuth, async (req, re
             return res.status(404).json({message: 'User, Profile or Photo not found'});
         }
 
-        const {statusApplication} = client
+        const {statusApplication, id} = client
         const {fullName} = user;
         const {description, age, price, rating} = profile;
         const {awsLink} = photo;
 
-        res.json({statusApplication, fullName, description, age, price, rating, awsLink});
+        res.json({statusApplication, fullName, description, age, price, rating, awsLink, id});
     } catch (error) {
         console.error(error);
         res.status(500).json({message: 'Server error', error: error.message});

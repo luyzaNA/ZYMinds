@@ -18,7 +18,15 @@ const ClientSchema = new mongoose.Schema({
         type: String,
         required: false
     }
-}, { collection: 'clients' })
+}, {collection: 'clients'}, {
+    toJSON: {
+        transform: (doc, ret) => {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.__v;
+        }
+    }
+});
 
 const Client = mongoose.model('Client', ClientSchema);
 
