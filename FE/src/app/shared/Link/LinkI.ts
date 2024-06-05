@@ -1,4 +1,4 @@
-export interface ClientI{
+export interface LinkI {
   clientId: string;
   coachId: string;
   status: 'pending' | 'approved' | 'rejected';
@@ -6,7 +6,7 @@ export interface ClientI{
   id: string;
 }
 
-export class Client implements ClientI {
+export class Link implements LinkI {
   clientId: string;
   coachId: string;
   status: 'pending' | 'approved' | 'rejected';

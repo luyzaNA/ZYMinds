@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {ClientService} from "../../shared/Client/client.service";
+import {LinkService} from "../../shared/Link/link.service";
 import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
 
 @Component({
@@ -12,12 +12,12 @@ export class ClientDashbordComponent {
   statusRequest :string ='pending'
   connection:boolean =false;
   profileInformation = new ProfileInformation();
-  constructor(private clientService: ClientService) {
+  constructor(private linkService: LinkService) {
     this.getConnection()
   }
 
   getConnection(): void {
-    this.clientService.getClientConnection().subscribe(
+    this.linkService.getClientConnection().subscribe(
       (profileInfo) => {
         this.connection=true;
         this.statusRequest = profileInfo.statusApplication;
@@ -37,7 +37,7 @@ export class ClientDashbordComponent {
   revokeConnection(){
     console.log(this.statusRequest)
     if(this.statusRequest==='pending'){
-      this.clientService.deleteConnection().subscribe(
+      this.linkService.deleteConnection().subscribe(
         (response) => {
           this.connection=false
           alert("Cererrea de conectare a fost incheieta cu succes");

@@ -13,6 +13,7 @@ import profileRouter from "./src/routes/Profile-routes.js";
 import clientRouter from "./src/routes/Client-routes.js";
 import messageRouter from "./src/routes/Message-routes.js";
 import conversationRouter from "./src/routes/Conversation-routes.js";
+import linkRouter from "./src/routes/Client-routes.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use(profileRouter);
 app.use(clientRouter);
 app.use(messageRouter);
 app.use(conversationRouter);
+app.use(linkRouter);
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
