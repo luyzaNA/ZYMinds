@@ -6,11 +6,10 @@ import Client from "../models/Client.js";
 import Profile from "../models/Profile.js";
 import User from "../models/User.js";
 import File from "../models/File.js";
-import profileRouter from "./Profile-routes.js";
-import client from "../models/Client.js";
+import Link from "../models/Client.js";
 
-const clientRouter = express.Router();
-clientRouter.post("/connect/:coachId", currentUser, requireAuth, async (req, res) => {
+const linkRouter = express.Router();
+linkRouter.post("/connect/:coachId", currentUser, requireAuth, async (req, res) => {
     try {
         const clientId = req.currentUser.id;
         const {coachId} = req.params;
@@ -20,20 +19,20 @@ clientRouter.post("/connect/:coachId", currentUser, requireAuth, async (req, res
             return res.status(403).json({message: "Access denied"});
         }
 
-        const newClientData = {
+        const newLinkData = {
             clientId, coachId, statusApplication: 'pending', ...req.body
         };
 
-        const newClient = new Client(newClientData);
-        await newClient.save();
+        const newLink = new Link(newLinkData);
+        await newLink.save();
 
-        return res.status(200).json({newClient});
+        return res.status(200).json({newLink});
     } catch (error) {
         res.status(500).json({message: error.message});
     }
 });
 
-clientRouter.get('/application/client', currentUser, requireAuth, async (req, res) => {
+linkRouter.get('/application/client', currentUser, requireAuth, async (req, res) => {
     const clientId = req.currentUser.id;
     try {
         const role = new RoleAuthorization(req.currentUser.roles);
@@ -41,20 +40,20 @@ clientRouter.get('/application/client', currentUser, requireAuth, async (req, re
             return res.status(403).json({message: "Access denied"});
         }
 
-        const client = await Client.findOne({clientId: clientId});
-        if (!client) {
-            return res.status(404).json({message: 'Client not found'});
+        const link = await Client.findOne({clientId: clientId});
+        if (!link) {
+            return res.status(404).json({message: 'Link not found'});
         }
 
-        const user = await User.findById(client.coachId);
-        const profile = await Profile.findOne({userId: client.coachId});
-        const photo = await File.findOne({userId: client.coachId, context: "PROFILE"});
+        const user = await User.findById(link.coachId);
+        const profile = await Profile.findOne({userId: link.coachId});
+        const photo = await File.findOne({userId: link.coachId, context: "PROFILE"});
 
         if (!user || !profile || !photo) {
             return res.status(404).json({message: 'User, Profile or Photo not found'});
         }
 
-        const {statusApplication, id} = client
+        const {statusApplication, id} = link
         const {fullName} = user;
         const {description, age, price, rating} = profile;
         const {awsLink} = photo;
@@ -66,7 +65,7 @@ clientRouter.get('/application/client', currentUser, requireAuth, async (req, re
     }
 });
 
-clientRouter.delete("/delete/connection", currentUser, requireAuth, async (req, res) => {
+linkRouter.delete("/delete/connection", currentUser, requireAuth, async (req, res) => {
     try {
         const clientId = req.currentUser.id;
         const {coachId} = req.params;
@@ -77,7 +76,7 @@ clientRouter.delete("/delete/connection", currentUser, requireAuth, async (req, 
         }
         const deleteConnection = await Client.findOneAndDelete({clientId: clientId});
         if (!deleteConnection) {
-            return res.status(404).json({message: 'Client not found'});
+            return res.status(404).json({message: 'Link not found'});
         }
         return res.status(200).json(deleteConnection);
     } catch (error) {
@@ -85,7 +84,7 @@ clientRouter.delete("/delete/connection", currentUser, requireAuth, async (req, 
     }
 });
 
-clientRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
+linkRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
     try {
         const coachId = req.currentUser.id;
 
@@ -94,43 +93,43 @@ clientRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
             return res.status(403).json({message: "Access denied"});
         }
 
-        const clients = await Client.find({coachId});
-        const clientDetails = [];
+        const links = await Client.find({coachId});
+        const linkDetails = [];
 
-        for (const client of clients) {
-            const clientDetail = {};
-            clientDetail.status = client.statusApplication;
-            clientDetail.message = client.message;
-            clientDetail.clientId = client.clientId;
+        for (const link of links) {
+            const linkDetail = {};
+            linkDetail.status = link.statusApplication;
+            linkDetail.message = link.message;
+            linkDetail.clientId = link.clientId;
 
-            const user = await User.findById(client.clientId);
+            const user = await User.findById(link.clientId);
             if (user) {
-                clientDetail.email = user.email;
-                clientDetail.fullName = user.fullName;
-                clientDetail.phoneNumber = user.phoneNumber;
+                linkDetail.email = user.email;
+                linkDetail.fullName = user.fullName;
+                linkDetail.phoneNumber = user.phoneNumber;
             }
 
-            const profile = await Profile.findOne({userId: client.clientId});
+            const profile = await Profile.findOne({userId: link.clientId});
             if (profile) {
-                clientDetail.age = profile.age;
+                linkDetail.age = profile.age;
             }
 
-            const photo = await File.findOne({userId: client.clientId});
+            const photo = await File.findOne({userId: link.clientId});
             if (photo) {
-                clientDetail.awsLink = photo.awsLink;
+                linkDetail.awsLink = photo.awsLink;
             } else {
-                clientDetail.awsLink = "https://zyminds-upload-files.s3.eu-central-1.amazonaws.com/profile.png";
+                linkDetail.awsLink = "https://zyminds-upload-files.s3.eu-central-1.amazonaws.com/profile.png";
             }
 
-            clientDetails.push(clientDetail);
+            linkDetails.push(linkDetail);
         }
-        return res.status(200).json(clientDetails);
+        return res.status(200).json(linkDetails);
     } catch (error) {
         res.status(500).json({message: error.message});
     }
 });
 
-clientRouter.patch('/update/status/client/:clientId', currentUser, requireAuth, async (req, res) => {
+linkRouter.patch('/update/status/client/:clientId', currentUser, requireAuth, async (req, res) => {
     const {clientId} = req.params;
     const {statusApplication} = req.body
 
@@ -141,16 +140,16 @@ clientRouter.patch('/update/status/client/:clientId', currentUser, requireAuth, 
             return res.status(403).json({message: "Access denied"});
         }
 
-        const updateClientStatus = await Client.findOneAndUpdate({clientId: clientId}, {statusApplication: statusApplication}, {new: true});
-        if (!updateClientStatus) {
-            return res.status(404).json({message: 'Client not found'});
+        const updateLinkStatus = await Link.findOneAndUpdate({clientId: clientId}, {statusApplication: statusApplication}, {new: true});
+        if (!updateLinkStatus) {
+            return res.status(404).json({message: 'Link not found'});
         }
 
-        res.json(updateClientStatus);
+        res.json(updateLinkStatus);
     } catch (error) {
         console.error(error);
         res.status(500).json({message: 'Server error', error: error.message});
     }
 });
 
-export default clientRouter;
+export default linkRouter;
