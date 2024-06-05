@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../shared/User/user.service";
 import {FileUploadService} from "../../services/upload.service";
 import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
 

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { User } from "../../shared/user";
 import { AuthService } from "../../services/auth.service";
 import { ProfileService } from "../../services/profile.service";
-import { UserService } from "../../services/user.service";
+import { UserService } from "../../shared/User/user.service";
 import { FileI } from "../../shared/file";
 import { FileUploadService } from "../../services/upload.service";
 import { ProfileI } from "../../shared/Profile";
 import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
+import {User} from "../../shared/User/UserI";
 
 @Component({
   selector: 'app-edit-profile',
@@ -15,7 +15,7 @@ import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInforma
 })
 export class EditProfileComponent {
 
-  currentUser!: User;
+  currentUser:User = new User();
   files!: File;
   fileId = '';
   profile: ProfileI = {

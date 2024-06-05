@@ -1,11 +1,46 @@
-<div class="search-container">
-  <input type="text" placeholder="Search by email" class="input-container" [(ngModel)]="searchText" (input)="searchUsers()" />
-  <div class="suggestions" *ngIf="users.length > 0">
-    <ul>
-      <li *ngFor="let user of users">
-        {{ user.email }} - {{ user.fullName }}
-      </li>
-    </ul>
+<app-navigation-bar></app-navigation-bar>
+<div class="messenger-container">
+  <div class="left-panel">
+    <div class="search-bar">
+      <input type="text" placeholder="Search by email" class="search-input" [(ngModel)]="searchEmail" (input)="searchUsers()" />
+      <div class="suggestions" *ngIf="users.length > 0">
+        <ul class="user-list">
+          <li *ngFor="let user of users">
+            <a (click)="checkConversation(user)" routerLinkActive="active" href="{{user.id}}" routerLink="../{{user.id}}">
+              {{ user.email }}
+            </a>
+          </li>
+        </ul>
+        <button class="close-btn" *ngIf="users.length > 0" (click)="closeSearchResults()">x</button>
+        <div *ngIf="viewInput" class="message-input">
+          <input type="text" [(ngModel)]="firstMessage" name="content" placeholder="Type your message...">
+          <button (click)="startConversation(firstMessage)" class="sendMess">Send</button>
+        </div>
+      </div>
+    </div>
+    <div class="conversation-list" *ngFor="let conv of conversation">
+      <div (click)="selectConversation(conv)" id="selectedEmail">
+        <div id="mail">  {{ conv.otherParticipantEmail }}</div>
+        <div id="lastMsg"> {{conv.lastMessageContent}}</div>
+        <div id="date"> {{conv.createdAt}}</div>
+      </div>
+    </div>
   </div>
-  <div *ngIf="isLoading">Loading...</div>
+  <div class="right-panel" *ngIf="!viewInput">
+    <div *ngIf="selectedUserEmail" class="selected-conversation">
+      <h3>Conversation with {{ selectedUserEmail }}</h3>
+      <div *ngFor="let message of messages" class="message" [class.received]="message.senderEmail !== currentUser.email" [class.sent]="message.senderEmail === currentUser.email">
+        <div id="detail-mgs">
+          <span id="email">{{currentUser.email===message.senderEmail ? "" : message.senderEmail }}</span>
+          <span id="time">{{ message.createdAt }}</span>
+        </div>
+        <hr>
+        <div class="message-content">{{ message.content }}</div>
+      </div>
+      <div class="message-input">
+        <input type="text" [(ngModel)]="messageText" placeholder="Type your message...">
+        <button (click)="sendMessages(messageText)" class="sendMess">Send</button>
+      </div>
+    </div>
+  </div>
 </div>

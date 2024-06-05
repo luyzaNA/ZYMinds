@@ -19,7 +19,7 @@ import {EditProfileComponent} from "./profile/edit-profile/edit-profile.componen
 import {CoachListComponent} from "./coach/coach-list/coach-list.component";
 
 const routes: Routes = [
-  {path: "", redirectTo: "first-page", pathMatch: "full"},
+  {path: '', component:HomeComponent, pathMatch:'full'},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {
@@ -34,7 +34,7 @@ const routes: Routes = [
     path: 'coach', canActivate: [RoleGuard], data: {expectedRole: 'COACH'}, children: [
       {path: 'dashboard', component: CoachDashboardComponent},
       {path: 'clients', component: ClientsComponent},
-      {path: 'conversation', component: ConversationComponent},
+      {path: 'conversation/:id', component: ConversationComponent},
       {
         path: 'menus', component: MenuComponent, children: [
           {path: 'menu-details', component: MenuDetailsComponent}
@@ -54,7 +54,7 @@ const routes: Routes = [
       },
       {path: 'profile', component: ProfileComponent},
           {path: 'edit-profile', component: EditProfileComponent},
-      {path: 'conversation', component: ConversationComponent},
+      {path: 'conversation/:id', component: ConversationComponent},
     ]
   },
 

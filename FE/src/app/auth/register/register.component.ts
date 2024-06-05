@@ -1,10 +1,10 @@
 import {Component, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {User} from "../../shared/user";
 import {FileUploadService} from "../../services/upload.service";
 import {FileI} from "../../shared/file";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../shared/User/user.service";
+import {User} from "../../shared/User/UserI";
 
 @Component({
   selector: 'app-register',
@@ -18,15 +18,7 @@ export class RegisterComponent {
   private userId: string = '';
   selectedRole: boolean = false;
 
-  userData: User = {
-    email: '',
-    fullName: '',
-    phoneNumber: '',
-    password: '',
-    newCoach: false,
-    roles: '',
-    id: ''
-  };
+  userData: User = new User()
 
   constructor(private authService: AuthService,
               private fileService: FileUploadService,

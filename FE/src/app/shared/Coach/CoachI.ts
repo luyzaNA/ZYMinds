@@ -7,6 +7,7 @@ export interface CoachI {
   status: string;
   message: string;
   clientId: string;
+  lastMessage:string
 }
 
 export class Coach implements CoachI {
@@ -18,6 +19,7 @@ export class Coach implements CoachI {
   status: string;
   message: string;
   clientId: string
+  lastMessage:string;
 
   constructor() {
     this.fullName =
@@ -28,6 +30,7 @@ export class Coach implements CoachI {
     this.status = '';
     this.message = '';
     this.clientId = '';
+    this.lastMessage=''
   }
 
 }
