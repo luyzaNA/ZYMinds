@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {ProfileService} from "../services/profile.service";
 import {FileUploadService} from "../services/upload.service";
 import {AuthService} from "../services/auth.service";
-import {User} from "../shared/user";
 import {ActivatedRoute, Router} from "@angular/router";
+import {User} from "../shared/User/UserI";
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +12,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class ProfileComponent {
 
-  currentUser!: User;
+  currentUser: User = new User();
   isEditing: boolean = false;
 
   constructor(public profileService: ProfileService,

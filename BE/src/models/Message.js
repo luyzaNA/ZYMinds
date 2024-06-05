@@ -16,8 +16,21 @@ const MessageSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         required: true
+    },
+    conversationId: {
+        type: String,
+        required: true
     }
-}, {collection: 'messages'})
+}, { collection: 'messages' }, {
+    toJSON: {
+        transform: (doc, ret) => {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.__v;
+        }
+    }
+});
+
 
 const Message = mongoose.model('Message', MessageSchema);
 

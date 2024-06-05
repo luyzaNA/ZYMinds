@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {User} from "../../shared/user";
 import {AuthService} from "../../services/auth.service";
 import {ClientService} from "../../shared/Client/client.service";
 import {Router} from "@angular/router";
 import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
+import {User} from "../../shared/User/UserI";
 
 @Component({
   selector: 'app-coach-card',
@@ -11,7 +11,7 @@ import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInforma
   styleUrls: ['./coach-card.component.css']
 })
 export class CoachCardComponent {
-  currentUser!: User;
+  currentUser:User = new User();
   showApplyBox = false;
   messageToCoach ='';
   isTextareaVisible: boolean = false;
