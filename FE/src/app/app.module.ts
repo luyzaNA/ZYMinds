@@ -29,6 +29,7 @@ import { CoachListComponent } from './coach/coach-list/coach-list.component';
 import { RatingComponent } from './profile/rating/rating.component'
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import { EyeTrackingComponent } from './auth/eye-tracking/eye-tracking.component';
+import { PrerequisitesComponent } from './Client/prerequisites/prerequisites.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { EyeTrackingComponent } from './auth/eye-tracking/eye-tracking.component
     EditProfileComponent,
     CoachListComponent,
     RatingComponent,
-    EyeTrackingComponent],
+    EyeTrackingComponent,
+    PrerequisitesComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
