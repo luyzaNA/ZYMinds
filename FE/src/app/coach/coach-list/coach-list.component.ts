@@ -43,6 +43,7 @@ export class CoachListComponent {
                     userId: user.id,
                     rating: profile.rating,
                     awsLink: photoUrl,
+                    id: '',
                   };
                   this.users.push(userInformation);
                 },

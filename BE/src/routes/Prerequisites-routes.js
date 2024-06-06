@@ -3,19 +3,27 @@ import currentUser from "../middlewares/current-user.js";
 import Link from "../models/Link.js";
 import Prerequisites from "../models/Prerequisites.js";
 import Profile from "../models/Profile.js";
+import requireAuth from "../middlewares/require-auth.js";
+import RoleAuthorization from "../models/role-auhorization.js";
 
 const prerequisitesRouter = express.Router();
 
 //creez endpoint de post pentru prerequisites
 //din body iau datele necesare
+//verific daca sunt logata ca si client
 //caut link id ul adica conexiunea antrenor-client dupa user id ul curent care e clientUser
 //pt ca doar un client isi introduce datele
 //caut profilul dupa clientUser si extrag varsta
 //creez un nou obiect de tipul schemei si ii setez datele colectate
-prerequisitesRouter.post('/create/prerequisites', currentUser, async (req, res) => {
+prerequisitesRouter.post('/create/prerequisites', currentUser,requireAuth, async (req, res) => {
     const {id} = req.currentUser;
     const {weight, height, target, intolerances, activityLevel, gender} = req.body
     try {
+        const role = new RoleAuthorization(req.currentUser.roles);
+        if (role.name !== "CLIENT") {
+            return res.status(403).json({message: "Access denied"});
+        }
+
         const link = await Link.findOne({clientId: id});
         if (!link) {
             return res.status(404).json({message: 'Link not found'});
@@ -27,7 +35,7 @@ prerequisitesRouter.post('/create/prerequisites', currentUser, async (req, res) 
         }
 
         const newPrerequisites = new Prerequisites({
-            weight, height, target, intolerances, activityLevel, gender, linkId: link.id
+            weight, height, target, intolerances, activityLevel, gender, linkId: link.id, id
         })
 
         const savedPrerequisites = await newPrerequisites.save();
@@ -42,6 +50,7 @@ prerequisitesRouter.post('/create/prerequisites', currentUser, async (req, res) 
 })
 
 //astept ca parametru id-ul legaturii intre client si antrenor
+//verific daca sunt logata ca si client
 //caut prerequisites cu link id ul returnat
 //caut link-ul cu id-ul dat  pt a afla userId-ul
 //caut profilul cu userId ul gasit si extrag varsta
@@ -49,7 +58,9 @@ prerequisitesRouter.post('/create/prerequisites', currentUser, async (req, res) 
 prerequisitesRouter.get('/prerequisites/:linkId', async (req, res) => {
     const {linkId} = req.params;
     try {
-        const prerequisites = await Prerequisites.findOne({linkId: linkId});
+        console.log(linkId);
+        const prerequisites = await Prerequisites.findOne({linkId:linkId});
+
         if (!prerequisites) {
             return res.status(404).json({message: 'Prerequisites not found'});
         }
@@ -80,11 +91,16 @@ prerequisitesRouter.get('/prerequisites/:linkId', async (req, res) => {
 //doar un user isi poate modifica prerequisites deci current user ul
 //fac update daca e necesar la profil
 //compun raspunul si l returnez
-prerequisitesRouter.put('/update/prerequisites/:id', currentUser, async (req, res) => {
+prerequisitesRouter.put('/update/prerequisites/:id', currentUser,requireAuth, async (req, res) => {
     const {id} = req.params;
     const {weight, height, target, intolerances, activityLevel, gender, age} = req.body;
 
     try {
+        const role = new RoleAuthorization(req.currentUser.roles);
+        if (role.name !== "CLIENT") {
+            return res.status(403).json({message: "Access denied"});
+        }
+
         const updatePrerequisites = await Prerequisites.findByIdAndUpdate(id,
             {weight, height, target, intolerances, activityLevel, gender},
             {new: true}

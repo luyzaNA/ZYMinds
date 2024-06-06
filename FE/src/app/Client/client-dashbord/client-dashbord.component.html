@@ -6,10 +6,12 @@
   <h2>Ai aplicat pentru:</h2>
   <div class="coach-card-container">
     <app-coach-card [userProfileInformation]="profileInformation" [applied]="true"></app-coach-card>
+    <div *ngIf="statusRequest==='pending'">
     <span class="close-container" (click)="revokeConnection()">
       <span class="close-button">&times;</span>
       <span class="close-text">Anulează conectarea</span>
     </span>
+    </div>
   </div>
   <h2>Status : {{statusRequest}}</h2>
 </div>
@@ -19,4 +21,7 @@
   <a routerLink='../../coach-list'>
    VREAU ANTRENOR
   </a>
+</div>
+<div *ngIf="statusRequest==='approved'">
+<button (click)="navigateToDetails()" >Detalii</button>
 </div>

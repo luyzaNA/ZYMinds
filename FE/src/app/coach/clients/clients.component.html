@@ -42,25 +42,28 @@
 <div class="container">
   <h2>Approved</h2>
   <table>
-  <thead>
-  <tr>
-    <th>Profile Picture</th>
-    <th>Full Name</th>
-    <th>Email</th>
-    <th>Phone Number</th>
-    <th>Message</th>
-    <th>Status</th>
-  </tr>
-  </thead>
+    <thead>
+    <tr>
+      <th>Profile Picture</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>Phone Number</th>
+      <th>Message</th>
+      <th>Status</th>
+      <th>Edit Status</th>
+    </tr>
+    </thead>
   <tbody>
   <ng-container *ngFor="let client of clientsApproved">
-    <tr *ngIf="client.status === 'approved'">
+    <tr *ngIf="client.status === 'approved'"  routerLink="../menus/${client.id}" id="goToClientForm">
       <td><img [src]="client.awsLink" alt="Profile Picture"></td>
       <td>{{ client.fullName }}</td>
       <td>{{ client.email }}</td>
       <td>{{ client.phoneNumber }}</td>
       <td>{{ client.message }}</td>
       <td [class.approved]="client.status === 'approved'">{{ client.status }}</td>
+      <td>
+      </td>
     </tr>
   </ng-container>
   </tbody>
