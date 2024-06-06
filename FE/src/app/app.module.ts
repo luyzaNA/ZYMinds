@@ -29,7 +29,7 @@ import { CoachListComponent } from './coach/coach-list/coach-list.component';
 import { RatingComponent } from './profile/rating/rating.component'
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import { EyeTrackingComponent } from './auth/eye-tracking/eye-tracking.component';
-import { PrerequisitesComponent } from './Client/prerequisites/prerequisites.component';
+import { PrerequisitesComponent } from './menu/prerequisites/prerequisites.component';
 
 @NgModule({
   declarations: [

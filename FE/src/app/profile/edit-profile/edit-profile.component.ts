@@ -27,18 +27,7 @@ export class EditProfileComponent {
     userId: ''
   };
 
-  profileInformation: ProfileInformation = {
-    email: '',
-    fullName: '',
-    phoneNumber: '',
-    description: '',
-    age: 0,
-    price: 0,
-    userId: '',
-    rating: 0,
-    awsLink: ''
-  };
-
+  profileInformation: ProfileInformation = new ProfileInformation();
   constructor(
     protected profileService: ProfileService,
     private authService: AuthService,

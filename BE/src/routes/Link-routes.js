@@ -100,6 +100,7 @@ linkRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
             linkDetail.status = link.statusApplication;
             linkDetail.message = link.message;
             linkDetail.clientId = link.clientId;
+            linkDetail.id = link.id;
 
             const user = await User.findById(link.clientId);
             if (user) {

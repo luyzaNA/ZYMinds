@@ -4,6 +4,10 @@ export interface LinkI {
   status: 'pending' | 'approved' | 'rejected';
   message: string;
   id: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  awsLink: string;
 }
 
 export class Link implements LinkI {
@@ -12,6 +16,10 @@ export class Link implements LinkI {
   status: 'pending' | 'approved' | 'rejected';
   message:string;
   id: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  awsLink: string;
 
   constructor() {
     this.clientId = '';
@@ -19,5 +27,9 @@ export class Link implements LinkI {
     this.status = 'pending';
     this.message = '';
     this.id = '';
+    this.fullName = '';
+    this.email = '';
+    this.phoneNumber = '';
+    this.awsLink = '';
   }
 }

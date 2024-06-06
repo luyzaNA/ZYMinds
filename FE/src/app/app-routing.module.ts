@@ -36,7 +36,7 @@ const routes: Routes = [
       {path: 'clients', component: ClientsComponent},
       {path: 'conversation/:id', component: ConversationComponent},
       {
-        path: 'menus', component: MenuComponent, children: [
+        path: 'menus/:id', component: MenuComponent, children: [
           {path: 'menu-details', component: MenuDetailsComponent}
         ]
       },
@@ -48,7 +48,7 @@ const routes: Routes = [
     path: 'client', canActivate: [RoleGuard], data: {expectedRole: 'CLIENT'}, children: [
       {path: 'dashboard', component: ClientDashbordComponent},
       {
-        path: 'menus', component: MenuComponent, children: [
+        path: 'menus/:id', component: MenuComponent, children: [
           {path: 'menu-details', component: MenuDetailsComponent}
         ]
       },
