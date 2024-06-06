@@ -55,7 +55,7 @@
     </thead>
   <tbody>
   <ng-container *ngFor="let client of clientsApproved">
-    <tr *ngIf="client.status === 'approved'"  routerLink="../menus/${client.id}" id="goToClientForm">
+    <tr *ngIf="client.status === 'approved'"  routerLink="../menus/{{client.id}}" id="goToClientForm">
       <td><img [src]="client.awsLink" alt="Profile Picture"></td>
       <td>{{ client.fullName }}</td>
       <td>{{ client.email }}</td>
