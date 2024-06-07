@@ -5,6 +5,24 @@ const FoodSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    type: {
+        type: String,
+        enum: ['simple', 'compound'],
+        default: 'simple'
+    },
+    ingredients: [{
+        name: {
+            type: String,
+            required: function() {
+                return this.type === 'compound';
+            }
+        },
+        quantity: String
+    }],
+    mealType: [{
+        type: String,
+        required: true
+    }],
     kcals: {
         type: Number,
         required: true

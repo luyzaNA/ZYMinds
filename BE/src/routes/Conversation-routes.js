@@ -3,7 +3,7 @@ import Conversation from "../models/Conversation.js";
 import Message from "../models/Message.js";
 import currentUser from "../middlewares/current-user.js";
 import User from "../models/User.js";
-import {formatDateTime} from "../utlis/format-date.js";
+import {formatDateTime} from "../utils/format-date.js";
 
 const conversationRouter = express.Router();
 
