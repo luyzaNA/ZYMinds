@@ -172,7 +172,6 @@ const alimentsData = [
     {name: '100g olive oil', mealType: ['Lunch', 'Dinner']},
     {name: '100g coconut oil', mealType: ['Lunch', 'Dinner']},
     {name: '100g margarine', mealType: ['Breakfast', 'Snack', 'Dinner']},
-    {name: '100g cooking fat', mealType: ['Lunch', 'Dinner']},
     {name: '100g sunflower oil', mealType: ['Lunch', 'Dinner']},
     {name: '100g peanut oil', mealType: ['Lunch', 'Dinner']},
     {name: '100g sesame oil', mealType: ['Lunch', 'Dinner']},
@@ -183,7 +182,6 @@ const alimentsData = [
     {name: '100g smoked sausages', mealType: ['Lunch', 'Dinner']},
     {name: '100g Prague ham', mealType: ['Dinner']},
     {name: '100g smoked bacon', mealType: ['Breakfast', 'Lunch', 'Dinner']},
-    {name: '100g homemade caltaboș', mealType: ['Dinner']},
     {name: '100g homemade liver sausage', mealType: ['Dinner']},
     {name: '100g Italian pancetta', mealType: ['Dinner']},
     {name: '100g Italian mortadella', mealType: ['Dinner']},
@@ -221,17 +219,20 @@ const alimentsData = [
     {
         name: 'Tropical Delight Smoothie',
         ingredients: ['1/2 cup mango', '1/2 cup pineapple', '1/2 banana', '200ml orange juice'],
-        type: ['Breakfast', 'Snack']
+        type: 'compound',
+        mealType: ['Breakfast', 'Snack']
     },
     {
         name: 'Strawberry Banana Smoothie',
         ingredients: ['1 banana', '1 cup strawberries', '200ml almond milk'],
-        type: ['Breakfast', 'Snack']
+        type: 'compound',
+        mealType: ['Breakfast', 'Snack']
     },
     {
         name: 'Chocolate Peanut Butter Smoothie',
         ingredients: ['1 banana', '2 tbsp peanut butter', '2 tbsp cocoa powder', '200ml milk'],
-        type: ['Breakfast', 'Snack']
+        type: 'compound',
+        mealType: ['Breakfast', 'Snack']
     },
     {
         name: 'Blueberry Spinach Smoothie',
@@ -241,19 +242,19 @@ const alimentsData = [
     },
     {
         name: 'Classic Caesar Salad',
-        ingredients: ['100g Romaine lettuce', '50g Croutons', '50g Parmesan cheese', '50ml Caesar dressing'],
+        ingredients: ['100g Romaine lettuce', '50g Croutons', '50g Parmesan cheese'],
         type: 'compound',
         mealType: ['Dinner', 'Lunch']
     },
     {
         name: 'Greek Salad',
-        ingredients: ['100g Romaine lettuce', '100g Cucumbers', '100g Tomatoes', '50g olives', '50g Red onion', '50g Feta cheese', '50ml Greek dressing'],
+        ingredients: ['100g Romaine lettuce', '100g Cucumbers', '100g Tomatoes', '50g olives', '50g Red onion', '50g Feta cheese', '50ml Olive oil', '2 tbsp Red wine vinegar', '1 tsp Dried oregano'],
         type: 'compound',
         mealType: ['Dinner', 'Lunch']
     },
     {
         name: 'Caprese Salad',
-        ingredients: ['100g Tomatoes', '100g Fresh mozzarella', 'A handful of Basil leaves', 'Balsamic glaze', 'Extra virgin olive oil'],
+        ingredients: ['100g Tomatoes', '100g Fresh mozzarella', 'A handful of Basil leaves', '1/2 tbsp Extra virgin olive oil'],
         type: 'compound',
         mealType: ['Dinner', 'Lunch']
     },
