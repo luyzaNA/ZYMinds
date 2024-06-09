@@ -17,7 +17,7 @@ const prerequisitesRouter = express.Router();
 //creez un nou obiect de tipul schemei si ii setez datele colectate
 prerequisitesRouter.post('/create/prerequisites', currentUser,requireAuth, async (req, res) => {
     const {id} = req.currentUser;
-    const {weight, height, target, intolerances, activityLevel, gender} = req.body
+    const {weight, height, target, intolerances, activityLevel, gender, mainMealsCount, secondaryMealsCount} = req.body
     try {
         const role = new RoleAuthorization(req.currentUser.roles);
         if (role.name !== "CLIENT") {
@@ -35,7 +35,7 @@ prerequisitesRouter.post('/create/prerequisites', currentUser,requireAuth, async
         }
 
         const newPrerequisites = new Prerequisites({
-            weight, height, target, intolerances, activityLevel, gender, linkId: link.id, id
+            weight, height, target, intolerances, activityLevel, gender, mainMealsCount, secondaryMealsCount, linkId: link.id, id
         })
 
         const savedPrerequisites = await newPrerequisites.save();
@@ -93,7 +93,7 @@ prerequisitesRouter.get('/prerequisites/:linkId', async (req, res) => {
 //compun raspunul si l returnez
 prerequisitesRouter.put('/update/prerequisites/:id', currentUser,requireAuth, async (req, res) => {
     const {id} = req.params;
-    const {weight, height, target, intolerances, activityLevel, gender, age} = req.body;
+    const {weight, height, target, intolerances, activityLevel, gender, age, mainMealsCount,secondaryMealsCount} = req.body;
 
     try {
         const role = new RoleAuthorization(req.currentUser.roles);
@@ -102,7 +102,7 @@ prerequisitesRouter.put('/update/prerequisites/:id', currentUser,requireAuth, as
         }
 
         const updatePrerequisites = await Prerequisites.findByIdAndUpdate(id,
-            {weight, height, target, intolerances, activityLevel, gender},
+            {weight, height, target, intolerances, activityLevel, gender, mainMealsCount, secondaryMealsCount },
             {new: true}
         );
         if (!updatePrerequisites) {

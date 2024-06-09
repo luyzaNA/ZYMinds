@@ -1,5 +1,4 @@
 const NutritionCalculator = {
-
     //rata metabolica bazala
     //cantitatea minima de energie pe care organismul o consuma in repaus
     //energia necesara pentru mentinerea functiilor vitale
@@ -22,7 +21,7 @@ const NutritionCalculator = {
     //     lightlyActive: 1.375     ->1/3 zile pe saptmana
     //     moderatelyActive: 1.55   -> 3/5 zile pe saptmana
     //     veryActive: 1.725        -> >5 zile pe saptmana
-     calculateTotalCaloricNeeds(basalMetabolicRate, activityLevel) {
+    calculateTotalCaloricNeeds(basalMetabolicRate, activityLevel) {
         return basalMetabolicRate * activityLevel;
     },
 
@@ -90,19 +89,19 @@ const NutritionCalculator = {
         return fatCalories / 9;
     },
 
-    //daca se doreste crestere masa musculara se considerea cantitatea de proteine necesara
-    //limita superioara a intervalului
-    calculateProteinNeeds(weight, goal) {
-        let proteinNeeds;
+    calculateProteinNeeds(totalCaloricNeeds, goal) {
+        let proteinPercentage;
+
         if (goal === 'LOSE WEIGHT') {
-            proteinNeeds = weight * 1.6
+            proteinPercentage = 0.25;  // 25% din totalul caloriilor
         } else if (goal === 'GAIN WEIGHT') {
-            proteinNeeds = weight * 2.2;
+            proteinPercentage = 0.30;  // 30% din totalul caloriilor
         } else {
-            throw new Error("Invalid goal provided. Use 'muscleGain' or 'weightLoss'.");
+            throw new Error("Invalid goal provided. Use 'LOSE WEIGHT' or 'GAIN WEIGHT'.");
         }
 
-        return proteinNeeds;
+        const proteinCalories = totalCaloricNeeds * proteinPercentage;
+        return proteinCalories / 4;  // 1 gram de proteină = 4 kcal
     },
 
     //in functie de cantitatile de proteine si lipide se calculeaza carbo
@@ -113,7 +112,31 @@ const NutritionCalculator = {
         const carbCalories = totalCaloricNeeds - proteinAndFatCalories;
 
         return carbCalories / 4;
+    },
+
+    //ia ca param nr de mese principale, nr de mese secundare si nr total de kcals pe zi
+    //10% din total trebuie distribuit catre mesele secundare si 90% catre cele prinicpale
+    //se imparte fiecare procent la nr de mese dat ca parametru si rezulta distributia de kclas pe fiecare masa
+    calculateMealCalories(mainMealsCount, secondaryMealsCount, totalKcals) {
+        const mainMealsPercentage = 0.90;
+        const secondaryMealsPercentage = 0.10;
+
+        const totalKcalsForMainMeals = totalKcals * mainMealsPercentage;
+        const totalKcalsForSecondaryMeals = totalKcals * secondaryMealsPercentage;
+
+        const kcalsPerMainMeal = totalKcalsForMainMeals / mainMealsCount;
+        const kcalsPerSecondaryMeal = totalKcalsForSecondaryMeals / secondaryMealsCount;
+
+        return {
+            kcalsPerMainMeal: kcalsPerMainMeal,
+            kcalsPerSecondaryMeal: kcalsPerSecondaryMeal
+        };
+    },
+    getRandomNumber (max) {
+        return Math.floor(Math.random() * (max + 1));
     }
 };
 
-module.exports = NutritionCalculator;
+
+
+export default NutritionCalculator;

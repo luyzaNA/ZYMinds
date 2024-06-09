@@ -15,6 +15,7 @@ import messageRouter from "./src/routes/Message-routes.js";
 import conversationRouter from "./src/routes/Conversation-routes.js";
 import linkRouter from "./src/routes/Link-routes.js";
 import prerequisitesRouter from "./src/routes/Prerequisites-routes.js";
+import menuRouter from "./src/routes/Menu-routes.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use(messageRouter);
 app.use(conversationRouter);
 app.use(linkRouter);
 app.use(prerequisitesRouter);
+app.use(menuRouter);
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
