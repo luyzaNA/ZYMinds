@@ -30,6 +30,18 @@ const PrerequisitesSchema = new mongoose.Schema({
         type: String,
         enum: ['female', 'male'],
         required: true
+    },
+    mainMealsCount:{
+        type: Number,
+        min: 2,
+        max: 4,
+        required: false //true
+    },
+    secondaryMealsCount:{
+        type: Number,
+        min: 0,
+        max: 3,
+        required: false //true
     }
 }, {
     collection: 'prerequisites',
