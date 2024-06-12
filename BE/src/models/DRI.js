@@ -1,5 +1,5 @@
 export const DRI = [{
-    Group: "Males",
+    Group: "male",
     Age_range: [9,13],
     Calcium: 1300,
     Zinc: 8,
@@ -21,7 +21,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 31
 }, {
-    Group: "Females",
+    Group: "Female",
     Age_range: [9,13],
     Calcium: 1300,
     Zinc: 8,
@@ -43,7 +43,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 25
 }, {
-    Group: "Males",
+    Group: "male",
     Age_range: [14,18],
     Calcium: 1300,
     Zinc: 11,
@@ -65,7 +65,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 38
 }, {
-    Group: "Females",
+    Group: "Female",
     Age_range: [14,18],
     Calcium: 1300,
     Zinc: 9,
@@ -87,7 +87,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 25
 }, {
-    Group: "Males",
+    Group: "male",
     Age_range: [19,30],
     Calcium: 1000,
     Zinc: 11,
@@ -109,7 +109,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 38
 }, {
-    Group: "Females",
+    Group: "Female",
     Age_range: [19,30],
     Calcium: 1000,
     Zinc: 8,
@@ -131,7 +131,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 25
 }, {
-    Group: "Males",
+    Group: "male",
     Age_range: [31,50],
     Calcium: 1000,
     Zinc: 11,
@@ -153,7 +153,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 38
 }, {
-    Group: "Females",
+    Group: "Female",
     Age_range: [31,50],
     Calcium: 1000,
     Zinc: 8,
@@ -175,7 +175,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 25
 }, {
-    Group: 'Males',
+    Group: 'male',
     Age_range: [51 , 70],
     Calcium: 1200,
     Zinc: 11,
@@ -197,7 +197,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 30
 }, {
-    Group: 'Females',
+    Group: 'Female',
     Age_range: [51 , 70],
     Calcium: 1200,
     Zinc: 8,
@@ -219,7 +219,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 21
 }, {
-    Group: 'Males',
+    Group: 'male',
     Age_range: [71,120],
     Calcium: 1200,
     Zinc: 11,
@@ -241,7 +241,7 @@ export const DRI = [{
     Sugar: 25,
     Fiber: 30
 }, {
-    Group: 'Females',
+    Group: 'Female',
     Age_range: [71,120],
     Calcium: 1200,
     Zinc: 8,
