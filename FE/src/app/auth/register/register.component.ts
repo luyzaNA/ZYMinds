@@ -5,6 +5,7 @@ import {FileUploadService} from "../../services/upload.service";
 import {FileI} from "../../shared/file";
 import {UserService} from "../../shared/User/user.service";
 import {User} from "../../shared/User/UserI";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -17,7 +18,15 @@ export class RegisterComponent {
   files!: File[];
   private userId: string = '';
   selectedRole: boolean = false;
+  isPasswordFocused = false;
 
+  onFocus(isPassword: boolean) {
+    this.isPasswordFocused = isPassword;
+  }
+
+  onBlur() {
+    this.isPasswordFocused = false;
+  }
   userData: User = new User()
 
   constructor(private authService: AuthService,
