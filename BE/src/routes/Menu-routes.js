@@ -5,6 +5,7 @@ import Profile from "../models/Profile.js";
 import NutritionCalculator from "../utlis/nutritionCalculator.js";
 import {DRI} from "../models/DRI.js";
 import menuGenerator from "../utlis/menuGenerator.js";
+import Menu from "../models/Menu.js";
 
 const menuRouter = express.Router();
 
@@ -12,7 +13,7 @@ const menuRouter = express.Router();
 //iau cu linkId ul link ul din care extrag client id ul
 //cu lcient id ul extrag profile id ul din care mi aiu varsta
 //cu link id ul iau preconditiile
-menuRouter.get('/menu/:linkId', async (req, res) => {
+menuRouter.post('/menu/:linkId', async (req, res) => {
     const linkId = req.params.linkId;
 
     const link = await Link.findById(linkId);
@@ -95,10 +96,23 @@ menuRouter.get('/menu/:linkId', async (req, res) => {
     console.log("USER carbNeeds:", carbNeeds);
     console.log("USER mealCalories:", mealCalories);
 
-    try {
-        const menus = await menuGenerator.generateMenuForDays(prerequisites, mealCalories);
+    const macroNutrients = {
+        protein: proteinNeeds,
+        fat: fatNeeds,
+        carbs: carbNeeds
+    };
 
-        return res.status(200).json(menus);
+    try {
+        const menus = await menuGenerator.generateMenuForDays(prerequisites, mealCalories, macroNutrients);
+        const menuDb = new Menu({
+            linkId,
+            daily_intake: {...macroNutrients, ...mealCalories},
+            meals: menus
+        });
+
+        await menuDb.save()
+
+        return res.status(200).json(menuDb);
     } catch (error) {
         console.error("Error generating menu:", error);
         return res.status(500).json({message: 'Error generating menu'});
