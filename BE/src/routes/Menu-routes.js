@@ -4,17 +4,10 @@ import Link from "../models/Link.js";
 import Profile from "../models/Profile.js";
 import NutritionCalculator from "../utlis/nutritionCalculator.js";
 import {DRI} from "../models/DRI.js";
-import Food from "../models/Food.js";
+import menuGenerator from "../utlis/menuGenerator.js";
 
 const menuRouter = express.Router();
 
-
-menuRouter.get('/menu', async (req, res) => {
-
-    const foods = await Food.find();
-    return res.status(200).json(foods);
-
-})
 
 //iau cu linkId ul link ul din care extrag client id ul
 //cu lcient id ul extrag profile id ul din care mi aiu varsta
@@ -80,13 +73,19 @@ menuRouter.get('/menu/:linkId', async (req, res) => {
     const mealCalories = NutritionCalculator.calculateMealCalories(mainMealsCount, secondaryMealsCount, adjustedCaloricNeeds);
 
     let userDRI = null;
+
     DRI.forEach(element => {
-        if (element.Group === gender && age >= element.Age_range[0] && element.Age_range[1] >= age) {
+        if (element.Group === gender && age >= element.Age_range[0] && age <= element.Age_range[1]) {
             userDRI = element;
         }
-    })
+    });
 
-    console.log("USER DRI:", userDRI);
+    if (userDRI) {
+        console.log("Valori DRI :", userDRI);
+
+    } else {
+        console.log("nu e dri.");
+    }
     console.log("totalCaloricNeeds :", totalCaloricNeeds);
     console.log("adjustedCaloricNeeds :", adjustedCaloricNeeds);
     console.log("USER idealWeight:", idealWeight);
@@ -96,48 +95,14 @@ menuRouter.get('/menu/:linkId', async (req, res) => {
     console.log("USER carbNeeds:", carbNeeds);
     console.log("USER mealCalories:", mealCalories);
 
-    const numberOfDays = 30;
+    try {
+        const menus = await menuGenerator.generateMenuForDays(prerequisites, mealCalories);
 
-    for (let day = 0; day < numberOfDays; day++) {
-
-        let menu = {};
-        const snacksCount = await Food.countDocuments({mealType: {$elemMatch: {$eq: "Snack"}}});
-        for (let secMeal = 0; secMeal < secondaryMealsCount; secMeal++) {
-            let snackCalories = 0;
-            let snackIndex = 0;
-            let snacks = [];
-            const snackName = `secMeal${secMeal + 1}`;
-
-            while (snackCalories < mealCalories.kcalsPerSecondaryMeal && snackIndex < snacksCount) {
-                const randomIndex = NutritionCalculator.getRandomNumber(snacksCount);
-                const snack = await Food.find({mealType: {$elemMatch: {$eq: "Snack"}}}).limit(1).skip(randomIndex);
-
-                if (snack.length === 0) {
-                    console.log("Snack not found");
-                    break;
-                }
-
-                const currentSnack = snack[0];
-                snackCalories += currentSnack.kcals;
-                snacks.push(currentSnack);
-                snackIndex++;
-            }
-
-            if (snackCalories < mealCalories.kcalsPerSecondaryMeal) {
-                console.log(`Unable to meet caloric needs for ${snackName} with available snacks`);
-            }
-
-            menu[snackName] = snacks;
-            console.log(snacks);
-        }
-        for (let mainMeal = 0; mainMeal < mainMealsCount; mainMeal++) {
-
-        }
-
-        
-
+        return res.status(200).json(menus);
+    } catch (error) {
+        console.error("Error generating menu:", error);
+        return res.status(500).json({message: 'Error generating menu'});
     }
-
 
 });
 
