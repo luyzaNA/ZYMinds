@@ -3,6 +3,10 @@ import Food from '../models/Food.js';
 import extractNutrients from '../utils/extractNutrients.js';
 import alimentsData from "../utils/alimentsData.js";
 import fetch from 'node-fetch';
+
+const APP_ID = process.env.APP_ID ;
+const APP_KEY = process.env.APP_KEY ;
+
 const foodRouter = express.Router();
 
 //se preiau datele despre alimentul dat ca parametru folosind API ul Edamam Nutrion Analysis
