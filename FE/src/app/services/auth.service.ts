@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, switchMap} from 'rxjs/operators';
 import {environment} from "../shared/environment"
-import {catchError, Observable, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, of, throwError} from "rxjs";
 import {Router} from "@angular/router";
 import {User, UserI} from "../shared/User/UserI";
 
@@ -13,6 +13,8 @@ export class AuthService {
 
   private baseUrl = environment.apiUrl;
   private currentUser: User = new User();
+  currentUserSubject = new BehaviorSubject<User>(new User());
+  currentUser$: Observable<UserI> = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
 
@@ -60,14 +62,17 @@ export class AuthService {
     );
   }
 
-  getCurrentUser(): UserI{
+
+  getCurrentUser(): Observable<UserI>{
     if(!this.currentUser.id){
       this.fetchCurrentUser().pipe(map(response => {
-        this.currentUser = response;
-        return this.currentUser;
+        this.currentUserSubject.next(response);
+
+        return this.currentUser$;
       }));
     }
-    return this.currentUser;
+    console.log("nu sunt prezent")
+    return this.currentUser$;
   }
 
   logout(): Observable<any> {

@@ -36,7 +36,15 @@ export class PrerequisitesComponent implements OnInit {
   //obtin varsta user ului curent si setez linkId ul de pe url
   //fac cerere de get pt setul de prerequisites
   ngOnInit(): void {
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+      console.log(this.currentUser)
+      console.log(this.currentUser.roles)
+      console.log(this.currentUser.id)
+      this.getAgeFromProfile();
+      this.prerequisites.linkId = this.route.snapshot.paramMap.get('id')!;
+      this.getPrerequisitesSet();
+    });
     this.isClient = this.currentUser.roles === 'CLIENT';
     this.getAgeFromProfile();
     this.prerequisites.linkId = this.route.snapshot.paramMap.get('id')!;
