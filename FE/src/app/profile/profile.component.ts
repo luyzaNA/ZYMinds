@@ -19,7 +19,13 @@ export class ProfileComponent {
               private fileService: FileUploadService,
               private authService: AuthService,
               private router: Router) {
-    this.currentUser = this.authService.getCurrentUser()
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+      console.log(this.currentUser)
+      console.log(this.currentUser.roles)
+      this.router.navigate(this.currentUser.roles === 'COACH'?
+        ['coach', 'dashboard'] : ['client', 'dashboard']);
+    })
 console.log(this.currentUser)
     this.fileService.getFiles(this.currentUser.id, "PROFILE").subscribe(
       (response) => {

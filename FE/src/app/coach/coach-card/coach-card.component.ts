@@ -23,7 +23,9 @@ export class CoachCardComponent {
   constructor(private clientService: LinkService,
               protected authService: AuthService,
               private router: Router) {
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+    });
   }
 
   openForm(): void {

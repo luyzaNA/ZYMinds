@@ -35,8 +35,18 @@ export class EditProfileComponent {
     private fileService: FileUploadService
   ) {
     // Get current user
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+      console.log(this.currentUser)
+      console.log(this.currentUser.roles)
+      console.log(this.currentUser.id)
+      this.profileInformation.userId = this.currentUser.id;
+      this.profileInformation.fullName = this.currentUser.fullName;
+      this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
 
+      // Fetch profile data
+    });
+console.log("IN EDIT",this.currentUser)
     this.profileInformation.userId = this.currentUser.id;
     this.profileInformation.fullName = this.currentUser.fullName;
     this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
