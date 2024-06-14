@@ -5,7 +5,7 @@
   flex-direction: row;
   justify-content: space-between;
   position: fixed;
-  top: 0px; /*top: 0px;*/
+  top: 0px;
   border-bottom: 1px solid rgba(76, 52, 226, 7%);
   width: 100%;
   z-index: 1000000;
@@ -16,6 +16,7 @@ button {
   color: #2C18A3;
   border: none;
   margin-right: 40px;
+  height: 50px;
 }
 
 #menu-list {

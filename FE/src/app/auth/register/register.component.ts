@@ -85,7 +85,9 @@ export class RegisterComponent {
 
       this.authService.registerUser(this.userData).subscribe({
         next: (response) => {
-          this.userId = this.authService.getCurrentUser().id;
+          this.authService.getCurrentUser().subscribe(user => {
+            this.userId = user.id
+          });
           this.userData.id = this.userId;
           console.log("USER ID", this.userId);
           this.uploadFiles();
