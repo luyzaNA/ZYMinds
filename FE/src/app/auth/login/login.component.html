@@ -29,10 +29,18 @@
                      #passwordInput="ngModel"
                      placeholder="Password"
                      (focus)="onFocus(true)"
-                     (blur)="onBlur()">
+                     (blur)="onBlur()"
+                     pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
             </div>
             <div class="error" [class.hide]="passwordInput.untouched || passwordInput.valid">
-              Password is required!
+              <strong>Please follow the next requirements:</strong>
+              <ul>
+                <li>At least 8 characters</li>
+                <li>At least one uppercase letter</li>
+                <li>At least one lowercase letter</li>
+                <li>At least one number</li>
+                <li>At least one special character (@$!%*?&)</li>
+              </ul>
             </div>
             <div id="buttons" style="display: flex; flex-direction: column; align-items: center;">
               <button type="submit" [disabled]="!singUpForm.valid" id="login-b">Login</button>
