@@ -1,73 +1,82 @@
-<img [src] = profileService.photoUrl alt="profile photo">
-<div id="create-card">
-  <div id="enter-data">
-    <form #createCardForm="ngForm" (ngSubmit)="editProfile()">
-      <div class="form-group input-container">
-        <label>Nume & prenume</label>
-        <input type="text"
-               ngModel
-               name="fullName"
-               required
-               maxlength="27"
-               [(ngModel)]="profileInformation.fullName"
-               (ngModelChange)="updateFullName($event)">
-      </div>
-
-      <div class="form-group input-container">
-        <label>Numar de telefon</label>
-        <input type="text"
-               ngModel
-               name="phoneNumber"
-               required
-               maxlength="10"
-               maxlength="10"
-               [(ngModel)]="profileInformation.phoneNumber"
-               (ngModelChange)="updatePhoneNumber($event)">
-      </div>
-
-      <div class="form-group input-container">
-        <label>Varsta</label>
-        <input type="number"
-               ngModel
-               name="age"
-               required
-               pattern="^(1[89]|[2-9][0-9])$"
-               [(ngModel)]="profileInformation.age"
-               (ngModelChange)="updateAge($event)">
-      </div>
-
-      <div *ngIf="currentUser.roles === 'COACH'">
-        <div class="form-group input-container">
-          <label>Descriere</label>
-          <input type="text"
-                 ngModel
-                 name="description"
-                 required
-                 maxlength="150"
-                 [(ngModel)]="profileInformation.description"
-                 (ngModelChange)="updateDescription($event)">
-
+<div class="edit-component">
+  <div id="create-card">
+    <div id="edit-column">
+      <div class="profile-top-row">
+        <div class="profile-image-container">
+          <img [src]="profileService.photoUrl" alt="profile photo">
         </div>
         <div class="form-group input-container">
-          <label>Pret</label>
-          <input type="number"
-                 ngModel
-                 name="price"
-                 required
-                 [(ngModel)]="profileInformation.price"
-                 (ngModelChange)="updatePrice($event)">
+          <label>Select image:</label>
+          <app-file-uploader (filesChangeSingle)="filesUp($event)" [uploadMultipleFiles]="false"></app-file-uploader>
         </div>
       </div>
 
-      <div class="form-group input-container">
-        <label>Select image:</label>
-        <app-file-uploader  (filesChangeSingle)="filesUp($event)" [uploadMultipleFiles]="false"></app-file-uploader>
-      </div>
-      <button type="submit">Update</button>
-    </form>
-  </div>
+      <div id="enter-data">
+        <form #createCardForm="ngForm" (ngSubmit)="editProfile()">
+          <div class="form-group input-container">
+            <label>Nume & prenume</label>
+            <input type="text"
+                   ngModel
+                   name="fullName"
+                   required
+                   maxlength="27"
+                   [(ngModel)]="profileInformation.fullName"
+                   (ngModelChange)="updateFullName($event)">
+          </div>
 
-  <div *ngIf="currentUser.roles === 'COACH'" id="display-data">
-    <app-coach-card [userProfileInformation]="profileInformation"></app-coach-card>
+          <div class="form-group input-container">
+            <label>Numar de telefon</label>
+            <input type="text"
+                   ngModel
+                   name="phoneNumber"
+                   required
+                   maxlength="10"
+                   [(ngModel)]="profileInformation.phoneNumber"
+                   (ngModelChange)="updatePhoneNumber($event)">
+          </div>
+
+          <div class="form-group input-container">
+            <label>Varsta</label>
+            <input type="number"
+                   ngModel
+                   name="age"
+                   required
+                   pattern="^(1[89]|[2-9][0-9])$"
+                   [(ngModel)]="profileInformation.age"
+                   (ngModelChange)="updateAge($event)">
+          </div>
+
+          <div *ngIf="currentUser.roles === 'COACH'">
+            <div class="form-group input-container">
+              <label>Descriere</label>
+              <input type="text"
+                     ngModel
+                     name="description"
+                     required
+                     maxlength="150"
+                     [(ngModel)]="profileInformation.description"
+                     (ngModelChange)="updateDescription($event)">
+            </div>
+            <div class="form-group input-container">
+              <label>Pret</label>
+              <input type="number"
+                     ngModel
+                     name="price"
+                     required
+                     [(ngModel)]="profileInformation.price"
+                     (ngModelChange)="updatePrice($event)">
+            </div>
+          </div>
+
+          <button type="submit">Update</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="vertical-line"></div> <!-- Add this div for the vertical line -->
+
+    <div *ngIf="currentUser.roles === 'COACH'" id="display-data">
+      <app-coach-card [userProfileInformation]="profileInformation" [applied]="true"></app-coach-card>
+    </div>
   </div>
 </div>
