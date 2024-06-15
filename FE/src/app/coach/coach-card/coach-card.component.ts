@@ -29,8 +29,15 @@ export class CoachCardComponent {
   }
 
   openForm(): void {
-    this.isTextareaVisible = true;
-    this.isApplyButtonVisible = false;
+    if(!this.currentUser.id) {
+      this.router.navigate(['../', 'login']);
+    }
+    else if(this.currentUser.roles!=='CLIENT')
+        alert("TREBUIE SA AI ROL DE CLIENT PT A PUTEA APLICA")
+    else{
+      this.isTextareaVisible = true;
+      this.isApplyButtonVisible = false;
+    }
   }
 
   closeForm(): void {

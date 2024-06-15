@@ -207,7 +207,10 @@ userRouter.delete('/users/:id', async (req, res) => {
 userRouter.get('/users/search/:email', async (req, res) => {
     try {
         const email = req.params.email;
-        const users = await User.find({email: new RegExp(email, 'i')});
+        const users = await User.find({
+            email: new RegExp(email, 'i'),
+            roles: { $ne: 'ADMIN' }
+        });
         if (!users || users.length === 0) {
             return res.status(404).json({message: `No users found with that email`});
         }
