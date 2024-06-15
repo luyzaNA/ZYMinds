@@ -24,7 +24,8 @@ export class EditProfileComponent {
     description: '',
     price: 0,
     rating: 0,
-    userId: ''
+    userId: '',
+    awsLink: ''
   };
 
   profileInformation: ProfileInformation = new ProfileInformation();
@@ -57,6 +58,8 @@ console.log("IN EDIT",this.currentUser)
         this.profileInformation.age = profile.age;
         this.profileInformation.price = profile.price;
         this.profileInformation.rating = profile.rating;
+        this.profileInformation.awsLink = profile.awsLink;
+        console.log("IN EFDIT PROFILE LINK UL ", this.profileInformation.age)
         console.log("descrierea", this.profileInformation.description)
 
         this.profile._id = profile._id;
