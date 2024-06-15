@@ -28,6 +28,11 @@ console.log(this.currentUser)
         this.profileService.photoUrl = response[0].awsLink;
       }
     );
+    this.profileService.getProfile(this.currentUser.id).subscribe(
+      (profile) => {
+        this.profileService.profileI = profile;
+      }
+    )
 
   }
 

@@ -17,7 +17,8 @@ export class ProfileService {
     description: '',
     price: 0,
     rating: 0,
-    userId: ''
+    userId: '',
+    awsLink: ''
   }
 
   photoUrl : string =''
