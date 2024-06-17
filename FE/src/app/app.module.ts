@@ -27,7 +27,7 @@ import { ConversationComponent } from './conversation/conversation.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { CoachListComponent } from './coach/coach-list/coach-list.component';
 import { RatingComponent } from './profile/rating/rating.component'
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import { FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import { EyeTrackingComponent } from './auth/eye-tracking/eye-tracking.component';
 import { PrerequisitesComponent } from './menu/prerequisites/prerequisites.component';
 
@@ -62,7 +62,7 @@ import { PrerequisitesComponent } from './menu/prerequisites/prerequisites.compo
     FormsModule,
     NgOptimizedImage,
     AppRoutingModule,
-    FaIconComponent
+    FontAwesomeModule
   ],
   providers: [ provideHttpClient(withInterceptors([CustomInterceptor]))],
   bootstrap: [AppComponent],
