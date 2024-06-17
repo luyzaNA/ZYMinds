@@ -6,12 +6,32 @@ import NutritionCalculator from "../utlis/nutritionCalculator.js";
 import {DRI} from "../models/DRI.js";
 import menuGenerator from "../utlis/menuGenerator.js";
 import Menu from "../models/Menu.js";
+import MenuStatusAuthorization from "../models/menu-status.js";
 
 const menuRouter = express.Router();
 
 
 //iau cu linkId ul link ul din care extrag client id ul
 //cu lcient id ul extrag profile id ul din care mi aiu varsta
+async function generateMenuAsync(prerequisites, mealCalories, macroNutrients) {
+    try {
+        const menus = await menuGenerator.generateMenuForDays(prerequisites, mealCalories, macroNutrients);
+        const existingMenu = await Menu.findOne({linkId: prerequisites.linkId});
+
+        if (existingMenu) {
+            existingMenu.meals = menus;
+            existingMenu.status = new MenuStatusAuthorization('GENERATED').name;
+            await existingMenu.save();
+        } else {
+            throw new Error('Menu not found');
+        }
+    } catch (error) {
+        console.error('Error generating menu:', error.message);
+        throw error;
+    }
+}
+
+
 //cu link id ul iau preconditiile
 menuRouter.post('/menu/:linkId', async (req, res) => {
     const linkId = req.params.linkId;
@@ -103,21 +123,71 @@ menuRouter.post('/menu/:linkId', async (req, res) => {
     };
 
     try {
-        const menus = await menuGenerator.generateMenuForDays(prerequisites, mealCalories, macroNutrients);
-        const menuDb = new Menu({
-            linkId,
+        let existingMenu = await Menu.findOneAndUpdate({linkId}, {
+            status: new MenuStatusAuthorization('PROCESSING').name,
             daily_intake: {...macroNutrients, ...mealCalories},
-            meals: menus
-        });
+            meals: []
+        }, {new: true});
 
-        await menuDb.save()
+        if (!existingMenu) {
+            const existingMenu = new Menu({
+                linkId,
+                daily_intake: {...macroNutrients, ...mealCalories},
+                meals: [],
+                status: new MenuStatusAuthorization('PROCESSING').name
+            });
+            await existingMenu.save()
+        }
 
-        return res.status(200).json(menuDb);
+        generateMenuAsync(prerequisites, mealCalories, macroNutrients);
+
+        return res.status(200).json(existingMenu);
     } catch (error) {
         console.error("Error generating menu:", error);
         return res.status(500).json({message: 'Error generating menu'});
     }
 
+})
+
+
+menuRouter.get('/menu/:linkId', async (req, res) => {
+    const linkId = req.params.linkId;
+    try {
+        const menu = await Menu.findOne({linkId});
+        return res.status(200).json(menu);
+    } catch (error) {
+        console.error("Error getting menu:", error);
+        throw error;
+    }
+});
+
+
+menuRouter.put('/menu/:linkId', async (req, res) => {
+    const linkId = req.params.linkId;
+    const body = req.body;
+    console.log("body:", body);
+    if (!body) {
+        return res.status(400).json({message: 'Missing request body'});
+    }
+    try {
+        const menu = await Menu.findOneAndUpdate({linkId}, {...body}, {new: true});
+        res.status(200).json(menu);
+    } catch (error) {
+        console.error("Error updating menu:", error);
+        throw error;
+    }
+});
+
+menuRouter.delete('/menu/:linkId', async (req, res) => {
+
+    const linkId = req.params.linkId;
+    try {
+        const menu = await Menu.findOneAndDelete({linkId});
+        return res.status(200).json({message: 'Menu deleted'});
+    } catch (error) {
+        console.error("Error deleting menu:", error);
+        throw error;
+    }
 });
 
 export default menuRouter;
