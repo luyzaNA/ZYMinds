@@ -1,34 +1,40 @@
 import NutritionCalculator from "./nutritionCalculator.js";
 import Food from "../models/Food.js";
+import prerequisites from "../models/Prerequisites.js";
 
-// const mealTypes = ["Lunch", "Dinner", "Breakfast", "Snack"];
-//
-// async function getRandomIngredientByMealType(mealType) {
-//     const ingredient = await Food.aggregate([{$match: {mealType: mealType}}, {$sample: {size: 1}}]);
-//     return ingredient[0];
-// }
 const menuGenerator = {
-        async getRandomIngredientByType(type) {
+        async getRandomIngredientByType(type, intolerances) {
             console.log("AJUNG IN RANDOM BY TYPE")
-            const ingredientsCount = await Food.countDocuments({mealType: {$elemMatch: {$eq: type}}});
+            const ingredientsCount = await Food.countDocuments({
+                mealType: {$elemMatch: {$eq: type}},
+                _id: {$nin: intolerances}
+            });
             console.log("Ingredients count for type", type, ingredientsCount);
             const randomIndex = NutritionCalculator.getRandomNumber(ingredientsCount - 1);
-            const snack = await Food.find({mealType: {$elemMatch: {$eq: type}}}).limit(1).skip(randomIndex);
+            const snack = await Food.find({
+                mealType: {$elemMatch: {$eq: type}},
+                _id: {$nin: intolerances}
+            }).limit(1).skip(randomIndex);
             return snack[0];
         },
-        async getRandomIngredientByTypeAndCategory(type, category) {
+        async getRandomIngredientByTypeAndCategory(type, category, intolerances) {
             console.log("ajung aici")
-            const ingredientsCount = await Food.countDocuments({mealType: {$elemMatch: {$eq: type}}, category: category});
+            const ingredientsCount = await Food.countDocuments({
+                mealType: {$elemMatch: {$eq: type}},
+                category: category,
+                _id: {$nin: intolerances}
+            });
             const randomIndex = NutritionCalculator.getRandomNumber(ingredientsCount - 1);
             console.log("Ingredients count", ingredientsCount)
             const ingredient = await Food.find({
-                mealType: {$elemMatch: {$eq: type}}, category: category
+                mealType: {$elemMatch: {$eq: type}}, category: category,
+                _id: {$nin: intolerances}
             }).limit(1).skip(randomIndex);
             return ingredient[0];
         },
 
         async generateMenuForDays(prerequisites, kcalsPerMeal, macroNutrients) {
-            const numberOfDays = 10;
+            const numberOfDays = 30;
             let menu = [];
 
             for (let i = 0; i < numberOfDays; i++) {
@@ -40,7 +46,7 @@ const menuGenerator = {
 
                     let meal = {name: "secMeal" + j, ingredients: [], mealType: 'Snack'};
 
-                    const ingredientFromDb = await this.getRandomIngredientByType("Snack");
+                    const ingredientFromDb = await this.getRandomIngredientByType("Snack", prerequisites.intolerances);
                     console.log("Ingredient in " + j, " meal: ", ingredientFromDb)
 
                     if (ingredientFromDb) {
@@ -58,7 +64,7 @@ const menuGenerator = {
                 for (let k = 0; k < prerequisites.mainMealsCount; k++) {
                     let meal = {name: "mainMeal" + k, ingredients: [], mealType: mainMealTypes[t]};
 
-                    const ingredientFromDb = await this.getRandomIngredientByType(mainMealTypes[t]);
+                    const ingredientFromDb = await this.getRandomIngredientByType(mainMealTypes[t], prerequisites.intolerances);
                     console.log("INGREDIENTUL PRINCIPAL PRIMUL ESTE ", ingredientFromDb)
 
                     if (ingredientFromDb) {
@@ -245,7 +251,7 @@ const menuGenerator = {
 
                                 const category = matchedCategories[Math.floor(Math.random() * matchedCategories.length)];
 
-                                const ingredient = await this.getRandomIngredientByTypeAndCategory(meal.mealType, category);
+                                const ingredient = await this.getRandomIngredientByTypeAndCategory(meal.mealType, category, prerequisites.intolerances);
                                 if (ingredient) {
                                     meal.ingredients.push(ingredient);
                                     console.log("Ingredient added to meal:", ingredient);
@@ -292,185 +298,190 @@ const menuGenerator = {
             // adjust day menu to match the required proteins, lipids and carbohydrates intake
             // vegetalele alimentele secundare trebuie sa creasca in cantitate pana la maxim 300g fiind secundara vegetalele daca depasesc sa creasca principalul
             // pune sucurile la snack doar
-
-            function getActualMenuMacronutrients() {
-                let proteins = 0;
-                let lipids = 0;
-                let carbohydrates = 0;
-
-                dayMenu.forEach(meal => {
-                    meal.ingredients.forEach(ingredient => {
-                        proteins += ingredient.proteins;
-                        lipids += ingredient.lipids;
-                        carbohydrates += ingredient.carbohydrates;
-                    });
-                });
-                return {
-                    proteins, lipids, carbohydrates
-                }
-            }
-
-            let actualMenuMacronutrients = getActualMenuMacronutrients()
-
-            const isDeficitProteins = (macroNutrients.protein - 0.05 * macroNutrients.protein) > actualMenuMacronutrients.proteins;
-            const isSurplusProteins = (macroNutrients.protein + 0.05 * macroNutrients.protein) < actualMenuMacronutrients.proteins;
-
-            const isDeficitLipids = (macroNutrients.fat - 0.05 * macroNutrients.fat) > actualMenuMacronutrients.lipids;
-            const isSurplusLipids = (macroNutrients.fat + 0.05 * macroNutrients.fat) < actualMenuMacronutrients.lipids;
-
-            const isDeficitCarbs = (macroNutrients.carbs - 0.05 * macroNutrients.carbs) > actualMenuMacronutrients.carbohydrates;
-            const isSurplusCarbs = (macroNutrients.carbs + 0.05 * macroNutrients.carbs) < actualMenuMacronutrients.carbohydrates;
-
-            console.log(isDeficitCarbs, isDeficitLipids, isDeficitProteins)
-            console.log(isSurplusCarbs, isSurplusLipids, isSurplusProteins)
-
-            let allIngredients = [];
-            dayMenu.forEach(meal => {
-                allIngredients.push(...meal.ingredients);
-            })
-
-            // Create sorted arrays
-            const sortedByLipids = this.sortByAttribute(allIngredients, 'lipids');
-
-            let forceBreak = false
-
-            while ((macroNutrients.fat + 0.05 * macroNutrients.fat) < actualMenuMacronutrients.lipids && !forceBreak) {
-
-                if(actualMenuMacronutrients.lipids - macroNutrients.fat > 0.6*macroNutrients.fat){
-                    console.log("hi")
-                    for(let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++){
-                        for(let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++){
-                            if(dayMenu[mealIndex].ingredients[ingredientIndex] === sortedByLipids[0]){
-                                if((macroNutrients.carbs - 0.05 * macroNutrients.carbs) > actualMenuMacronutrients.carbohydrates){
-                                    let meal = dayMenu[mealIndex]
-                                    let mealType = meal.mealType;
-                                    let ingredientTobeAdded = await this.getRandomIngredientByTypeAndCategory(mealType, "carbohydrates");
-                                    const totalCaloriesNeededPerMeal = meal.name.startsWith("mainMeal") ? kcalsPerMeal.kcalsPerMainMeal : kcalsPerMeal.kcalsPerSecondaryMeal;
-                                    const mealKcals =  this.getMealKcals(meal);
-
-                                    this.modifyIngredient(ingredientTobeAdded, (totalCaloriesNeededPerMeal - mealKcals)/ingredientTobeAdded.kcals);
-                                    sortedByLipids.slice(0,1)
-                                    dayMenu[mealIndex].ingredients[ingredientIndex] = ingredientTobeAdded;
-                                }else if(dayMenu[mealIndex].ingredients.lenght > 2){
-                                    dayMenu[mealIndex].ingredients.slice(ingredientIndex, 1)
-                                } else {
-                                    console.log("hi")
-                                    let meal = dayMenu[mealIndex]
-                                    let mealType = meal.mealType;
-                                    let ingredientTobeAdded = await this.getRandomIngredientByTypeAndCategory(mealType, "proteins");
-                                    const totalCaloriesNeededPerMeal = meal.name.startsWith("mainMeal") ? kcalsPerMeal.kcalsPerMainMeal : kcalsPerMeal.kcalsPerSecondaryMeal;
-                                    const mealKcals =  this.getMealKcals(meal);
-
-                                    this.modifyIngredient(ingredientTobeAdded, (totalCaloriesNeededPerMeal - mealKcals)/ingredientTobeAdded.kcals);
-                                    sortedByLipids.slice(sortedByLipids.length -1,1)
-                                    dayMenu[mealIndex].ingredients[ingredientIndex] = ingredientTobeAdded;
-                                }
-                            } else {forceBreak = true;
-
-                            }
-                        }
-                    }
-                } else {break;}
-                actualMenuMacronutrients = getActualMenuMacronutrients()
-            }
-            forceBreak = false;
-            while((macroNutrients.fat - 0.05 * macroNutrients.fat) > actualMenuMacronutrients.lipids && !forceBreak){
-                if(macroNutrients.fat - actualMenuMacronutrients.lipids > macroNutrients.fat - 0.05*macroNutrients.fat){
-                    for(let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++){
-                        for(let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++){
-                            if(dayMenu[mealIndex].ingredients[ingredientIndex] === sortedByProteins[sortedByProteins.length -1]){
-                                if((macroNutrients.protein + 0.05 * macroNutrients.protein) < actualMenuMacronutrients.proteins){
-                                    let meal = dayMenu[mealIndex]
-                                    let mealType = meal.mealType;
-                                    let ingredientTobeAdded = await this.getRandomIngredientByTypeAndCategory(mealType, "lipids");
-                                    const totalCaloriesNeededPerMeal = meal.name.startsWith("mainMeal") ? kcalsPerMeal.kcalsPerMainMeal : kcalsPerMeal.kcalsPerSecondaryMeal;
-                                    const mealKcals =  this.getMealKcals(meal);
-                                    this.modifyIngredient(ingredientTobeAdded, (totalCaloriesNeededPerMeal - mealKcals)/ingredientTobeAdded.kcals);
-                                    dayMenu[mealIndex].ingredients[ingredientIndex] = ingredientTobeAdded;
-                                    sortedByProteins.slice(sortedByProteins.length -1,1)
-
-                                    if(meal.ingredients.length > 2){
-                                        const carbo = meal.ingredients.find(elm => elm.category == "carbohydrates")
-                                        if(carbo){
-                                            let nonStarchyIngredient = await this.getRandomIngredientByTypeAndCategory(mealType, "non-starchy vegetables");
-                                            const mealKcals =  this.getMealKcals(meal);
-                                            this.modifyIngredient(nonStarchyIngredient, (totalCaloriesNeededPerMeal - mealKcals)/nonStarchyIngredient.kcals);
-
-                                            for(let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++){
-                                                for(let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++){
-                                                    if(dayMenu[mealIndex].ingredients[ingredientIndex] === carbo){
-                                                        dayMenu[mealIndex].ingredients[ingredientIndex] = nonStarchyIngredient
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else { forceBreak = true}
-
-                            } else {forceBreak = true;}
-                        }
-                    }
-                }else{break;}
-                actualMenuMacronutrients = getActualMenuMacronutrients()
-            }
-
-            actualMenuMacronutrients = getActualMenuMacronutrients()
-
-            if ((macroNutrients.carbs + 0.05 * macroNutrients.carbs) < actualMenuMacronutrients.carbohydrates) {
-                if(actualMenuMacronutrients.carbohydrates - macroNutrients.carbs > 0.6*macroNutrients.carbs){
-                    console.log("hi")
-                    for(let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++){
-                        for(let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++){
-                            if(dayMenu[mealIndex].ingredients[ingredientIndex] === sortedByCarbohydrates[sortedByCarbohydrates.length -1]){
-                                if(dayMenu[mealIndex].ingredients[ingredientIndex] === sortedByCarbohydrates[sortedByCarbohydrates.length -1]){
-                                    if(dayMenu[mealIndex].ingredients.length > 2){
-                                        dayMenu[mealIndex].ingredients.slice(ingredientIndex,1)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            let numberOfProteins = 0;
-            let numberOfLipids = 0;
-            let numberOfCarbs = 0;
-
-            actualMenuMacronutrients = getActualMenuMacronutrients()
-
-            for(let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++){
-                for(let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++){
-                    let ingredientCategory = dayMenu[mealIndex].ingredients[ingredientIndex].category;
-                    if(ingredientCategory === "proteins"){
-                        numberOfProteins++;
-                    } else if (ingredientCategory === "lipids"){
-                        numberOfLipids++;
-                    }else if(ingredientCategory === "carbohydrates"){
-                        numberOfCarbs++;
-                    }
-                }
-            }
-
-            for(let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++){
-                for(let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++){
-                    let ingredientMultiplier = 1;
-                    let ingredient = dayMenu[mealIndex].ingredients[ingredientIndex];
-                    let ingredientCategory = ingredient.category;
-                    if(ingredientCategory === "proteins"){
-                        ingredientMultiplier = (macroNutrients.protein - actualMenuMacronutrients.proteins)/numberOfProteins/ingredient.proteins;
-                    } else if (ingredientCategory === "lipids"){
-                        ingredientMultiplier = (macroNutrients.fat - actualMenuMacronutrients.lipids)/numberOfLipids/ingredient.lipids;
-                    }else if(ingredientCategory === "carbohydrates"){
-                        ingredientMultiplier = (macroNutrients.carbs - actualMenuMacronutrients.carbohydrates)/numberOfCarbs/ingredient.carbohydrates;
-                    }
-                    this.modifyIngredient(dayMenu[mealIndex].ingredients[ingredientIndex], ingredientMultiplier)
-                }
-            }
-
-
-
-
+            //
+            // function getActualMenuMacronutrients() {
+            //     let proteins = 0;
+            //     let lipids = 0;
+            //     let carbohydrates = 0;
+            //
+            //     dayMenu.forEach(meal => {
+            //         meal.ingredients.forEach(ingredient => {
+            //             proteins += ingredient.proteins;
+            //             lipids += ingredient.lipids;
+            //             carbohydrates += ingredient.carbohydrates;
+            //         });
+            //     });
+            //     return {
+            //         proteins, lipids, carbohydrates
+            //     }
+            // }
+            //
+            // let actualMenuMacronutrients = getActualMenuMacronutrients()
+            //
+            // const isDeficitProteins = (macroNutrients.protein - 0.05 * macroNutrients.protein) > actualMenuMacronutrients.proteins;
+            // const isSurplusProteins = (macroNutrients.protein + 0.05 * macroNutrients.protein) < actualMenuMacronutrients.proteins;
+            //
+            // const isDeficitLipids = (macroNutrients.fat - 0.05 * macroNutrients.fat) > actualMenuMacronutrients.lipids;
+            // const isSurplusLipids = (macroNutrients.fat + 0.05 * macroNutrients.fat) < actualMenuMacronutrients.lipids;
+            //
+            // const isDeficitCarbs = (macroNutrients.carbs - 0.05 * macroNutrients.carbs) > actualMenuMacronutrients.carbohydrates;
+            // const isSurplusCarbs = (macroNutrients.carbs + 0.05 * macroNutrients.carbs) < actualMenuMacronutrients.carbohydrates;
+            //
+            // console.log(isDeficitCarbs, isDeficitLipids, isDeficitProteins)
+            // console.log(isSurplusCarbs, isSurplusLipids, isSurplusProteins)
+            //
+            // let allIngredients = [];
+            // dayMenu.forEach(meal => {
+            //     allIngredients.push(...meal.ingredients);
+            // })
+            //
+            // // Create sorted arrays
+            // const sortedByLipids = this.sortByAttribute(allIngredients, 'lipids');
+            //
+            // let forceBreak = false
+            //
+            // while ((macroNutrients.fat + 0.05 * macroNutrients.fat) < actualMenuMacronutrients.lipids && !forceBreak) {
+            //
+            //     if (actualMenuMacronutrients.lipids - macroNutrients.fat > 0.6 * macroNutrients.fat) {
+            //         console.log("hi")
+            //         for (let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++) {
+            //             for (let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++) {
+            //                 if (dayMenu[mealIndex].ingredients[ingredientIndex] === sortedByLipids[0]) {
+            //                     if ((macroNutrients.carbs - 0.05 * macroNutrients.carbs) > actualMenuMacronutrients.carbohydrates) {
+            //                         let meal = dayMenu[mealIndex]
+            //                         let mealType = meal.mealType;
+            //                         let ingredientTobeAdded = await this.getRandomIngredientByTypeAndCategory(mealType, "carbohydrates", prerequisites.intolerances);
+            //                         const totalCaloriesNeededPerMeal = meal.name.startsWith("mainMeal") ? kcalsPerMeal.kcalsPerMainMeal : kcalsPerMeal.kcalsPerSecondaryMeal;
+            //                         const mealKcals = this.getMealKcals(meal);
+            //
+            //                         this.modifyIngredient(ingredientTobeAdded, (totalCaloriesNeededPerMeal - mealKcals) / ingredientTobeAdded.kcals);
+            //                         sortedByLipids.slice(0, 1)
+            //                         dayMenu[mealIndex].ingredients[ingredientIndex] = ingredientTobeAdded;
+            //                     } else if (dayMenu[mealIndex].ingredients.lenght > 2) {
+            //                         dayMenu[mealIndex].ingredients.slice(ingredientIndex, 1)
+            //                     } else {
+            //                         console.log("hi")
+            //                         let meal = dayMenu[mealIndex]
+            //                         let mealType = meal.mealType;
+            //                         let ingredientTobeAdded = await this.getRandomIngredientByTypeAndCategory(mealType, "proteins", prerequisites.intolerances);
+            //                         const totalCaloriesNeededPerMeal = meal.name.startsWith("mainMeal") ? kcalsPerMeal.kcalsPerMainMeal : kcalsPerMeal.kcalsPerSecondaryMeal;
+            //                         const mealKcals = this.getMealKcals(meal);
+            //
+            //                         this.modifyIngredient(ingredientTobeAdded, (totalCaloriesNeededPerMeal - mealKcals) / ingredientTobeAdded.kcals);
+            //                         sortedByLipids.slice(sortedByLipids.length - 1, 1)
+            //                         dayMenu[mealIndex].ingredients[ingredientIndex] = ingredientTobeAdded;
+            //                     }
+            //                 } else {
+            //                     forceBreak = true;
+            //
+            //                 }
+            //             }
+            //         }
+            //     } else {
+            //         break;
+            //     }
+            //     actualMenuMacronutrients = getActualMenuMacronutrients()
+            // }
+            // forceBreak = false;
+            // while ((macroNutrients.fat - 0.05 * macroNutrients.fat) > actualMenuMacronutrients.lipids && !forceBreak) {
+            //     if (macroNutrients.fat - actualMenuMacronutrients.lipids > macroNutrients.fat - 0.05 * macroNutrients.fat) {
+            //         for (let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++) {
+            //             for (let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++) {
+            //                 if (dayMenu[mealIndex].ingredients[ingredientIndex] === sortedByProteins[sortedByProteins.length - 1]) {
+            //                     if ((macroNutrients.protein + 0.05 * macroNutrients.protein) < actualMenuMacronutrients.proteins) {
+            //                         let meal = dayMenu[mealIndex]
+            //                         let mealType = meal.mealType;
+            //                         let ingredientTobeAdded = await this.getRandomIngredientByTypeAndCategory(mealType, "lipids", prerequisites.intolerances);
+            //                         const totalCaloriesNeededPerMeal = meal.name.startsWith("mainMeal") ? kcalsPerMeal.kcalsPerMainMeal : kcalsPerMeal.kcalsPerSecondaryMeal;
+            //                         const mealKcals = this.getMealKcals(meal);
+            //                         this.modifyIngredient(ingredientTobeAdded, (totalCaloriesNeededPerMeal - mealKcals) / ingredientTobeAdded.kcals);
+            //                         dayMenu[mealIndex].ingredients[ingredientIndex] = ingredientTobeAdded;
+            //                         sortedByProteins.slice(sortedByProteins.length - 1, 1)
+            //
+            //                         if (meal.ingredients.length > 2) {
+            //                             const carbo = meal.ingredients.find(elm => elm.category == "carbohydrates")
+            //                             if (carbo) {
+            //                                 let nonStarchyIngredient = await this.getRandomIngredientByTypeAndCategory(mealType, "non-starchy vegetables", prerequisites.intolerances);
+            //                                 const mealKcals = this.getMealKcals(meal);
+            //                                 this.modifyIngredient(nonStarchyIngredient, (totalCaloriesNeededPerMeal - mealKcals) / nonStarchyIngredient.kcals);
+            //
+            //                                 for (let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++) {
+            //                                     for (let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++) {
+            //                                         if (dayMenu[mealIndex].ingredients[ingredientIndex] === carbo) {
+            //                                             dayMenu[mealIndex].ingredients[ingredientIndex] = nonStarchyIngredient
+            //                                         }
+            //                                     }
+            //                                 }
+            //                             }
+            //                         }
+            //                     } else {
+            //                         forceBreak = true
+            //                     }
+            //
+            //                 } else {
+            //                     forceBreak = true;
+            //                 }
+            //             }
+            //         }
+            //     } else {
+            //         break;
+            //     }
+            //     actualMenuMacronutrients = getActualMenuMacronutrients()
+            // }
+            //
+            // actualMenuMacronutrients = getActualMenuMacronutrients()
+            //
+            // if ((macroNutrients.carbs + 0.05 * macroNutrients.carbs) < actualMenuMacronutrients.carbohydrates) {
+            //     if (actualMenuMacronutrients.carbohydrates - macroNutrients.carbs > 0.6 * macroNutrients.carbs) {
+            //         console.log("hi")
+            //         for (let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++) {
+            //             for (let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++) {
+            //                 if (dayMenu[mealIndex].ingredients[ingredientIndex] === sortedByCarbohydrates[sortedByCarbohydrates.length - 1]) {
+            //                     if (dayMenu[mealIndex].ingredients[ingredientIndex] === sortedByCarbohydrates[sortedByCarbohydrates.length - 1]) {
+            //                         if (dayMenu[mealIndex].ingredients.length > 2) {
+            //                             dayMenu[mealIndex].ingredients.slice(ingredientIndex, 1)
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
+            //
+            // let numberOfProteins = 0;
+            // let numberOfLipids = 0;
+            // let numberOfCarbs = 0;
+            //
+            // actualMenuMacronutrients = getActualMenuMacronutrients()
+            //
+            // for (let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++) {
+            //     for (let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++) {
+            //         let ingredientCategory = dayMenu[mealIndex].ingredients[ingredientIndex].category;
+            //         if (ingredientCategory === "proteins") {
+            //             numberOfProteins++;
+            //         } else if (ingredientCategory === "lipids") {
+            //             numberOfLipids++;
+            //         } else if (ingredientCategory === "carbohydrates") {
+            //             numberOfCarbs++;
+            //         }
+            //     }
+            // }
+            //
+            // for (let mealIndex = 0; mealIndex < dayMenu.length; mealIndex++) {
+            //     for (let ingredientIndex = 0; ingredientIndex < dayMenu[mealIndex].ingredients.length; ingredientIndex++) {
+            //         let ingredientMultiplier = 1;
+            //         let ingredient = dayMenu[mealIndex].ingredients[ingredientIndex];
+            //         let ingredientCategory = ingredient.category;
+            //         if (ingredientCategory === "proteins") {
+            //             ingredientMultiplier = (macroNutrients.protein - actualMenuMacronutrients.proteins) / numberOfProteins / ingredient.proteins;
+            //         } else if (ingredientCategory === "lipids") {
+            //             ingredientMultiplier = (macroNutrients.fat - actualMenuMacronutrients.lipids) / numberOfLipids / ingredient.lipids;
+            //         } else if (ingredientCategory === "carbohydrates") {
+            //             ingredientMultiplier = (macroNutrients.carbs - actualMenuMacronutrients.carbohydrates) / numberOfCarbs / ingredient.carbohydrates;
+            //         }
+            //         this.modifyIngredient(dayMenu[mealIndex].ingredients[ingredientIndex], ingredientMultiplier)
+            //     }
+            // }
 
 
             let proteinsResult = 0;
@@ -492,7 +503,7 @@ const menuGenerator = {
             // Creating a shallow copy of the array
             return array.slice().sort((a, b) => b[attribute] - a[attribute]);
         },
-        getMealKcals(meal){
+        getMealKcals(meal) {
             let mealKcals = 0;
             meal.ingredients.forEach(ingredient => mealKcals + ingredient.kcals)
 

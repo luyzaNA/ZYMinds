@@ -25,10 +25,6 @@ export class FileUploadService {
     return this.http.get<FileI[]>(`${this.baseUrl}/files/${userId}/${context}`);
   }
 
-  deleteFile(fileId: string): Observable<FileI> {
-    return this.http.delete<FileI>(`${this.baseUrl}/files/${fileId}`);
-  }
-
   updateFile(fileId: string, file: File, fileData: FileI): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('file', file);

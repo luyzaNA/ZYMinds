@@ -5,6 +5,7 @@ import {ProfileService} from "../../services/profile.service";
 import {Prerequisites} from "../../shared/Prerequisites/PrerequisitesI";
 import {PrerequisitesService} from "../../shared/Prerequisites/prerequisites.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {MenuServiceService} from "../../services/menu-service.service";
 
 @Component({
   selector: 'app-prerequisites',
@@ -24,18 +25,25 @@ export class PrerequisitesComponent implements OnInit {
 
   //activeaza/dezactiveaza form ul in functie de rolul utilizatorului curent
   isClient: boolean = true;
+  foods: any;
 
   constructor(private authService: AuthService,
               private profileService: ProfileService,
               private prerequisitesService: PrerequisitesService,
               private route: ActivatedRoute,
-              private navRoute: Router) {
+              private navRoute: Router,
+              private menuService: MenuServiceService){
   }
 
   //obtin user ul curent  si verific rolul lui
   //obtin varsta user ului curent si setez linkId ul de pe url
   //fac cerere de get pt setul de prerequisites
   ngOnInit(): void {
+    this.menuService.getFoods().subscribe(() => {
+    });
+    this.menuService.foods$.subscribe((foods:any) => {
+      this.foods = foods;
+    });
     this.authService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
       console.log(this.currentUser)
@@ -102,5 +110,19 @@ export class PrerequisitesComponent implements OnInit {
           this.navRoute.navigate(['/coach/clients'])
         }
       })
+  }
+
+  getIngredientName(name: string) {
+    let regex = /\d+\s*(g|ml|kg|l)\s*(.*)/i;
+
+    let match = name.match(regex);
+
+    if (match) {
+      let result = match[2].trim();
+      // Capitalize the first character
+      return result.charAt(0).toUpperCase() + result.slice(1);
+    } else {
+      return "No match found";
+    }
   }
 }

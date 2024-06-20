@@ -1,48 +1,67 @@
 <form (ngSubmit)="  setPrerequisitesSet()"  [hidden]="!isClient && !prerequisites.id"  #prerequisitesForm="ngForm">
+  <h3>{{'Required settings needed for menu generation' | translate}}</h3>
   <div class="form-group">
-    <label for="age">Varsta:</label>
+    <label for="age">{{'Age' | translate}}:</label>
     <input type="number" class="form-control"    [disabled]="!isClient" id="age" name="age" [(ngModel)]="prerequisites.age" required>
   </div>
   <div class="form-group">
-    <label for="weight">Masa:</label>
+    <label for="weight">{{'Weight' | translate}}:</label>
     <input type="number" class="form-control"  [disabled]="!isClient" id="weight" name="weight" [(ngModel)]="prerequisites.weight" required>
   </div>
   <div class="form-group">
-    <label for="height">Inaltime in cm:</label>
+    <label for="height">{{'Height' | translate}} in cm:</label>
     <input type="number" class="form-control"   [disabled]="!isClient" id="height" name="height" [(ngModel)]="prerequisites.height" required>
   </div>
   <div class="form-group">
-    <label for="gender">Gen:</label>
+    <label for="gender">{{'Gender' | translate}}:</label>
     <select class="form-control" id="gender"    [disabled]="!isClient" name="gender" [(ngModel)]="prerequisites.gender" required>
-      <option value="female">Femeie</option>
-      <option value="male">Barbat</option>
+      <option value="female">{{'Female' | translate}}</option>
+      <option value="male">{{'Male' | translate}}</option>
     </select>
   </div>
   <div class="form-group">
-    <label for="intolerance">Intolerante:</label>
-    <input type="text" class="form-control"    [disabled]="!isClient" id="intolerance" name="intolerance" [(ngModel)]="prerequisites.intolerances" required>
+    <label for="intolerance">{{'Intolerances' | translate}}:</label>
+    <select style="height: 150px" multiple class="form-control" id="intolerance"    [disabled]="!isClient" name="intolerance" [(ngModel)]="prerequisites.intolerances" required>
+      <option *ngFor="let ingredient of foods" [value]="ingredient._id">{{getIngredientName(ingredient.name) | translate}}</option>
+    </select>
   </div>
   <div class="form-group">
-    <label for="target">Target:</label>
+    <label for="snack">{{'Number of snack meals' | translate}}:</label>
+    <select class="form-control" id="snack"    [disabled]="!isClient" name="snack" [(ngModel)]="prerequisites.secondaryMealsCount" required>
+      <option value=1>1</option>
+      <option value=2>2</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="meals">{{'Number of main meals' | translate}}:</label>
+    <select class="form-control" id="meals"    [disabled]="!isClient" name="meal" [(ngModel)]="prerequisites.mainMealsCount" required>
+      <option value=1>2</option>
+      <option value=2>3</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="target">{{'Target' | translate}}:</label>
     <select class="form-control" id="target"  [disabled]="!isClient" name="target" [(ngModel)]="prerequisites.target" required>
-      <option value="LOSE WEIGHT">Pierde greutate</option>
-      <option value="GAIN WEIGHT">Castiga masa musculara</option>
+      <option value="LOSE WEIGHT">{{'Lose weight' | translate}}</option>
+      <option value="GAIN WEIGHT">{{'Increase muscle mass' | translate}}</option>
     </select>
   </div>
   <div class="form-group">
-    <label for="activityLevel">Nivel de activitate:</label>
+    <label for="activityLevel">{{'Activity level' | translate}}:</label>
     <select class="form-control" id="activityLevel"   [disabled]="!isClient" name="activityLevel" [(ngModel)]="prerequisites.activityLevel" required>
-      <option value="1.2">Sedentara</option>
-      <option value="1.375">Usoara(1-3 zile pe saptamana)</option>
-      <option value="1.55">Modearata(3-5 zile pe saptamana)</option>
-      <option value="1.725">Intensa(6-7 zile pe saptamana)</option>
+      <option value="1.2">{{'Sedentary' | translate}}</option>
+      <option value="1.375">{{'Light(1-3 days per week)' | translate}}</option>
+      <option value="1.55">{{'Moderate(3-5 days per week)' | translate}}</option>
+      <option value="1.725">{{'Active(6-7 days per week)' | translate}}</option>
     </select>
   </div>
-  <div *ngIf="prerequisitesLoaded ===true && isClient">
-    <button type="submit" class="btn btn-primary">Update</button>
+  <div *ngIf="prerequisitesLoaded && isClient">
+    <button type="submit" class="button-s">{{'Update' | translate}}</button>
   </div>
-  <div *ngIf="prerequisitesLoaded ===false && isClient">
-    <button type="submit" class="btn btn-primary">Create</button>
+  <div *ngIf="!prerequisitesLoaded && isClient">
+    <button type="submit" class="button-s">{{'Create' | translate}}</button>
   </div>
 </form>
 <div *ngIf="!prerequisites.id && !isClient">

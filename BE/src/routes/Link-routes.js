@@ -6,9 +6,12 @@ import Profile from "../models/Profile.js";
 import User from "../models/User.js";
 import File from "../models/File.js";
 import Link from "../models/Link.js";
+import {body, param} from "express-validator";
 
 const linkRouter = express.Router();
-linkRouter.post("/connect/:coachId", currentUser, requireAuth, async (req, res) => {
+linkRouter.post("/connect/:coachId", currentUser, requireAuth, [
+    body('message').not().isEmpty().withMessage('Message is required'),
+], async (req, res) => {
     try {
         const clientId = req.currentUser.id;
         const {coachId} = req.params;
@@ -129,7 +132,10 @@ linkRouter.get('/clients', currentUser, requireAuth, async (req, res) => {
     }
 });
 
-linkRouter.patch('/update/status/client/:clientId', currentUser, requireAuth, async (req, res) => {
+linkRouter.patch('/update/status/client/:clientId', currentUser, requireAuth,[
+    body('statusApplication').not().isEmpty().withMessage('Status is required'),
+    param('clientId').not().isEmpty().withMessage('Client id is required')
+], async (req, res) => {
     const {clientId} = req.params;
     const {statusApplication} = req.body
 

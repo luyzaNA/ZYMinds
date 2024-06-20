@@ -4,6 +4,8 @@ import Message from "../models/Message.js";
 import currentUser from "../middlewares/current-user.js";
 import User from "../models/User.js";
 import {formatDateTime} from "../utlis/format-date.js";
+import requireAuth from "../middlewares/require-auth.js";
+import {body, param} from "express-validator";
 
 const conversationRouter = express.Router();
 
@@ -15,7 +17,10 @@ const conversationRouter = express.Router();
 //se steaza ultimul mesja ca find mesjaul tocmai creat
 //se salveaza conversatia
 //se formateeaza raspunsul
-conversationRouter.post('/initialize/conversation', currentUser, async (req, res) => {
+conversationRouter.post('/initialize/conversation', currentUser, requireAuth, [
+    body('email').isEmail().withMessage('Email must be valid'),
+    body('content').not().isEmpty().withMessage('Content is required')
+], async (req, res) => {
     const {content, email} = req.body;
     const senderId = req.currentUser.id;
 
@@ -63,7 +68,9 @@ conversationRouter.post('/initialize/conversation', currentUser, async (req, res
 //se salveaza ultimul mesaj cu id ul conversatiei curent  si se sorteaza descrecator
 //se compune raspunsul
 //se push uie in array
-conversationRouter.get('/conversations', currentUser, async (req, res) => {
+conversationRouter.get('/conversations', currentUser, requireAuth, [
+  param('id').not().isEmpty().withMessage('Invalid id')
+], async (req, res) => {
     const userId = req.currentUser.id;
 
     try {
@@ -94,7 +101,9 @@ conversationRouter.get('/conversations', currentUser, async (req, res) => {
 //se cauta conversatia cu particapantii : user curent si user cu email dat
 //se extrage ultimul mesaj
 //se returneaza conversatia cu datele ei
-conversationRouter.get('/conversation/:email', currentUser, async (req, res) => {
+conversationRouter.get('/conversation/:email', currentUser, requireAuth,[
+    param('email').isEmail().withMessage('Email must be valid')
+], async (req, res) => {
     const currentUser = req.currentUser;
     const userEmail = req.params.email;
 

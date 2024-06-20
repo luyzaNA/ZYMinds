@@ -5,16 +5,16 @@
     </div>
     <div class="profile-details">
       <h1 id="fullName">{{currentUser.fullName}}</h1>
-      <p id="phoneNumber">Phone: {{currentUser.phoneNumber}}</p>
+      <p id="phoneNumber">{{'Phone Number' | translate}}: {{currentUser.phoneNumber}}</p>
     </div>
   </div>
   <div class="profile-info">
-    <p><strong>Age:</strong> <span id="age">{{profileService.profileI.age}}</span></p>
-    <p><strong>Email:</strong> <span id="email">{{currentUser.email}}</span></p>
+    <p><strong>{{'Age' | translate}}: </strong> <span id="age">{{profileService.profileI.age}}</span></p>
+    <p><strong>{{'Email' | translate}}: </strong> <span id="email">{{currentUser.email}}</span></p>
   </div>
   <div class="edit-profile">
     <button type="button" class="button-with-icon" (click)="toToEdit()">
-      <i class="fas fa-cog"></i> Edit
+      <i class="fas fa-cog"></i> {{'Edit' | translate}}
     </button>
   </div>
 </div>

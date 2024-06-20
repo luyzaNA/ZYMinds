@@ -7,6 +7,11 @@ import {DRI} from "../models/DRI.js";
 import menuGenerator from "../utlis/menuGenerator.js";
 import Menu from "../models/Menu.js";
 import MenuStatusAuthorization from "../models/menu-status.js";
+import currentUser from "../middlewares/current-user.js";
+import requireAuth from "../middlewares/require-auth.js";
+import RoleAuthorization from "../models/role-auhorization.js";
+import NotAuthorizedError from "../errors/not-authorized-errors.js";
+import {param} from "express-validator";
 
 const menuRouter = express.Router();
 
@@ -33,18 +38,19 @@ async function generateMenuAsync(prerequisites, mealCalories, macroNutrients) {
 
 
 //cu link id ul iau preconditiile
-menuRouter.post('/menu/:linkId', async (req, res) => {
+menuRouter.post('/menu/:linkId', [
+    param('linkId').not().isEmpty().withMessage('Invalid link id')
+], async (req, res) => {
     const linkId = req.params.linkId;
-
+    // if (req.currentUser.roles !== new RoleAuthorization('COACH').name) {
+    //     throw new NotAuthorizedError();
+    // }
     const link = await Link.findById(linkId);
 
     if (!link) {
         return res.status(404).json({message: 'Link not found'});
     }
-
     const clientProfile = await Profile.findOne({userId: link.clientId});
-
-    console.log(clientProfile)
 
     const prerequisites = await Prerequisites.findOne({linkId: linkId});
 
@@ -150,7 +156,9 @@ menuRouter.post('/menu/:linkId', async (req, res) => {
 })
 
 
-menuRouter.get('/menu/:linkId', async (req, res) => {
+menuRouter.get('/menu/:linkId', currentUser, requireAuth, [
+    param('linkId').not().isEmpty().withMessage('Invalid link id')
+], async (req, res) => {
     const linkId = req.params.linkId;
     try {
         const menu = await Menu.findOne({linkId});
@@ -162,10 +170,14 @@ menuRouter.get('/menu/:linkId', async (req, res) => {
 });
 
 
-menuRouter.put('/menu/:linkId', async (req, res) => {
+menuRouter.put('/menu/:linkId', currentUser, requireAuth, [
+    param('linkId').not().isEmpty().withMessage('Invalid link id'),
+], async (req, res) => {
+    if (req.currentUser.roles !== new RoleAuthorization('COACH').name) {
+        throw new NotAuthorizedError();
+    }
     const linkId = req.params.linkId;
     const body = req.body;
-    console.log("body:", body);
     if (!body) {
         return res.status(400).json({message: 'Missing request body'});
     }
@@ -178,8 +190,12 @@ menuRouter.put('/menu/:linkId', async (req, res) => {
     }
 });
 
-menuRouter.delete('/menu/:linkId', async (req, res) => {
-
+menuRouter.delete('/menu/:linkId', currentUser, requireAuth, [
+    param('linkId').not().isEmpty().withMessage('Invalid link id')
+], async (req, res) => {
+    if (req.currentUser.roles !== new RoleAuthorization('COACH').name) {
+        throw new NotAuthorizedError();
+    }
     const linkId = req.params.linkId;
     try {
         const menu = await Menu.findOneAndDelete({linkId});

@@ -8,6 +8,8 @@ export interface PrerequisitesI {
   linkId: string;
   id: string;
   activityLevel: string;
+  mainMealsCount: number;
+  secondaryMealsCount: number;
 }
 
 export class Prerequisites implements PrerequisitesI {
@@ -20,6 +22,8 @@ export class Prerequisites implements PrerequisitesI {
   linkId: string;
   id: string;
   activityLevel: string;
+  mainMealsCount: number;
+  secondaryMealsCount: number;
 
   constructor() {
     this.age = 0;
@@ -31,5 +35,7 @@ export class Prerequisites implements PrerequisitesI {
     this.linkId = '';
     this.id = '';
     this.activityLevel = '';
+    this.mainMealsCount = 0;
+    this.secondaryMealsCount = 0;
   }
 }

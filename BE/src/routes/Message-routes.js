@@ -4,6 +4,8 @@ import Message from "../models/Message.js";
 import Conversation from "../models/Conversation.js";
 import {formatDateTime} from "../utlis/format-date.js";
 import User from "../models/User.js";
+import requireAuth from "../middlewares/require-auth.js";
+import {param} from "express-validator";
 const messageRouter = express.Router();
 
 //se cauta o converstia dupa id ul user ului curent
@@ -12,7 +14,9 @@ const messageRouter = express.Router();
 //se salveaza mesajul
 //se seteaza ultimul mesaj al conversatiei ca find mesajul tocmai salvat
 //se returneaza raspunsul
-messageRouter.post('/message/:conversationId', currentUser, async (req, res) => {
+messageRouter.post('/message/:conversationId', currentUser, requireAuth,[
+    param('conversationId').isMongoId().withMessage('Invalid conversation ID'),
+], async (req, res) => {
     const { content } = req.body;
     const senderId = req.currentUser.id;
     const conversationId = req.params.conversationId;

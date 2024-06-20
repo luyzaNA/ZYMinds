@@ -8,7 +8,7 @@
   top: 0px;
   border-bottom: 1px solid rgba(76, 52, 226, 7%);
   width: 100%;
-  z-index: 1000000;
+  z-index: 10;
 }
 
 button {
@@ -27,5 +27,20 @@ button {
 
 img {
   margin-top: -25px;
+}
+
+.nav-auth-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: start;
+}
+
+select {
+  background-color: transparent;
+  color: #2C18A3;
+  border: none;
+  margin-right: 40px;
+  height: 50px;
 }
 

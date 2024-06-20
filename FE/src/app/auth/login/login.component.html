@@ -7,44 +7,44 @@
       <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
           <form #singUpForm="ngForm" (ngSubmit)="login(emailInput.value, passwordInput.value)" style="width: 100%; max-width: 500px; margin: 0 auto;">
-            <div class="form-group" class="input-container">
+            <div class="input-container">
               <input type="email"
                      ngModel
                      name="email"
                      required
                      email
                      #emailInput="ngModel"
-                     placeholder="Email"
+                     [placeholder]="'Email' | translate"
                      (focus)="onFocus(false)"
                      (blur)="onBlur()">
             </div>
             <div class="error" [class.hide]="emailInput.untouched || emailInput.valid">
               Email is required!
             </div>
-            <div class="form-group" class="input-container">
+            <div class="input-container">
               <input type="password"
                      ngModel
                      name="password"
                      required
                      #passwordInput="ngModel"
-                     placeholder="Password"
+                     [placeholder]="'Password' | translate"
                      (focus)="onFocus(true)"
                      (blur)="onBlur()"
                      pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
             </div>
             <div class="error" [class.hide]="passwordInput.untouched || passwordInput.valid">
-              <strong>Please follow the next requirements:</strong>
+              <strong>{{'Please follow the next requirements' | translate}}:</strong>
               <ul>
-                <li>At least 8 characters</li>
-                <li>At least one uppercase letter</li>
-                <li>At least one lowercase letter</li>
-                <li>At least one number</li>
-                <li>At least one special character (@$!%*?&)</li>
+                <li>{{'At least 8 characters' | translate}}</li>
+                <li>{{'At least one uppercase letter' | translate}}</li>
+                <li>{{'At least one lowercase letter' | translate}}</li>
+                <li>{{'At least one number' | translate}}</li>
+                <li>{{'At least one special character' | translate}} (@$!%*?&)</li>
               </ul>
             </div>
             <div id="buttons" style="display: flex; flex-direction: column; align-items: center;">
-              <button type="submit" [disabled]="!singUpForm.valid" id="login-b">Login</button>
-              <span style="margin-top: 10px;">Don't have an account? <a routerLink="../register" id="register-link">Register here</a></span>
+              <button type="submit" [disabled]="!singUpForm.valid" id="login-b">{{'Sign in' | translate}}</button>
+              <span style="margin-top: 10px;">{{'Don\'t have an account?' | translate}} <a routerLink="../register" id="register-link">{{'Register here' | translate}}</a></span>
             </div>
           </form>
         </div>

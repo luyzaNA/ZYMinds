@@ -1,5 +1,5 @@
 .container {
-  margin-top: 20px;
+  margin-top: 150px;
 }
 
 .form-group {
@@ -24,4 +24,22 @@
 
 .btn {
   margin: 0 5px;
+}
+
+.documents-container {
+  display: flex;
+  flex-direction: column;
+  box-shadow: #4C34E2 1px 2px 4px;
+  border-radius: 8px;
+  margin: 20px 0;
+  padding: 20px;
+}
+
+.users-container{
+  display: flex;
+  flex-direction: column;
+  box-shadow: #4C34E2 1px 2px 4px;
+  border-radius: 8px;
+  margin: 20px 0;
+  padding: 20px;
 }

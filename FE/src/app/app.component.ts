@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {AuthService} from "./services/auth.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,13 @@ import {AuthService} from "./services/auth.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  // constructor(private authService: AuthService) {
-  //
-  //   console.log("IN APP",this.authService.getCurrentUser());
-  //
-  // }
+
   title = 'FE';
+  constructor(private translate: TranslateService) {
+    this.translate.setDefaultLang('ro');
+  }
+
+  switchLanguage(language: string) {
+    this.translate.use(language);
+  }
 }

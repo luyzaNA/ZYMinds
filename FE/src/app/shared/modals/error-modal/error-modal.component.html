@@ -1,0 +1,6 @@
+<div [ngClass]="{'modal-visible': isVisible}" class="modal">
+  <div class="modal-content">
+    <h2 class="error-message"> {{ errorMessage }}</h2>
+    <button style="margin: 0" class="button-s" (click)="closeModal()">OK</button>
+  </div>
+</div>

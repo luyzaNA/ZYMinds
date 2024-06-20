@@ -5,6 +5,7 @@ import Prerequisites from "../models/Prerequisites.js";
 import Profile from "../models/Profile.js";
 import requireAuth from "../middlewares/require-auth.js";
 import RoleAuthorization from "../models/role-auhorization.js";
+import {body, param} from "express-validator";
 
 const prerequisitesRouter = express.Router();
 
@@ -15,7 +16,16 @@ const prerequisitesRouter = express.Router();
 //pt ca doar un client isi introduce datele
 //caut profilul dupa clientUser si extrag varsta
 //creez un nou obiect de tipul schemei si ii setez datele colectate
-prerequisitesRouter.post('/create/prerequisites', currentUser,requireAuth, async (req, res) => {
+prerequisitesRouter.post('/create/prerequisites', currentUser,requireAuth,[
+    body('weight').not().isEmpty().withMessage('Weight is required'),
+    body('height').not().isEmpty().withMessage('Height is required'),
+    body('target').not().isEmpty().withMessage('Target is required'),
+    body('intolerances').not().isEmpty().withMessage('Intolerances is required'),
+    body('activityLevel').not().isEmpty().withMessage('Activity level is required'),
+    body('gender').not().isEmpty().withMessage('Gender is required'),
+    body('mainMealsCount').not().isEmpty().withMessage('Main meals count is required'),
+    body('secondaryMealsCount').not().isEmpty().withMessage('Secondary meals count is required'),
+], async (req, res) => {
     const {id} = req.currentUser;
     const {weight, height, target, intolerances, activityLevel, gender, mainMealsCount, secondaryMealsCount} = req.body
     try {
@@ -55,7 +65,9 @@ prerequisitesRouter.post('/create/prerequisites', currentUser,requireAuth, async
 //caut link-ul cu id-ul dat  pt a afla userId-ul
 //caut profilul cu userId ul gasit si extrag varsta
 //compun return ul
-prerequisitesRouter.get('/prerequisites/:linkId', async (req, res) => {
+prerequisitesRouter.get('/prerequisites/:linkId', currentUser, requireAuth,[
+    param('linkId').not().isEmpty().withMessage('Invalid link ID'),
+], async (req, res) => {
     const {linkId} = req.params;
     try {
         console.log(linkId);
@@ -65,7 +77,6 @@ prerequisitesRouter.get('/prerequisites/:linkId', async (req, res) => {
             return res.status(404).json({message: 'Prerequisites not found'});
         }
 
-        console.log(linkId)
         const link = await Link.findById(linkId);
         if (!link) {
             return res.status(404).json({message: 'Link not found'});
@@ -91,7 +102,18 @@ prerequisitesRouter.get('/prerequisites/:linkId', async (req, res) => {
 //doar un user isi poate modifica prerequisites deci current user ul
 //fac update daca e necesar la profil
 //compun raspunul si l returnez
-prerequisitesRouter.put('/update/prerequisites/:id', currentUser,requireAuth, async (req, res) => {
+prerequisitesRouter.put('/update/prerequisites/:id', currentUser,requireAuth, [
+    param('id').not().isEmpty().withMessage('Invalid prerequisites ID'),
+    body('weight').not().isEmpty().withMessage('Weight is required'),
+    body('height').not().isEmpty().withMessage('Height is required'),
+    body('target').not().isEmpty().withMessage('Target is required'),
+    body('intolerances').not().isEmpty().withMessage('Intolerances is required'),
+    body('activityLevel').not().isEmpty().withMessage('Activity level is required'),
+    body('gender').not().isEmpty().withMessage('Gender is required'),
+    body('age').not().isEmpty().withMessage('Age is required'),
+    body('mainMealsCount').not().isEmpty().withMessage('Main meals count is required'),
+    body('secondaryMealsCount').not().isEmpty().withMessage('Secondary meals count is required')
+], async (req, res) => {
     const {id} = req.params;
     const {weight, height, target, intolerances, activityLevel, gender, age, mainMealsCount,secondaryMealsCount} = req.body;
 

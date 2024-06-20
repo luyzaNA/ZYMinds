@@ -4,7 +4,7 @@ import {AppComponent} from './app.component';
 import {RegisterComponent} from './auth/register/register.component';
 import {LoginComponent} from './auth/login/login.component';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule, provideHttpClient, withInterceptors} from '@angular/common/http';
+import {HttpClient, HttpClientModule, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {FileUploaderComponent} from './auth/register/file-uploader/file-uploader.component';
 import {HomeComponent} from "./first-page/home/home-component";
 import {UserManagementComponent} from './admin/user-management/user-management.component';
@@ -30,6 +30,9 @@ import { RatingComponent } from './profile/rating/rating.component'
 import { FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import { EyeTrackingComponent } from './auth/eye-tracking/eye-tracking.component';
 import { PrerequisitesComponent } from './menu/prerequisites/prerequisites.component';
+import { ErrorModalComponent } from './shared/modals/error-modal/error-modal.component';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {CustomLoader} from "../translate-loader";
 
 @NgModule({
   declarations: [
@@ -55,16 +58,25 @@ import { PrerequisitesComponent } from './menu/prerequisites/prerequisites.compo
     CoachListComponent,
     RatingComponent,
     EyeTrackingComponent,
-    PrerequisitesComponent],
+    PrerequisitesComponent,
+    ErrorModalComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     NgOptimizedImage,
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: CustomLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
-  providers: [ provideHttpClient(withInterceptors([CustomInterceptor]))],
+  providers: [ provideHttpClient(withInterceptors([CustomInterceptor])),
+  ],
   bootstrap: [AppComponent],
   exports: [RouterModule]
 })

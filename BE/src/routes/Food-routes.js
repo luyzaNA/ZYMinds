@@ -3,13 +3,15 @@ import Food from '../models/Food.js';
 import extractNutrients from '../utlis/extractNutrients.js';
 import alimentsData from "../utlis/alimentsData.js";
 import fetch from 'node-fetch';
+import currentUser from "../middlewares/current-user.js";
+import requireAuth from "../middlewares/require-auth.js";
 //
 // const APP_ID = process.env.APP_ID ;
 // const APP_KEY = process.env.APP_KEY ;
 
 const foodRouter = express.Router();
 
-foodRouter.get('/foods', async (req, res) => {
+foodRouter.get('/foods', currentUser, requireAuth, async (req, res) => {
     try {
         const foods = await Food.find();
         res.json(foods);

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import ContextFileAuthorization from "./file-context.js";
 
 const FileSchema = new mongoose.Schema({
     userId: {
