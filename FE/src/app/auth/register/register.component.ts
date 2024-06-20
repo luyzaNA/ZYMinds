@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  @ViewChild('singUpForm') form!: NgForm;
+  @ViewChild('signUpForm') form!: NgForm;
 
   files!: File[];
   private userId: string = '';
@@ -31,7 +31,9 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService,
               private fileService: FileUploadService,
-              private userService: UserService) {
+              private userService: UserService,
+              private router: Router
+              ) {
   }
 
   protected filesUp(files: File[]) {
@@ -87,6 +89,11 @@ export class RegisterComponent {
         next: (response) => {
           this.authService.getCurrentUser().subscribe(user => {
             this.userId = user.id
+            if(user.roles === 'COACH') {
+              this.router.navigate(['/coach/dashboard']);
+            } else if (user.roles === 'CLIENT') {
+              this.router.navigate(['/client/dashboard']);
+            }
           });
           this.userData.id = this.userId;
           console.log("USER ID", this.userId);
@@ -94,6 +101,7 @@ export class RegisterComponent {
 
 
           console.log('Răspunsul primit:', response);
+
         },
         error: (error) => {
           console.error('Eroare la înregistrare:', error);

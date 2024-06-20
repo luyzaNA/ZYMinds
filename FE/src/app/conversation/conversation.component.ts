@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {UserService} from "../shared/User/user.service";
 import {ConversationService} from "../shared/Conversation/conversation.service";
 import {Conversation, ConversationI} from "../shared/Conversation/ConversationI";
@@ -11,9 +11,11 @@ import {User} from "../shared/User/UserI";
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.css']
 })
-export class ConversationComponent {
+export class ConversationComponent implements OnDestroy{
   //folosit pt a stoca email ul cautat
   searchEmail: string = '';
+
+  timer: any;
 
   //stocheaza toti userii gasiti
   users: User[] = new Array<User>();
@@ -86,8 +88,11 @@ export class ConversationComponent {
   selectConversation(conversation: Conversation) {
     this.viewInput = false;
     this.conversationId = conversation.id;
-    this.getMessages(conversation.otherParticipantEmail);
-    this.closeSearchResults()
+    this.timer = setInterval(() => {
+      this.getMessages(conversation.otherParticipantEmail);
+      this.closeSearchResults()
+    }, 1000);
+
   }
 
   //returneaza lista cu toate mesajele +data + cine le a trimis in functie de mail ul selectat
@@ -147,4 +152,9 @@ export class ConversationComponent {
       this.users = [];
     }
   }
+  ngOnDestroy() {
+    clearInterval(this.timer);
+  }
 }
+
+
