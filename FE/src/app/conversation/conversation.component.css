@@ -58,6 +58,389 @@ a {
   overflow: hidden;
   height: 100%;
   margin-top: 150px;
+  gap: 105px;
+}
+
+#mail {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#lastMsg {
+  font-size: 14px;
+  text-align: start;
+  margin: 10px;
+  overflow: hidden;
+}
+
+#date {
+  font-weight: bold;
+  font-size: 12px;
+  text-align: end;
+}
+
+.conversation-list p {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.conversation-list p:hover {
+  background-color: #c1c0dc;
+}
+.message-container{
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.message.received {
+  background-color: #9187d3;
+  color: rgba(175, 171, 211, 0.8);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: start;
+  min-width: 50%;
+  align-self: end!important;
+}
+
+.align-right {
+  justify-content: end!important;
+}
+.align-left{
+  justify-content: start!important;
+}
+
+
+#time {
+  margin-left: 30px;
+}
+
+.message.sent {
+  overflow: hidden;
+  background-color: rgba(175, 171, 211, 0.8);
+  color: #9187d3;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: end;
+  min-width: 50%;
+}
+
+.message-input {
+  width: 560px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+
+span {
+  color: rgb(36, 36, 156);
+}
+
+.sendMess:hover {
+  background-color: #9187d3;
+  color: rgb(36, 36, 156);
+}
+
+.sendMess {
+  background-color: rgba(161, 158, 204, 0.8);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  text-align: center;
+}
+
+.left-panel {
+  overflow: hidden;
+  margin: 10px;
+}
+
+#selectedEmail {
+  background-color: rgba(161, 158, 204, 0.8);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: start;
+}
+
+#selectedEmail:hover {
+  background-color: rgb(145, 135, 211);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: start;
+}
+
+
+.message-content {
+  padding: 20px;
+  color: #24249c;
+  font-size: 20px;
+}
+
+.right-panel {
+  margin: 10px;
+  overflow: hidden;
+  padding: 20px;
+  word-wrap: break-word;
+  box-shadow: #4C34E2 1px 2px 4px;
+  border-radius: 8px;
+}
+
+.conv-header-container{
+  padding-bottom: 20px;
+}
+.suggestions {
+  position: relative;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 0;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.user-list li {
+  padding: 15px;
+  cursor: pointer;
+}
+
+.user-list li:hover {
+  background-color: rgba(161, 158, 204, 0.8);
+}
+
+hr {
+  background-color: #2C18A3;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-top: 1px solid #2C18A3;
+}
+
+a {
+  color: #2C18A3;;
+}
+
+.close-btn {
+  font-size: 14px;
+  padding: 5px 8px;
+  border: none;
+  background-color: transparent;
+  color: #555;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 05px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+}
+
+.messenger-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  margin-top: 150px;
+}
+
+#mail {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#lastMsg {
+  font-size: 14px;
+  text-align: start;
+  margin: 10px;
+  overflow: hidden;
+}
+
+#date {
+  font-weight: bold;
+  font-size: 12px;
+  text-align: end;
+}
+
+.conversation-list p {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.conversation-list p:hover {
+  background-color: #c1c0dc;
+}
+
+.message.received {
+  background-color: #9187d3;
+  color: rgba(175, 171, 211, 0.8);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  text-align: start;
+}
+
+
+#time {
+  margin-left: 300px;
+}
+
+.message.sent {
+  overflow: hidden;
+  background-color: rgba(175, 171, 211, 0.8);
+  color: #9187d3;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  max-width: 70%;
+  align-self: flex-end;
+  text-align: end;
+}
+
+.message-input {
+  width: 560px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+
+span {
+  color: rgb(36, 36, 156);
+}
+
+.sendMess:hover {
+  background-color: #9187d3;
+  color: rgb(36, 36, 156);
+}
+
+.sendMess {
+  background-color: rgba(161, 158, 204, 0.8);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  text-align: center;
+}
+
+.left-panel {
+  overflow: hidden;
+}
+
+#selectedEmail {
+  background-color: rgba(161, 158, 204, 0.8);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: start;
+}
+
+#selectedEmail:hover {
+  background-color: rgb(145, 135, 211);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: start;
+}
+
+
+.message-content {
+  padding: 20px;
+  color: #24249c;
+  font-size: 20px;
+}
+
+.right-panel {
+  margin-left: 200px;
+  overflow: hidden;
+  padding: 10px;
+  width: 100%;
+  word-wrap: break-word;
+}
+.suggestions {
+  position: relative;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 0;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.user-list li {
+  padding: 15px;
+  cursor: pointer;
+}
+
+.user-list li:hover {
+  background-color: rgba(161, 158, 204, 0.8);
+}
+
+hr {
+  background-color: #2C18A3;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-top: 1px solid #2C18A3;
+}
+
+a {
+  color: #2C18A3;;
+}
+
+.close-btn {
+  font-size: 14px;
+  padding: 5px 8px;
+  border: none;
+  background-color: transparent;
+  color: #555;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 05px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+}
+
+.messenger-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  margin-top: 150px;
 }
 
 #mail {
