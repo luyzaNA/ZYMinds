@@ -1,20 +1,26 @@
-  <div id="nav-bar">
-    <img src="../../../assets/logo.png" alt="logo-picture" id="logo">
-    <div id="menu-list">
-      <div class="button-with-icon">
-        <button (click)="moveTo('section1')"><i class="fas fa-home"></i>Acasa</button>
-      </div>
-      <div class="button-with-icon">
-        <button (click)="moveTo('section3')"><i class="fa-solid fa-volume-high"></i>Despre noi</button>
-      </div>
-      <div class="button-with-icon">
-        <button routerLink="../coach-list"><i class="fa-solid fa-bars"></i>Lista antrenori</button>
-      </div>
-      <div class="button-with-icon">
-        <button (click)="moveTo('section4')"><i class="fa-solid fa-square-phone"></i>Contact</button>
-      </div>
+<div id="nav-bar">
+  <img src="../../../assets/logo.png" alt="logo-picture" id="logo">
+  <div id="menu-list">
+    <div class="button-with-icon">
+      <button routerLink="/first-page"><i class="fas fa-home"></i>Acasa</button>
     </div>
     <div class="button-with-icon">
-      <button routerLink="../login"  class="button-s"><i class="fa-regular fa-user"></i>Autentifica-te</button>
+      <button [routerLink]="['/first-page']" fragment="aboutUs"><i class="fa-solid fa-volume-high"></i>Despre noi</button>
+    </div>
+    <div class="button-with-icon">
+      <button routerLink="/coach-list"><i class="fa-solid fa-bars"></i>Lista antrenori</button>
+    </div>
+    <div class="button-with-icon">
+      <button [routerLink]="['/first-page']" fragment="contact"><i class="fa-solid fa-square-phone"></i>Contact</button>
     </div>
   </div>
+  <div class="button-with-icon">
+    <div *ngIf="!isLoggedIn">
+      <button routerLink="/login" class="button-s"><i class="fa-regular fa-user"></i>Autentifica-te</button>
+    </div>
+    <div *ngIf="isLoggedIn">
+      <button (click)="logOutUser()" class="button-s"><i class="fas fa-door-open"></i>Deloghează-te</button>
+    </div>
+  </div>
+
+</div>

@@ -1,9 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {User} from "../../shared/user";
 import {AuthService} from "../../services/auth.service";
-import {ClientService} from "../../shared/Client/client.service";
+import {LinkService} from "../../shared/Link/link.service";
 import {Router} from "@angular/router";
 import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
+import {User} from "../../shared/User/UserI";
 
 @Component({
   selector: 'app-coach-card',
@@ -11,7 +11,7 @@ import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInforma
   styleUrls: ['./coach-card.component.css']
 })
 export class CoachCardComponent {
-  currentUser!: User;
+  currentUser:User = new User();
   showApplyBox = false;
   messageToCoach ='';
   isTextareaVisible: boolean = false;
@@ -20,15 +20,24 @@ export class CoachCardComponent {
   @Input() userProfileInformation!: ProfileInformation;
   @Input() applied: boolean = false;
 
-  constructor(private clientService: ClientService,
+  constructor(private clientService: LinkService,
               protected authService: AuthService,
               private router: Router) {
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+    });
   }
 
   openForm(): void {
-    this.isTextareaVisible = true;
-    this.isApplyButtonVisible = false;
+    if(!this.currentUser.id) {
+      this.router.navigate(['../', 'login']);
+    }
+    else if(this.currentUser.roles!=='CLIENT')
+        alert("TREBUIE SA AI ROL DE CLIENT PT A PUTEA APLICA")
+    else{
+      this.isTextareaVisible = true;
+      this.isApplyButtonVisible = false;
+    }
   }
 
   closeForm(): void {

@@ -1,10 +1,11 @@
 import {Component, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {User} from "../../shared/user";
 import {FileUploadService} from "../../services/upload.service";
 import {FileI} from "../../shared/file";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../shared/User/user.service";
+import {User} from "../../shared/User/UserI";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -17,16 +18,16 @@ export class RegisterComponent {
   files!: File[];
   private userId: string = '';
   selectedRole: boolean = false;
+  isPasswordFocused = false;
 
-  userData: User = {
-    email: '',
-    fullName: '',
-    phoneNumber: '',
-    password: '',
-    newCoach: false,
-    roles: '',
-    id: ''
-  };
+  onFocus(isPassword: boolean) {
+    this.isPasswordFocused = isPassword;
+  }
+
+  onBlur() {
+    this.isPasswordFocused = false;
+  }
+  userData: User = new User()
 
   constructor(private authService: AuthService,
               private fileService: FileUploadService,
@@ -84,7 +85,9 @@ export class RegisterComponent {
 
       this.authService.registerUser(this.userData).subscribe({
         next: (response) => {
-          this.userId = this.authService.getCurrentUser().id;
+          this.authService.getCurrentUser().subscribe(user => {
+            this.userId = user.id
+          });
           this.userData.id = this.userId;
           console.log("USER ID", this.userId);
           this.uploadFiles();

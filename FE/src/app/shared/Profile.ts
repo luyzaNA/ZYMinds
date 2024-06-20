@@ -5,4 +5,5 @@ export interface ProfileI{
   price: number;
   rating: number;
   userId: string;
+  awsLink: string;
 }

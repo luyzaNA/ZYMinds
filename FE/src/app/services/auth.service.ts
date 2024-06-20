@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {map, switchMap} from 'rxjs/operators';
-import {User} from "../shared/user";
 import {environment} from "../shared/environment"
-import {catchError, Observable, throwError} from "rxjs";
+import {BehaviorSubject, catchError, Observable, of, throwError} from "rxjs";
 import {Router} from "@angular/router";
+import {User, UserI} from "../shared/User/UserI";
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +12,15 @@ import {Router} from "@angular/router";
 export class AuthService {
 
   private baseUrl = environment.apiUrl;
-  private currentUser: User =
-      {email: '', fullName: '',
-      phoneNumber: '', roles: '', id: '', password: '',
-      newCoach: false};
-
+  private currentUser: User = new User();
+  currentUserSubject = new BehaviorSubject<User>(new User());
+  currentUser$: Observable<UserI> = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
 
   }
 
-  registerUser(userData: User): Observable<User> {
+  registerUser(userData: User): Observable<UserI> {
     return this.http.post<any>(`${this.baseUrl}/users/create`, userData).pipe(
       switchMap(() => {
         if (userData.email !== null && userData.password !== null) {
@@ -34,7 +32,7 @@ export class AuthService {
     );
   }
 
-  loginUser(email: string, password: string): Observable<User> {
+  loginUser(email: string, password: string): Observable<UserI> {
     return this.http.post<any>(`${this.baseUrl}/login`, {email, password}).pipe(
       map(response => {
         if (response && response.token) {
@@ -49,8 +47,8 @@ export class AuthService {
     );
   }
 
-  fetchCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/me`).pipe(
+  fetchCurrentUser(): Observable<UserI> {
+    return this.http.get<UserI>(`${this.baseUrl}/me`).pipe(
       map(response => {
         this.currentUser = response;
         return this.currentUser;
@@ -64,14 +62,17 @@ export class AuthService {
     );
   }
 
-  getCurrentUser(): User{
+
+  getCurrentUser(): Observable<UserI>{
     if(!this.currentUser.id){
       this.fetchCurrentUser().pipe(map(response => {
-        this.currentUser = response;
-        return this.currentUser;
+        this.currentUserSubject.next(response);
+
+        return this.currentUser$;
       }));
     }
-    return this.currentUser;
+    console.log("nu sunt prezent")
+    return this.currentUser$;
   }
 
   logout(): Observable<any> {

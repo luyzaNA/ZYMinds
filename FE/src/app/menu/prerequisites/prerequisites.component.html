@@ -1,0 +1,51 @@
+<form (ngSubmit)="  setPrerequisitesSet()"  [hidden]="!isClient && !prerequisites.id"  #prerequisitesForm="ngForm">
+  <div class="form-group">
+    <label for="age">Varsta:</label>
+    <input type="number" class="form-control"    [disabled]="!isClient" id="age" name="age" [(ngModel)]="prerequisites.age" required>
+  </div>
+  <div class="form-group">
+    <label for="weight">Masa:</label>
+    <input type="number" class="form-control"  [disabled]="!isClient" id="weight" name="weight" [(ngModel)]="prerequisites.weight" required>
+  </div>
+  <div class="form-group">
+    <label for="height">Inaltime in cm:</label>
+    <input type="number" class="form-control"   [disabled]="!isClient" id="height" name="height" [(ngModel)]="prerequisites.height" required>
+  </div>
+  <div class="form-group">
+    <label for="gender">Gen:</label>
+    <select class="form-control" id="gender"    [disabled]="!isClient" name="gender" [(ngModel)]="prerequisites.gender" required>
+      <option value="female">Femeie</option>
+      <option value="male">Barbat</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="intolerance">Intolerante:</label>
+    <input type="text" class="form-control"    [disabled]="!isClient" id="intolerance" name="intolerance" [(ngModel)]="prerequisites.intolerances" required>
+  </div>
+  <div class="form-group">
+    <label for="target">Target:</label>
+    <select class="form-control" id="target"  [disabled]="!isClient" name="target" [(ngModel)]="prerequisites.target" required>
+      <option value="LOSE WEIGHT">Pierde greutate</option>
+      <option value="GAIN WEIGHT">Castiga masa musculara</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="activityLevel">Nivel de activitate:</label>
+    <select class="form-control" id="activityLevel"   [disabled]="!isClient" name="activityLevel" [(ngModel)]="prerequisites.activityLevel" required>
+      <option value="1.2">Sedentara</option>
+      <option value="1.375">Usoara(1-3 zile pe saptamana)</option>
+      <option value="1.55">Modearata(3-5 zile pe saptamana)</option>
+      <option value="1.725">Intensa(6-7 zile pe saptamana)</option>
+    </select>
+  </div>
+  <div *ngIf="prerequisitesLoaded ===true && isClient">
+    <button type="submit" class="btn btn-primary">Update</button>
+  </div>
+  <div *ngIf="prerequisitesLoaded ===false && isClient">
+    <button type="submit" class="btn btn-primary">Create</button>
+  </div>
+</form>
+<div *ngIf="!prerequisites.id && !isClient">
+  <img src="../../../assets/notFound.jpeg">
+</div>
+

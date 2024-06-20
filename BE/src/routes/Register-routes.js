@@ -14,7 +14,7 @@ import AWS from "../db/aws-config.js";
 import File from "../models/File.js";
 import fs from "fs"
 import * as path from "node:path";
-import { v4 as uuiv4 } from 'uuid';
+import {v4 as uuiv4} from 'uuid';
 
 const userRouter = express.Router();
 
@@ -71,8 +71,7 @@ userRouter.post("/users/create", [
 
             const s3 = new AWS.S3();
 
-            if(typeof __dirname==="undefined")
-            {
+            if (typeof __dirname === "undefined") {
                 global.__dirname = path.resolve();
             }
 
@@ -120,7 +119,6 @@ userRouter.post("/users/create", [
 
                     res.status(201).send(newUser);
                 })
-
 
 
             // res.status(201).send({token: userJwt});
@@ -206,5 +204,20 @@ userRouter.delete('/users/:id', async (req, res) => {
     }
 });
 
+userRouter.get('/users/search/:email', async (req, res) => {
+    try {
+        const email = req.params.email;
+        const users = await User.find({
+            email: new RegExp(email, 'i'),
+            roles: { $ne: 'ADMIN' }
+        });
+        if (!users || users.length === 0) {
+            return res.status(404).json({message: `No users found with that email`});
+        }
+        return res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
 
 export default userRouter;

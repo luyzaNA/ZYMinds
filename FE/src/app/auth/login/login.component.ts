@@ -38,15 +38,4 @@ export class LoginComponent {
       }
     );
   }
-
-  logout(): void {
-    this.authService.logout().subscribe(
-      () => {
-        this.router.navigate(['register']);
-      },
-      error => {
-        console.error('Logout failed:', error);
-      }
-    );
-  }
 }
