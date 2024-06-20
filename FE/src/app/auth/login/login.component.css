@@ -53,3 +53,58 @@ button{
   height: auto;
   padding: 2px 2px;
 }
+#login-page{
+  margin-top:100px;
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 50px 50px
+}
+
+app-eye-tracking{
+  align-content: center;
+  padding-left: 150px;
+}
+
+#form-animated{
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  width: 500px;
+}
+
+#welcome-back{
+  width: 300px;
+  height: auto;
+  margin-top: 170px;
+}
+input{
+  width: 400px;
+  height: 30px;
+}
+
+#buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+}
+
+button#login-b {
+  margin: 8px;
+  width: 150px;
+  height: 40px;
+  padding: 2px 2px;
+}
+
+button#login-b:hover {
+  box-shadow: 1px 2px 4px #4C34E2;
+}
+
+button{
+  margin: 8px;
+  width: 100px;
+  height: auto;
+  padding: 2px 2px;
+}

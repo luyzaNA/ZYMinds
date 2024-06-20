@@ -1,9 +1,9 @@
 <div class="container">
   <div class="row">
-    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+    <div *ngIf="user.id">
       <form>
         <div ngModelGroup="userData">
-          <div class="form-group" class="input-container">
+          <div class="input-container">
             <input type="email"
                    ngModel
                    name="email"
@@ -12,7 +12,7 @@
                    [(ngModel)]="user.email"
                    placeholder="Email">
           </div>
-          <div class="form-group" class="input-container">
+          <div class="input-container">
             <input type="text"
                    ngModel
                    name="fullName"
@@ -20,7 +20,7 @@
                    placeholder="Full name"
                    [(ngModel)]="user.fullName">
           </div>
-          <div class="form-group" class="input-container">
+          <div class="input-container">
             <input type="text"
                    ngModel
                    name="phoneNumber"
@@ -28,77 +28,79 @@
                    [(ngModel)]="user.phoneNumber"
                    placeholder="Phone number">
           </div>
-          <div class="form-group" class="input-container" *ngIf="awsLinks.length > 0">
+          <div class="input-container" *ngIf="awsLinks.length > 0">
             <label>Role</label>
-            <select class="form-control" name="coach" required  [(ngModel)]="user.roles">
-              <option>CLIENT</option>
-              <option>COACH</option>
+            <select class="form-control" name="coach" required [(ngModel)]="user.roles">
+              <option value="CLIENT">{{'Client' | translate}}</option>
+              <option value="COACH">{{'Coach' | translate}}</option>
             </select>
           </div>
 
         </div>
-        <button type="submit" (click)="updateRecords()">Update</button>
+        <button type="submit" (click)="updateRecords()">{{'Update' | translate}}</button>
       </form>
-      <div *ngFor="let link of awsLinks">
-        <p>Link AWS: <a [href]="link">{{ link }}</a></p>
+      <div *ngIf="awsLinks.length>0" class="documents-container">
+        <h3>{{'Documents' | translate}}:</h3>
+        <div *ngFor="let link of awsLinks">
+          <h4 style="margin-left: 20px">{{'File' | translate}}: <a [href]="link">{{ link }}</a></h4>
+        </div>
       </div>
-
     </div>
   </div>
 </div>
+<div class="users-container">
+  <h2>{{'New Users' | translate}}</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>{{'Email' | translate}}</th>
+      <th>{{'Full Name' | translate}}</th>
+      <th>{{'Phone Number' | translate}}</th>
+      <th>{{'Status' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of newPossibleCoaches; let i=index">
+      <td>{{ user.email }}</td>
+      <td>{{ user.fullName| uppercase }}</td>
+      <td>{{ user.phoneNumber }}</td>
+      <td>{{ user.newCoach ? "new" : "old" }}</td>
+      <td>
 
-<h2>New Users</h2>
-<table class="table">
-  <thead>
-  <tr>
-    <th>Email</th>
-    <th>Full Name</th>
-    <th>Phone number</th>
-    <th>Status</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let user of newPossibleCoaches; let i=index">
-    <td>{{user.email}}</td>
-    <td>{{user.fullName| uppercase}}</td>
-    <td>{{user.phoneNumber}}</td>
-    <td>{{user.newCoach ? "new" : "old" }}</td>
-    <td>
+        <button type="button" (click)="setUser(user)">Edit</button>
+        <button type="button" (click)="setDelete(user.id)">Delete</button>
+      </td>
+    </tr>
 
-      <button type="button" (click)="setUser(user)">Edit</button>
-      <button type="button" (click)="setDelete(user.id)">Delete</button>
-    </td>
-  </tr>
+    </tbody>
+  </table>
+</div>
 
-  </tbody>
-</table>
+<div class="users-container">
+  <h2>{{'Users' | translate}}</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>{{'Email' | translate}}</th>
+      <th>{{'Full Name' | translate}}</th>
+      <th>{{'Phone Number' | translate}}</th>
+      <th>{{'Role' | translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users; let i=index">
+      <td>{{ user.email }}</td>
+      <td>{{ user.fullName| uppercase }}</td>
+      <td>{{ user.phoneNumber }}</td>
+      <td>{{ user.roles }}</td>
+      <td>
+        <button class="button-s" style="margin-right: 10px" type="button" (click)="setUser(user)">{{'Edit' | translate}}</button>
+        <button style="color: white" class="" type="button" (click)="setDelete(user.id)">{{'Delete' | translate}}</button>
+      </td>
+    </tr>
 
-<hr>
-<hr>
-<h2>Users</h2>
-<table class="table">
-  <thead>
-  <tr>
-    <th>Email</th>
-    <th>Full Name</th>
-    <th>Phone number</th>
-    <th>Roles</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let user of users; let i=index">
-    <td>{{user.email}}</td>
-    <td>{{user.fullName| uppercase}}</td>
-    <td>{{user.phoneNumber}}</td>
-    <td>{{user.roles}}</td>
-    <td>
-
-      <button type="button" (click)="setUser(user)">Edit</button>
-      <button type="button" (click)="setDelete(user.id)">Delete</button>
-    </td>
-  </tr>
-
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
 
 

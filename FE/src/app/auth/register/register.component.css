@@ -101,3 +101,106 @@ form .form-group select:focus {
   align-items: center;
   margin-top: 20px;
 }
+#register-page {
+  margin-top: 100px;
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 50px 50px;
+}
+
+app-eye-tracking {
+  align-content: center;
+  padding-left: 150px;
+}
+
+#form-animated {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+}
+
+#welcome-back {
+  width: 300px;
+  height: auto;
+  margin-top: 170px;
+}
+
+input {
+  width: 600px; /* Increased width */
+  height: 40px;
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  font-size: 16px;
+  transition: border-bottom 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid #4C34E2;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.error.hide {
+  display: none;
+}
+
+form .form-group {
+  margin-bottom: 15px;
+}
+
+button#signup-b {
+  margin: 8px;
+  width: 150px;
+  height: 40px;
+  padding: 2px 2px;
+}
+
+button#signup-b:hover {
+ box-shadow: 1px 2px 4px #4C34E2;
+}
+
+button {
+  margin: 8px;
+  width: 100px;
+  height: auto;
+  padding: 2px 2px;
+}
+
+form .form-group input,
+form .form-group select {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  border-radius: 0;
+  font-size: 16px;
+  transition: border-bottom 0.3s;
+}
+
+form .form-group input:focus,
+form .form-group select:focus {
+  outline: none;
+  border-bottom: 2px solid #4C34E2;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
