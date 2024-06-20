@@ -14,7 +14,9 @@ export class RoleGuard implements CanActivate {
 
   getUserRole(): Observable<string | null> {
     return this.authService.fetchCurrentUser().pipe(
-      map(currentUser => currentUser ? currentUser.roles : null),
+      map(currentUser => {
+        this.authService.currentUserSubject.next(currentUser);
+        return currentUser ? currentUser.roles : null}),
       catchError(error => {
         console.error('Error fetching user:', error);
         return of(null);

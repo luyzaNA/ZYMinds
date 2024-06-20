@@ -11,11 +11,11 @@ import {User} from "../../shared/User/UserI";
   styleUrls: ['./coach-card.component.css']
 })
 export class CoachCardComponent {
-  currentUser:User = new User();
+  currentUser: User = new User();
   showApplyBox = false;
-  messageToCoach ='';
+  messageToCoach = '';
   isTextareaVisible: boolean = false;
-  isApplyButtonVisible: boolean= true
+  isApplyButtonVisible: boolean = true
 
   @Input() userProfileInformation!: ProfileInformation;
   @Input() applied: boolean = false;
@@ -23,12 +23,23 @@ export class CoachCardComponent {
   constructor(private clientService: LinkService,
               protected authService: AuthService,
               private router: Router) {
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+      if (this.currentUser.roles !== 'CLIENT') {
+        this.isApplyButtonVisible = false;
+      }
+    });
   }
 
   openForm(): void {
-    this.isTextareaVisible = true;
-    this.isApplyButtonVisible = false;
+    if (!this.currentUser.id) {
+      this.router.navigate(['../', 'login']);
+    } else if (this.currentUser.roles !== 'CLIENT') {
+      alert("TREBUIE SA AI ROL DE CLIENT PT A PUTEA APLICA")
+    } else {
+      this.isTextareaVisible = true;
+      this.isApplyButtonVisible = false;
+    }
   }
 
   closeForm(): void {

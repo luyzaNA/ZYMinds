@@ -24,7 +24,8 @@ export class EditProfileComponent {
     description: '',
     price: 0,
     rating: 0,
-    userId: ''
+    userId: '',
+    awsLink: ''
   };
 
   profileInformation: ProfileInformation = new ProfileInformation();
@@ -35,8 +36,18 @@ export class EditProfileComponent {
     private fileService: FileUploadService
   ) {
     // Get current user
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+      console.log(this.currentUser)
+      console.log(this.currentUser.roles)
+      console.log(this.currentUser.id)
+      this.profileInformation.userId = this.currentUser.id;
+      this.profileInformation.fullName = this.currentUser.fullName;
+      this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
 
+      // Fetch profile data
+    });
+console.log("IN EDIT",this.currentUser)
     this.profileInformation.userId = this.currentUser.id;
     this.profileInformation.fullName = this.currentUser.fullName;
     this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
@@ -47,6 +58,8 @@ export class EditProfileComponent {
         this.profileInformation.age = profile.age;
         this.profileInformation.price = profile.price;
         this.profileInformation.rating = profile.rating;
+        this.profileInformation.awsLink = profile.awsLink;
+        console.log("IN EFDIT PROFILE LINK UL ", this.profileInformation.age)
         console.log("descrierea", this.profileInformation.description)
 
         this.profile._id = profile._id;

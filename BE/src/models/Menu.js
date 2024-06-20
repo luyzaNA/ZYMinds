@@ -12,8 +12,13 @@ const MenuSchema = new mongoose.Schema({
     meals: {
         type: [Object],
         required: true
-    }
-}, {collection: 'menus'}, {
+    },
+    status: {
+        type: String,
+        required: true
+    },
+}, {
+    collection: 'menus',
     toJSON: {
         transform: (doc, ret) => {
             ret.id = ret._id;
@@ -21,5 +26,8 @@ const MenuSchema = new mongoose.Schema({
             delete ret.__v;
         }
     }
-})
+});
 
+const Menu = mongoose.model('Menu', MenuSchema);
+
+export default Menu;

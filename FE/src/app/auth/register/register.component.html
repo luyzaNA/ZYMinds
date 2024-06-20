@@ -1,79 +1,95 @@
-
-<div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-            <form #singUpForm="ngForm" (ngSubmit)="onSubmit()" >
-                <div ngModelGroup="userData">
-                  <div class="form-group" class="input-container">
-                    <input type="email"
-                           ngModel
-                           name="email"
-                           required
-                           email
-                           #emailInput="ngModel"
-                           placeholder="Email">
-                  </div>
-                  <div class="error" [class.hide]="emailInput.untouched || emailInput.valid">
-                    Email is required!
-                  </div>
-                  <div class="form-group" class="input-container">
-                    <input type="text"
-                           ngModel
-                           name="fullName"
-                           required
-                           #fullNameInput="ngModel"
-                           placeholder="Full name"
-                           pattern="[A-Za-z\s]{1,50}">
-                    </div>
-                  <div class="error" [class.hide]="fullNameInput.untouched || fullNameInput.valid">
-                    Full name is required!
-                  </div>
-                 <div class="form-group" class="input-container">
-                  <input type="text"
-                         ngModel
-                         name="phoneNumber"
-                         required
-                         #phoneNumberInput="ngModel"
-                         placeholder="Phone number"
-                         pattern="[0-9]{10}">
-                </div>
-              <div class="error" [class.hide]="phoneNumberInput.untouched || phoneNumberInput.valid">
-                Phone number is required!
+<router-outlet></router-outlet>
+<div id="register-page">
+  <img src="../../../assets/welcome.png" id="welcome-back">
+  <div class="content-register">
+    <div id="form-animated">
+      <app-eye-tracking [isPassword]="isPasswordFocused"></app-eye-tracking>
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+          <form #signUpForm="ngForm" (ngSubmit)="onSubmit()">
+            <div ngModelGroup="userData">
+              <div class="form-group input-container">
+                <input type="email"
+                       ngModel
+                       name="email"
+                       required
+                       email
+                       #emailInput="ngModel"
+                       [placeholder]="'Email' | translate"
+                       (focus)="onFocus(false)"
+                       (blur)="onBlur()">
               </div>
-                  <div class="form-group" class="input-container">
-                    <input type="password"
-                           ngModel
-                           name="password"
-                           required
-                           #passwordInput="ngModel"
-                           placeholder="Passsword"
-                           autocomplete="current-password"
-                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
-                  </div>
-                  <div class="error" [class.hide]="passwordInput.untouched || passwordInput.valid">
-                    <strong>Please follow the next requirements:</strong>
-                    <ul>
-                      <li>At least 8 characters</li>
-                      <li>At least one uppercase letter</li>
-                      <li>At least one lowercase letter</li>
-                      <li>At least one number</li>
-                      <li>At least one special character (@$!%*?&)</li>
-                    </ul>
-                  </div>
-                  <div class="form-group" class="input-container">
-                    <label>Are you a coach?</label>
-                        <select class="form-control" name="coach" [(ngModel)]="selectedRole" required>
-                            <option [ngValue]="true">Yes</option>
-                            <option [ngValue]="false">No</option>
-                        </select>
-                    </div>
-                    <div class="form-group" class="input-container" *ngIf="selectedRole">
-                           <app-file-uploader (filesChange)="filesUp($event)" [uploadMultipleFiles]="true"></app-file-uploader>
-                    </div>
-                </div>
-          <button type="submit" [disabled]="!singUpForm.valid">Register</button>
-              <a class="align-self-center" routerLink="../login">Already have an account? Log in</a>
-            </form>
+              <div class="error" [class.hide]="emailInput.untouched || emailInput.valid">
+                {{'Email is required!' | translate}}
+              </div>
+              <div class="form-group input-container">
+                <input type="text"
+                       ngModel
+                       name="fullName"
+                       required
+                       #fullNameInput="ngModel"
+                       [placeholder]="'Full Name' | translate"
+                       pattern="[A-Za-z\s]{1,50}"
+                       (focus)="onFocus(false)"
+                       (blur)="onBlur()">
+              </div>
+              <div class="error" [class.hide]="fullNameInput.untouched || fullNameInput.valid">
+                {{'Full name is required!' | translate}}
+              </div>
+              <div class="form-group input-container">
+                <input type="text"
+                       ngModel
+                       name="phoneNumber"
+                       required
+                       #phoneNumberInput="ngModel"
+                       [placeholder]="'Phone number' | translate"
+                       pattern="[0-9]{10}"
+                       (focus)="onFocus(false)"
+                       (blur)="onBlur()">
+              </div>
+              <div class="error" [class.hide]="phoneNumberInput.untouched || phoneNumberInput.valid">
+                {{'Phone number is required!' | translate}}
+              </div>
+              <div class="form-group input-container">
+                <input type="password"
+                       ngModel
+                       name="password"
+                       required
+                       #passwordInput="ngModel"
+                       [placeholder]="'Password' | translate"
+                       autocomplete="current-password"
+                       (focus)="onFocus(true)"
+                       (blur)="onBlur()"
+                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+              </div>
+              <div class="error" [class.hide]="passwordInput.untouched || passwordInput.valid">
+                <strong>{{'Please follow the next requirements' | translate}}:</strong>
+                <ul>
+                  <li>{{'At least 8 characters' | translate}}</li>
+                  <li>{{'At least one uppercase letter' | translate}}</li>
+                  <li>{{'At least one lowercase letter' | translate}}</li>
+                  <li>{{'At least one number' | translate}}</li>
+                  <li>{{'At least one special character' | translate}} (@$!%*?&)</li>
+                </ul>
+              </div>
+              <div class="form-group input-container">
+                <label>{{'Are you a coach?' | translate}}</label>
+                <select class="form-control" name="coach" [(ngModel)]="selectedRole" required>
+                  <option [ngValue]="true">{{'Yes' | translate}}</option>
+                  <option [ngValue]="false">{{'No' | translate}}</option>
+                </select>
+              </div>
+              <div class="form-group input-container" *ngIf="selectedRole">
+                <app-file-uploader (filesChange)="filesUp($event)" [uploadMultipleFiles]="true"></app-file-uploader>
+              </div>
+            </div>
+            <div id="buttons">
+              <button type="submit" [disabled]="!signUpForm.valid" id="signup-b">{{'Sign up' | translate}}</button>
+              <span style="margin-top: 10px;">{{'Already have an account?' | translate}} <a routerLink="../login" id="login-link">{{'Sign in here' | translate}}</a></span>
+            </div>
+          </form>
+        </div>
       </div>
-</div>
+    </div>
+  </div>
 </div>

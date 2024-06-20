@@ -47,7 +47,9 @@ export class ConversationComponent {
               private conversationService: ConversationService,
               private auth: AuthService) {
 
-    this.currentUser = this.auth.getCurrentUser();
+    this.auth.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+    });
     this.getAllConversations();
   }
 
@@ -101,13 +103,13 @@ export class ConversationComponent {
 //se trimit mesajele
   sendMessages(message: string) {
     this.viewInput = false;
-    console.log("HEEEI",this.conversationId);
+    console.log("HEEEI", this.conversationId);
     this.conversationService.sendMessage(this.conversationId, message).subscribe((conversations: ConversationI) => {
         this.getMessages(this.selectedUserEmail);
         this.getAllConversations();
       },
       error => console.log(error));
-    this.messageText=''
+    this.messageText = ''
 
   }
 
@@ -118,8 +120,8 @@ export class ConversationComponent {
   startConversation(firstMessage: string) {
     if (firstMessage.trim().length > 0) {
       this.conversationService.initializeConversation(this.selectedUserEmail, firstMessage).subscribe((conversations: ConversationI) => {
-        this.viewInput=false;
-        this.getMessages(this.selectedUserEmail);
+          this.viewInput = false;
+          this.getMessages(this.selectedUserEmail);
           this.getAllConversations()
         },
         error => console.log(error));

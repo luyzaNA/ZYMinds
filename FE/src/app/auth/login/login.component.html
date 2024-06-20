@@ -1,49 +1,54 @@
 <router-outlet></router-outlet>
-<app-navigation-bar></app-navigation-bar>
 <div id="login-page">
-<img src="../../../assets/welcome-back.png" id="welcome-back">
+  <img src="../../../assets/welcome-back.png" id="welcome-back">
   <div class="content-login">
     <div id="form-animated">
-  <app-eye-tracking [isPassword]="isPasswordFocused"></app-eye-tracking>
-   <div class="row">
-    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-      <form #singUpForm="ngForm" (ngSubmit)="login(emailInput.value, passwordInput.value)">
-        <div class="form-group" class="input-container">
-          <input type="email"
-                 ngModel
-                 name="email"
-                 required
-                 email
-                 #emailInput="ngModel"
-                 placeholder="Email"
-                 (focus)="onFocus(false)"
-                 (blur)="onBlur()">
+      <app-eye-tracking [isPassword]="isPasswordFocused"></app-eye-tracking>
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+          <form #singUpForm="ngForm" (ngSubmit)="login(emailInput.value, passwordInput.value)" style="width: 100%; max-width: 500px; margin: 0 auto;">
+            <div class="form-group" class="input-container">
+              <input type="email"
+                     ngModel
+                     name="email"
+                     required
+                     email
+                     #emailInput="ngModel"
+                     placeholder="Email"
+                     (focus)="onFocus(false)"
+                     (blur)="onBlur()">
+            </div>
+            <div class="error" [class.hide]="emailInput.untouched || emailInput.valid">
+              Email is required!
+            </div>
+            <div class="form-group" class="input-container">
+              <input type="password"
+                     ngModel
+                     name="password"
+                     required
+                     #passwordInput="ngModel"
+                     placeholder="Password"
+                     (focus)="onFocus(true)"
+                     (blur)="onBlur()"
+                     pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+            </div>
+            <div class="error" [class.hide]="passwordInput.untouched || passwordInput.valid">
+              <strong>Please follow the next requirements:</strong>
+              <ul>
+                <li>At least 8 characters</li>
+                <li>At least one uppercase letter</li>
+                <li>At least one lowercase letter</li>
+                <li>At least one number</li>
+                <li>At least one special character (@$!%*?&)</li>
+              </ul>
+            </div>
+            <div id="buttons" style="display: flex; flex-direction: column; align-items: center;">
+              <button type="submit" [disabled]="!singUpForm.valid" id="login-b">Login</button>
+              <span style="margin-top: 10px;">Don't have an account? <a routerLink="../register" id="register-link">Register here</a></span>
+            </div>
+          </form>
         </div>
-        <div class="error" [class.hide]="emailInput.untouched || emailInput.valid">
-          Email is required!
-        </div>
-        <div class="form-group" class="input-container">
-          <input type="password"
-                 ngModel
-                 name="password"
-                 required
-                 #passwordInput="ngModel"
-                 placeholder="Password"
-                 (focus)="onFocus(true)"
-                 (blur)="onBlur()">
-        </div>
-        <div class="error" [class.hide]="passwordInput.untouched || passwordInput.valid">
-          Password is required!
-        </div>
-        <div id="buttons">
-        <button type="submit" [disabled]="!singUpForm.valid" id="login-b">Login</button>
-        <button routerLink="../first-page" type="button" class="button-s">Logout</button>
-        <button routerLink="../register" type="button" class="button-s">Register</button>
-        </div>
-      </form>
+      </div>
     </div>
-
-   </div>
   </div>
-</div>
 </div>

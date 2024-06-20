@@ -48,12 +48,12 @@ userRouter.post("/users/create", [
                 throw new BadRequestError("User already exists");
             }
 
-            const hashedPassword = await Password.toHash(req.body.password);
+            const hashedPassword = await Password.toHash(password);
 
             const newUser = new User({
-                email: req.body.email,
-                fullName: req.body.fullName,
-                phoneNumber: req.body.phoneNumber,
+                email: email,
+                fullName: fullName,
+                phoneNumber: phoneNumber,
                 password: hashedPassword,
                 roles: new RoleAuhorization('CLIENT').category,
                 newCoach: false
@@ -120,8 +120,6 @@ userRouter.post("/users/create", [
                     res.status(201).send(newUser);
                 })
 
-
-            // res.status(201).send({token: userJwt});
         } catch (error) {
             res.status(400).json({message: error.message});
         }
@@ -182,7 +180,7 @@ userRouter.put('/users/:id', currentUser, requireAuth, async (req, res) => {
             fullName: updateUser.fullName,
             phoneNumber: updateUser.phoneNumber,
             roles: updateUser.roles,
-        }, "g2Trf%LPZ9CqQsRb&D@J$u*p8@X#yE7H");
+        }, process.env.JWT_SECRET);
 
         return res.status(200).json({updateUser, token: userJwt});
     } catch (error) {
@@ -207,7 +205,10 @@ userRouter.delete('/users/:id', async (req, res) => {
 userRouter.get('/users/search/:email', async (req, res) => {
     try {
         const email = req.params.email;
-        const users = await User.find({email: new RegExp(email, 'i')});
+        const users = await User.find({
+            email: new RegExp(email, 'i'),
+            roles: { $ne: 'ADMIN' }
+        });
         if (!users || users.length === 0) {
             return res.status(404).json({message: `No users found with that email`});
         }
