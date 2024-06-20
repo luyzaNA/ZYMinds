@@ -5,5 +5,10 @@
 }
 
 .coach-list-container{
-  margin-top: 150px;
+  padding-top: 15vh;
+  min-height: 100vh;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
 }

@@ -46,7 +46,6 @@ export class NavigationBarComponent implements OnInit {
     this.authService.logout().subscribe(
       () => {
         this.isLoggedIn = false;
-        alert("Delogarea s-a efectuat cu succes");
         this.router.navigate(['/first-page']);
       },
       error => {

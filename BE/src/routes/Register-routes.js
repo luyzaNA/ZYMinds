@@ -117,7 +117,7 @@ userRouter.post("/users/create", [
                         },
                         process.env.JWT_SECRET)
 
-                    res.status(201).send(newUser);
+                    res.status(201).send({id:newUser.id, token: userJwt});
                 })
 
         } catch (error) {

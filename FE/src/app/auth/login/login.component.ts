@@ -26,11 +26,11 @@ export class LoginComponent {
     this.authService.loginUser(email, password).subscribe(
       user => {
         if (user.roles === 'COACH') {
-          this.router.navigate(['/coach/dashboard']);
+          this.router.navigate(['coach/dashboard']);
         } else if (user.roles === 'CLIENT')
-          this.router.navigate(['/client/dashboard']);
+          this.router.navigate(['client/dashboard']);
         else if (user.roles === 'ADMIN')
-          this.router.navigate(['/admin/management-clients']);
+          this.router.navigate(['admin/management-clients']);
 
       },
       error => {

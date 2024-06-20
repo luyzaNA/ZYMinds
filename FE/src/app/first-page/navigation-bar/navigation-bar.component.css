@@ -1,32 +1,32 @@
 #nav-bar {
   background-color: rgba(242, 240, 255, 1);
-  padding: 20px 15px 0px 15px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   position: fixed;
   top: 0px;
   border-bottom: 1px solid rgba(76, 52, 226, 7%);
-  width: 100%;
   z-index: 10;
+  width: 100%;
+  box-shadow: 1px 2px 4px #4C34E2;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 button {
   background-color: transparent;
   color: #2C18A3;
   border: none;
-  margin-right: 40px;
   height: 50px;
+  display: flex;
+  align-items: center;
 }
 
 #menu-list {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-img {
-  margin-top: -25px;
 }
 
 .nav-auth-container{
@@ -40,7 +40,5 @@ select {
   background-color: transparent;
   color: #2C18A3;
   border: none;
-  margin-right: 40px;
   height: 50px;
 }
-

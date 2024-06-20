@@ -1,35 +1,28 @@
 <div id="nav-bar">
   <img src="../../../assets/logo.png" alt="logo-picture" id="logo">
-  <div id="menu-list">
-    <div class="button-with-icon">
-      <button routerLink="/first-page"><i class="fas fa-home"></i>{{'Home' | translate}}</button>
-    </div>
-    <div class="button-with-icon">
-      <button [routerLink]="['/first-page']" fragment="aboutUs"><i class="fa-solid fa-volume-high"></i>{{'About us' | translate}}</button>
-    </div>
-    <div class="button-with-icon">
-      <button routerLink="/coach-list"><i class="fa-solid fa-bars"></i>{{'Coach list' | translate}}</button>
-    </div>
-    <div class="button-with-icon">
-      <button [routerLink]="['/first-page']" fragment="contact"><i class="fa-solid fa-square-phone"></i>{{'Contact' | translate}}</button>
-    </div>
-    <div class="button-with-icon">
-      <select (change)="changeLanguage($event)">
-        <option value="en" [selected]="currentLanguage === 'en'">EN</option>
-        <option value="ro" [selected]="currentLanguage === 'ro'">RO</option>
-      </select>
-    </div>
-  </div>
-  <div class="nav-auth-container">
-    <div class="button-with-icon" *ngIf="isLoggedIn">
-      <button (click)="navigateToDashboard()"><i class="fas fa-dashboard"></i>{{'Dashboard' | translate}}</button>
-    </div>
-    <div class="button-with-icon" *ngIf="!isLoggedIn">
-      <button routerLink="/login" class="button-s"><i class="fa-regular fa-user"></i>{{'Sign in' | translate}}</button>
-    </div>
-    <div class="button-with-icon" *ngIf="isLoggedIn">
-      <button (click)="logOutUser()" class="button-s"><i class="fas fa-door-open"></i>{{'Sign out' | translate}}</button>
-    </div>
-  </div>
+
+  <button routerLink="/first-page"><i class="fas fa-home"></i> {{'Home' | translate}}</button>
+
+  <button [routerLink]="['/first-page']" fragment="aboutUs"><i class="fa-solid fa-volume-high"> </i> {{'About us' |
+    translate}}</button>
+
+  <button routerLink="/coach-list"><i class="fa-solid fa-bars"></i> {{'Coach list' | translate}}</button>
+
+  <button [routerLink]="['/first-page']" fragment="contact"><i class="fa-solid fa-square-phone"></i> {{'Contact' |
+    translate}}</button>
+
+  <select (change)="changeLanguage($event)">
+    <option value="en" [selected]="currentLanguage === 'en'">EN</option>
+    <option value="ro" [selected]="currentLanguage === 'ro'">RO</option>
+  </select>
+
+  <button *ngIf="isLoggedIn" (click)="navigateToDashboard()"><i class="fas fa-dashboard"></i> {{'Dashboard' |
+    translate}}</button>
+
+  <button routerLink="/login" *ngIf="!isLoggedIn" class="button-s"><i class="fa-regular fa-user"></i> {{'Sign in' |
+    translate}}</button>
+
+  <button *ngIf="isLoggedIn" (click)="logOutUser()" class="button-s"><i class="fas fa-door-open"></i> {{'Sign out' |
+    translate}}</button>
 
 </div>

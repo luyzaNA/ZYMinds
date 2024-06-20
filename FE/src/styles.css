@@ -39,12 +39,6 @@ h3 {
   font-size: 27px;
 }
 
-body {
-  background-color: rgba(242, 240, 255, 1);
-  font-family: Inter;
-  margin: 20px
-}
-
 H1 {
   font-weight: bold;
   font-size: 40px;
@@ -67,7 +61,6 @@ p {
   background-color: transparent;
   color: #2C18A3;
   border: none;
-  margin-right: 40px;
   box-shadow: 1px 2px 4px #4C34E2;
 }
 .button-s:hover {
@@ -125,16 +118,6 @@ placeholder {
   padding: 10px;
 }
 
-.button-with-icon button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button-with-icon i {
-  margin-right: 8px;
-}
-
 .dashboard-container {
   padding: 50px;
   margin-top: 150px;
@@ -173,4 +156,7 @@ placeholder {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
   padding-top: 60px;
+}
+button i{
+  margin-right: 5px;
 }
