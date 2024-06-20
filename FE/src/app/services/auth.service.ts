@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map, switchMap} from 'rxjs/operators';
+import {map, switchMap, tap} from 'rxjs/operators';
 import {environment} from "../shared/environment"
 import {BehaviorSubject, catchError, Observable, of, throwError} from "rxjs";
 import {Router} from "@angular/router";
@@ -21,16 +21,19 @@ export class AuthService {
 
   }
 
-  registerUser(userData: User): Observable<UserI> {
+  registerUser(userData: User): Observable<string> {
     return this.http.post<any>(`${this.baseUrl}/users/create`, userData).pipe(
-      switchMap(() => {
-        if (userData.email !== null && userData.password !== null) {
-          return this.loginUser(userData.email, userData.password);
+      map(response => {
+        if (response && response.token) {
+          localStorage.setItem('token', response.token);
+          return response.id;
         } else {
-          this.errorService.errorSubject.next('Email is null.');
-          throw new Error('Email is null.');
+          this.errorService.errorSubject.next(response.message || 'Authentication failed.');
         }
       }),
+      switchMap(id => this.fetchCurrentUser().pipe(map(user => {
+        return user.id;
+      }))),
       catchError(error => {
         this.errorService.errorSubject.next(error.error.message || 'Registration failed.');
         return throwError(error);
@@ -76,8 +79,8 @@ export class AuthService {
   }
 
 
-  getCurrentUser(): Observable<UserI>{
-    if(!this.currentUser.id){
+  getCurrentUser(): Observable<UserI> {
+    if (!this.currentUser.id) {
       this.fetchCurrentUser().pipe(map(response => {
         this.currentUserSubject.next(response);
         return this.currentUser$;
@@ -90,6 +93,7 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}/logout`, {}).pipe(
       map(response => {
         localStorage.removeItem('token');
+        this.currentUserSubject.next(new User());
         return response;
       }),
       catchError(error => {

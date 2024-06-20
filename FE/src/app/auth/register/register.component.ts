@@ -1,18 +1,20 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {FileUploadService} from "../../services/upload.service";
 import {FileI} from "../../shared/file";
 import {UserService} from "../../shared/User/user.service";
-import {User} from "../../shared/User/UserI";
+import {User, UserI} from "../../shared/User/UserI";
 import {Router} from "@angular/router";
+import {relative} from "@angular/compiler-cli";
+import {take} from "rxjs";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   @ViewChild('signUpForm') form!: NgForm;
 
   files!: File[];
@@ -27,13 +29,30 @@ export class RegisterComponent {
   onBlur() {
     this.isPasswordFocused = false;
   }
+
   userData: User = new User()
 
   constructor(private authService: AuthService,
               private fileService: FileUploadService,
               private userService: UserService,
               private router: Router
-              ) {
+  ) {
+  }
+
+  ngOnInit() {
+    this.authService.currentUser$.pipe(take(3)).subscribe((user: UserI) => {
+      if (user && user.roles) {
+        if (user.roles === 'COACH') {
+          this.router.navigate(['coach/dashboard']);
+        } else if (user.roles === 'CLIENT') {
+          this.router.navigate(['client/dashboard']);
+        } else if (user.roles === 'ADMIN') {
+          this.router.navigate(['admin/management-clients']);
+        }
+      }
+    }, error => {
+      console.error("Error occurred while fetching the user:", error);
+    });
   }
 
   protected filesUp(files: File[]) {
@@ -87,21 +106,11 @@ export class RegisterComponent {
 
       this.authService.registerUser(this.userData).subscribe({
         next: (response) => {
-          this.authService.getCurrentUser().subscribe(user => {
-            this.userId = user.id
-            if(user.roles === 'COACH') {
-              this.router.navigate(['/coach/dashboard']);
-            } else if (user.roles === 'CLIENT') {
-              this.router.navigate(['/client/dashboard']);
-            }
-          });
-          this.userData.id = this.userId;
-          console.log("USER ID", this.userId);
-          this.uploadFiles();
-
-
-          console.log('Răspunsul primit:', response);
-
+          if (response) {
+            this.userId = response;
+            this.userData.id = this.userId;
+            this.uploadFiles();
+          }
         },
         error: (error) => {
           console.error('Eroare la înregistrare:', error);
