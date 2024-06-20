@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
-import {CoachService} from "../../shared/Coach/coach.service";
+import {LinkService} from "../../shared/Link/link.service";
 import {Coach} from "../../shared/Coach/CoachI";
+import {Link, LinkI} from "../../shared/Link/LinkI";
+import {ActivatedRoute, Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-clients',
@@ -9,26 +11,26 @@ import {Coach} from "../../shared/Coach/CoachI";
 })
 export class ClientsComponent {
 
-  clientsApproved: Coach[] = [];
-  clientsInPending: Coach[] = [];
-  clientsRejected: Coach[] = [];
+  clientsApproved: Link[] = [];
+  clientsInPending: Link[] = [];
+  clientsRejected: Link[] = [];
 
-  constructor(private coachService: CoachService) {
+  constructor(private linkService: LinkService) {
     this.fetchClients();
   }
 
   fetchClients(): void {
-    this.coachService.getClietsByCoach().subscribe((coaches: Coach[]) => {
-      this.clientsApproved = coaches.filter(coach => coach.status === 'approved');
-      this.clientsInPending = coaches.filter(coach => coach.status === 'pending');
-      this.clientsRejected = coaches.filter(coach => coach.status === 'rejected');
+    this.linkService.getClientsByCoach().subscribe((links: LinkI[]) => {
+      this.clientsApproved = links.filter(links => links.status === 'approved');
+      this.clientsInPending = links.filter(links => links.status === 'pending');
+      this.clientsRejected = links.filter(links => links.status === 'rejected');
     });
   }
 
-  updateStatus(client: Coach): void {
-    this.coachService.updateClientStatus(client.clientId, client.status).subscribe(response => {
-      if (client.status === 'approved' || client.status === 'rejected') {
-        this.removeFromPending(client.clientId);
+  updateStatus(link: Link): void {
+    this.linkService.updateClientStatus(link.clientId, link.status).subscribe(response => {
+      if (link.status === 'approved' || link.status === 'rejected') {
+        this.removeFromPending(link.clientId);
       }
       this.fetchClients();
     }, error => {
@@ -40,7 +42,7 @@ export class ClientsComponent {
     this.clientsInPending = this.clientsInPending.filter(c => c.clientId !== clientId);
   }
 
-  editStatus(client: Coach) {
+  editStatus(client: Link) {
     this.updateStatus(client);
   }
 }

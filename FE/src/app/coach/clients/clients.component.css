@@ -1,80 +1,43 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
-  margin: 0;
-  padding: 20px;
+#application {
+  margin-top: 200px;
+  position: relative;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.coach-card-container {
+  position: relative;
 }
 
-th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #f2f2f2;
-}
-
-img {
-  width: 50px;
-  height: auto;
-  object-fit: cover;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  text-align: center;
-  color: #333;
-}
-
-.filter-container {
+.close-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
-  margin-bottom: 20px;
-}
-
-select {
-  width: 95px;
-  padding: 8px;
-  margin-right: 10px;
-  border-radius: 3px;
-}
-
-button{
-  width:  95px;
-  height: auto;
-  background-color: transparent;
-  color: #2C18A3;
-  border: none;
-  align-content: center;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
-i{
+.close-button {
+  font-size: 24px;
+  margin-right: 5px;
+  color: red;
+}
+
+.close-text {
+  font-size: 13px;
+  color: red;
+}
+
+a {
+  text-decoration: none;
+  color: #25148D;
+  font-size: 24px;
+  font-weight: bold;
   margin-right: 10px;
-}
-button:hover{
-  padding: 5px 15px;
-  height: auto;
-  border: 1px solid #2C18A3;
-  border-radius: 2px;
-}
-.clients-container{
-padding:100px;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+  &:hover {
+    color: #9187d3;
+    font-size: 30px;
+    font-weight: bold;
+  }
 }

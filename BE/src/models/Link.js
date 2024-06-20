@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ClientSchema = new mongoose.Schema({
+const LinkSchema = new mongoose.Schema({
 
     clientId:{
         type: String,
@@ -18,8 +18,16 @@ const ClientSchema = new mongoose.Schema({
         type: String,
         required: false
     }
-}, { collection: 'clients' })
+}, {collection: 'links'}, {
+    toJSON: {
+        transform: (doc, ret) => {
+            ret.id = ret._id;
+            delete ret._id;
+            delete ret.__v;
+        }
+    }
+});
 
-const Client = mongoose.model('Client', ClientSchema);
+const Link = mongoose.model('Link', LinkSchema);
 
-export default Client;
+export default Link;

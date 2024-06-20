@@ -8,6 +8,7 @@ export interface ProfileInformationI {
   userId: string;
   rating: number;
   awsLink: string;
+  id: string;
 }
 
 export class ProfileInformation implements ProfileInformation {
@@ -20,6 +21,7 @@ export class ProfileInformation implements ProfileInformation {
   userId: string;
   rating: number;
   awsLink: string;
+  id: string;
 
   constructor() {
     this.email = '';
@@ -31,6 +33,7 @@ export class ProfileInformation implements ProfileInformation {
     this.userId = '';
     this.rating = 0;
     this.awsLink = '';
+    this.id = '';
   }
 }
 

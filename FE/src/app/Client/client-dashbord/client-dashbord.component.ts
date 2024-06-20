@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {ClientService} from "../../shared/Client/client.service";
+import {LinkService} from "../../shared/Link/link.service";
 import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-client-dashbord',
@@ -9,24 +10,27 @@ import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInforma
 })
 export class ClientDashbordComponent {
 
-  statusRequest :string ='pending'
-  connection:boolean =false;
+  statusRequest: string = 'pending'
+  connection: boolean = false;
   profileInformation = new ProfileInformation();
-  constructor(private clientService: ClientService) {
+
+  constructor(private linkService: LinkService,
+              private router: Router) {
     this.getConnection()
   }
 
   getConnection(): void {
-    this.clientService.getClientConnection().subscribe(
+    this.linkService.getClientConnection().subscribe(
       (profileInfo) => {
-        this.connection=true;
+        this.connection = true;
         this.statusRequest = profileInfo.statusApplication;
-        this.profileInformation.age=profileInfo.age;
-        this.profileInformation.description=profileInfo.description;
-        this.profileInformation.rating=profileInfo.rating;
-        this.profileInformation.price=profileInfo.price;
-        this.profileInformation.awsLink=profileInfo.awsLink;
-        this.profileInformation.fullName=profileInfo.fullName;
+        this.profileInformation.age = profileInfo.age;
+        this.profileInformation.description = profileInfo.description;
+        this.profileInformation.rating = profileInfo.rating;
+        this.profileInformation.price = profileInfo.price;
+        this.profileInformation.awsLink = profileInfo.awsLink;
+        this.profileInformation.fullName = profileInfo.fullName;
+        this.profileInformation.id = profileInfo.id;
       },
       (error) => {
         console.error('Eroare la crearea conexiunii:', error);
@@ -34,12 +38,12 @@ export class ClientDashbordComponent {
     );
   }
 
-  revokeConnection(){
+  revokeConnection() {
     console.log(this.statusRequest)
-    if(this.statusRequest==='pending'){
-      this.clientService.deleteConnection().subscribe(
+    if (this.statusRequest === 'pending') {
+      this.linkService.deleteConnection().subscribe(
         (response) => {
-          this.connection=false
+          this.connection = false
           alert("Cererrea de conectare a fost incheieta cu succes");
         },
         (error) => {
@@ -48,7 +52,9 @@ export class ClientDashbordComponent {
       );
     }
   }
-  hideCard(){
-    alert("Eroare la crearea conexiun")
+
+  navigateToDetails(): void {
+    console.log(this.profileInformation.id)
+    this.router.navigate([`/client/menus/${this.profileInformation.id}`]);
   }
 }
