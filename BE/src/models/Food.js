@@ -7,7 +7,6 @@ const FoodSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        // enum: ['simple', 'compound'],
         request: true
     },
     mealType: [{
