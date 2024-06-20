@@ -1,17 +1,17 @@
 <div class="clients-container">
 <div class="container">
-  <h1>Client Details</h1>
-  <h2>In pending</h2>
+  <h1>{{'Client Details' | translate}}</h1>
+  <h2>{{'In pending' | translate}}</h2>
   <table>
     <thead>
     <tr>
-      <th>Profile Picture</th>
-      <th>Full Name</th>
-      <th>Email</th>
-      <th>Phone Number</th>
-      <th>Message</th>
-      <th>Status</th>
-      <th>Edit Status</th>
+      <th>{{'Profile Picture' | translate}}</th>
+      <th>{{'Full Name' | translate}}</th>
+      <th>{{'Email' | translate}}</th>
+      <th>{{'Phone Number' | translate}}</th>
+      <th>{{'Message' | translate}}</th>
+      <th>{{'Status' | translate}}</th>
+      <th>{{'Edit Status' | translate}}</th>
     </tr>
     </thead>
     <tbody>
@@ -23,14 +23,14 @@
       <td>{{ client.message }}</td>
       <td>
         <select [(ngModel)]="client.status">
-          <option value="pending">Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
+          <option value="pending">{{'Pending' | translate}}</option>
+          <option value="approved">{{'Approved' | translate}}</option>
+          <option value="rejected">{{'Rejected' | translate}}</option>
         </select>
       </td>
       <td>
         <button class="btn-save" (click)="editStatus(client)">
-          <i class="fas fa-save"></i> Save
+          <i class="fas fa-save"></i> {{'Save' | translate}}
         </button>
       </td>
     </tr>
@@ -39,17 +39,16 @@
 </div>
 
 <div class="container">
-  <h2>Approved</h2>
+  <h2>{{'Approved' | translate}}</h2>
   <table>
     <thead>
     <tr>
-      <th>Profile Picture</th>
-      <th>Full Name</th>
-      <th>Email</th>
-      <th>Phone Number</th>
-      <th>Message</th>
-      <th>Status</th>
-      <th>Edit Status</th>
+      <th>{{'Profile Picture' | translate}}</th>
+      <th>{{'Full Name' | translate}}</th>
+      <th>{{'Email' | translate}}</th>
+      <th>{{'Phone Number' | translate}}</th>
+      <th>{{'Message' | translate}}</th>
+      <th>{{'Status' | translate}}</th>
     </tr>
     </thead>
   <tbody>
@@ -60,7 +59,7 @@
       <td>{{ client.email }}</td>
       <td>{{ client.phoneNumber }}</td>
       <td>{{ client.message }}</td>
-      <td [class.approved]="client.status === 'approved'">{{ client.status }}</td>
+      <td [class.approved]="client.status === 'approved'">{{ client.status.toUpperCase() }}</td>
       <td>
       </td>
     </tr>
@@ -69,16 +68,16 @@
 </table>
 </div>
 <div class="container">
-  <h2>Rejected</h2>
+  <h2>{{'Rejected' | translate}}</h2>
   <table>
     <thead>
     <tr>
-      <th>Profile Picture</th>
-      <th>Full Name</th>
-      <th>Email</th>
-      <th>Phone Number</th>
-      <th>Message</th>
-      <th>Status</th>
+      <th>{{'Profile Picture' | translate}}</th>
+      <th>{{'Full Name' | translate}}</th>
+      <th>{{'Email' | translate}}</th>
+      <th>{{'Phone Number' | translate}}</th>
+      <th>{{'Message' | translate}}</th>
+      <th>{{'Status' | translate}}</th>
     </tr>
     </thead>
     <tbody>
@@ -89,7 +88,7 @@
         <td>{{ client.email }}</td>
         <td>{{ client.phoneNumber }}</td>
         <td>{{ client.message }}</td>
-        <td [class.approved]="client.status === 'rejected'">{{ client.status }}</td>
+        <td [class.rejected]="client.status === 'rejected'">{{ client.status.toUpperCase() }}</td>
       </tr>
     </ng-container>
     </tbody>
