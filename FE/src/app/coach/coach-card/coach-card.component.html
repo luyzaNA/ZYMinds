@@ -3,7 +3,7 @@
     <img [src]="userProfileInformation.awsLink" alt="Image Preview">
     <div id="smt">
       <div id="title">
-        <h4>{{ userProfileInformation.fullName |  uppercase }} - {{ userProfileInformation.age }} ANI</h4>
+        <h4>{{ userProfileInformation.fullName |  uppercase }} - {{ userProfileInformation.age }} {{'Years old' | translate}}</h4>
       </div>
       <div id="description">
         <p>{{ userProfileInformation.description }}</p>
@@ -14,11 +14,11 @@
       </div>
     </div>
     <div *ngIf="!applied">
-      <button *ngIf="isApplyButtonVisible" type="button" (click)="openForm()" id="apply">Apply</button>
+      <button *ngIf="isApplyButtonVisible" type="button" (click)="openForm()" id="apply">{{'Apply' | translate}}</button>
       <div *ngIf="isTextareaVisible" id="messageToCoah" class="apply-box">
-        <textarea [(ngModel)]="messageToCoach" placeholder="Enter your message here, if you want to"></textarea>
+        <textarea [(ngModel)]="messageToCoach" [placeholder]="'Enter your message here, if you want to' | translate"></textarea>
         <div class="send-button-container">
-          <button type="button" (click)="applApplyForCoaching(userProfileInformation.userId)">Send</button>
+          <button type="button" (click)="applApplyForCoaching(userProfileInformation.userId)">{{'Send' | translate}}</button>
         </div>
         <span class="close-button" (click)="closeForm()">&times;</span>
       </div>
