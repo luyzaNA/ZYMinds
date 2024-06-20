@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { User, UserInformation } from "../../shared/user";
 import { AuthService } from "../../services/auth.service";
 import { ProfileService } from "../../services/profile.service";
-import { UserService } from "../../services/user.service";
+import { UserService } from "../../shared/User/user.service";
 import { FileI } from "../../shared/file";
 import { FileUploadService } from "../../services/upload.service";
 import { ProfileI } from "../../shared/Profile";
+import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
+import {User} from "../../shared/User/UserI";
 
 @Component({
   selector: 'app-edit-profile',
@@ -14,7 +15,7 @@ import { ProfileI } from "../../shared/Profile";
 })
 export class EditProfileComponent {
 
-  currentUser!: User;
+  currentUser:User = new User();
   files!: File;
   fileId = '';
   profile: ProfileI = {
@@ -23,21 +24,11 @@ export class EditProfileComponent {
     description: '',
     price: 0,
     rating: 0,
-    userId: ''
-  };
-
-  profileInformation: UserInformation = {
-    email: '',
-    fullName: '',
-    phoneNumber: '',
-    description: '',
-    age: 0,
-    price: 0,
     userId: '',
-    rating: 0,
-    photoUrl: ''
+    awsLink: ''
   };
 
+  profileInformation: ProfileInformation = new ProfileInformation();
   constructor(
     protected profileService: ProfileService,
     private authService: AuthService,
@@ -45,8 +36,18 @@ export class EditProfileComponent {
     private fileService: FileUploadService
   ) {
     // Get current user
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
+      console.log(this.currentUser)
+      console.log(this.currentUser.roles)
+      console.log(this.currentUser.id)
+      this.profileInformation.userId = this.currentUser.id;
+      this.profileInformation.fullName = this.currentUser.fullName;
+      this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
 
+      // Fetch profile data
+    });
+console.log("IN EDIT",this.currentUser)
     this.profileInformation.userId = this.currentUser.id;
     this.profileInformation.fullName = this.currentUser.fullName;
     this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
@@ -57,6 +58,8 @@ export class EditProfileComponent {
         this.profileInformation.age = profile.age;
         this.profileInformation.price = profile.price;
         this.profileInformation.rating = profile.rating;
+        this.profileInformation.awsLink = profile.awsLink;
+        console.log("IN EFDIT PROFILE LINK UL ", this.profileInformation.age)
         console.log("descrierea", this.profileInformation.description)
 
         this.profile._id = profile._id;
@@ -66,7 +69,7 @@ export class EditProfileComponent {
           (response) => {
             if (response.length > 0) {
               this.fileId = response[0]._id;
-              this.profileInformation.photoUrl = response[0].awsLink;
+              this.profileInformation.awsLink = response[0].awsLink;
             }
           },
           (error) => {
@@ -156,7 +159,7 @@ export class EditProfileComponent {
       this.fileService.updateFile(this.fileId, this.files, this.fileData).subscribe(
         (response: any) => {
           if (response.body) {
-            this.profileInformation.photoUrl = response.body.awsLink;
+            this.profileInformation.awsLink = response.body.awsLink;
           }
         },
         (error: any) => {

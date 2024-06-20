@@ -1,7 +1,6 @@
-import {RouterModule, Routes} from "@angular/router";
+import {RouterModule, Routes, ExtraOptions} from "@angular/router";
 import {NgModule} from "@angular/core";
 import {LoginComponent} from "./auth/login/login.component";
-import {HomeComponent} from "./first-page/first-component/home-component";
 import {AboutUsComponent} from "./first-page/about-us/about-us.component";
 import {ContactSectionComponent} from "./first-page/contact-section/contact-section.component";
 import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
@@ -17,49 +16,47 @@ import {MenuDetailsComponent} from "./menu/menu-details/menu-details.component";
 import {ConversationComponent} from "./conversation/conversation.component";
 import {EditProfileComponent} from "./profile/edit-profile/edit-profile.component";
 import {CoachListComponent} from "./coach/coach-list/coach-list.component";
+import {HomeComponent} from "./first-page/home/home-component";
 
 const routes: Routes = [
-  {path: "", redirectTo: "first-page", pathMatch: "full"},
+  {path: '', component: HomeComponent, pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {
     path: 'first-page', component: HomeComponent, children: [
-      {path: 'aboutUs', component: AboutUsComponent}
+      {path: 'aboutUs', component: AboutUsComponent},
+      {path: 'contact', component: ContactSectionComponent}
     ]
   },
-  {
-    path: 'coach-list', component: CoachListComponent
-  },
+  {path: 'coach-list', component: CoachListComponent},
   {
     path: 'coach', canActivate: [RoleGuard], data: {expectedRole: 'COACH'}, children: [
       {path: 'dashboard', component: CoachDashboardComponent},
       {path: 'clients', component: ClientsComponent},
-      {path: 'conversation', component: ConversationComponent},
+      {path: 'conversation/:id', component: ConversationComponent},
       {
-        path: 'menus', component: MenuComponent, children: [
+        path: 'menus/:id', component: MenuComponent, children: [
           {path: 'menu-details', component: MenuDetailsComponent}
         ]
       },
       {path: 'profile', component: ProfileComponent},
-       {path: 'edit-profile', component: EditProfileComponent},
+      {path: 'edit-profile', component: EditProfileComponent},
     ]
   },
   {
     path: 'client', canActivate: [RoleGuard], data: {expectedRole: 'CLIENT'}, children: [
       {path: 'dashboard', component: ClientDashbordComponent},
       {
-        path: 'menus', component: MenuComponent, children: [
+        path: 'menus/:id', component: MenuComponent, children: [
           {path: 'menu-details', component: MenuDetailsComponent}
         ]
       },
       {path: 'profile', component: ProfileComponent},
-          {path: 'edit-profile', component: EditProfileComponent},
-      {path: 'conversation', component: ConversationComponent},
+      {path: 'edit-profile', component: EditProfileComponent},
+      {path: 'conversation/:id', component: ConversationComponent},
     ]
   },
-
   {path: 'contact', component: ContactSectionComponent},
-
   {
     path: 'admin', canActivate: [RoleGuard], data: {expectedRole: 'ADMIN'}, children: [
       {path: 'management-clients', component: UserManagementComponent},
@@ -69,10 +66,14 @@ const routes: Routes = [
   {path: '**', redirectTo: 'page-not-found'}
 ];
 
+const routerOptions: ExtraOptions = {
+  anchorScrolling: 'enabled',
+  scrollPositionRestoration: 'enabled',
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
-
 export class AppRoutingModule {
 }

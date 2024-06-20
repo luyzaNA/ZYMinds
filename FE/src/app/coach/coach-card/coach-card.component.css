@@ -23,24 +23,77 @@
   flex: 1;
 }
 
-#title h4 {
-  margin: 0 0 8px;
+button {
+  width: 100px;
+  height: 50px;
+  padding: 2px 2px;
 }
 
-#description p {
-  margin: 0 0 16px;
+#apply:hover {
+  padding: 2px 2px;
+  box-shadow: 1px 2px 4px #4C34E2;
 }
 
-#price h4 {
-  margin: 0;
-  color: #25148D;
-;
+#price {
+  display: grid;
+  padding: 0 40px 0 10px;
+  margin-left: -10px;
 }
 
+.apply-box {
+  position: relative;
+}
 
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+}
 
+.close-button:hover {
+  color: red;
+}
 
+#messageToCoah {
+  position: relative;
+}
 
+#messageToCoah textarea {
+  width: 100%;
+  min-width: 300px;
+  max-width: 100%;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+}
 
+.send-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
 
-
+#messageToCoah button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background-color: rgba(121, 113, 168, 0.75);
+}
+#messageToCoah button:hover{
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  background-color: rgba(121, 113, 168, 0.75);
+  box-shadow: 1px 2px 4px rgba(121, 113, 168, 0.75);
+  border: rgba(121, 113, 168, 0.85);
+}

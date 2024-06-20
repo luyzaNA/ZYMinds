@@ -1,5 +1,39 @@
-<p>client-dashbord works!</p>
-<a class="align-self-center" routerLink="../menus">Menus</a>
-<a class="align-self-center" routerLink="../profile">Profile</a>
-<a class="align-self-center" routerLink="../conversation">Conversation</a>
+<div id="application">
+  <h1>{{'Connections' | translate}}</h1>
+  <hr>
+  <div *ngIf="connection">
+    <h2>{{'You have applied for' | translate}}:</h2>
+    <div class="coach-card-container">
+      <app-coach-card [userProfileInformation]="profileInformation" [applied]="true"></app-coach-card>
+      <div *ngIf="statusRequest==='pending'">
+    <span class="close-container" (click)="revokeConnection()">
+      <span class="close-button">&times;</span>
+      <span class="close-text">{{'Abort connection' | translate}}</span>
+    </span>
+      </div>
+    </div>
+    <h2>{{'Status' | translate}} : {{ statusRequest }}</h2>
+  </div>
+</div>
+<div *ngIf="!connection">
+  <h2>{{'You have no connections' | translate}}</h2>
+  <a routerLink='../../coach-list'>
+    {{'I want a coach!' | translate}}
+  </a>
+</div>
+<div *ngIf="statusRequest==='approved'">
+  <button (click)="navigateToDetails()">{{'Details' | translate}}</button>
+</div>
+
+
+<div class="dashboard-container" style="margin-top: 50px">
+  <div class="option-container" routerLink="../conversation/1">
+    <h2>{{'Conversations' | translate}}</h2>
+    <img src="assets/conversations-svg.svg" alt="conversations">
+  </div>
+  <div class="option-container" routerLink="../profile">
+    <h2>{{'Profile' | translate}}</h2>
+    <img src="assets/profile-svg.svg" alt="profile">
+  </div>
+</div>
 

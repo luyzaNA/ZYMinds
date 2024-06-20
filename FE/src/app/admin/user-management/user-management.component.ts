@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {User} from "../../shared/user";
 import {FileUploadService} from "../../services/upload.service";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../shared/User/user.service";
+import {User} from "../../shared/User/UserI";
 
 @Component({
   selector: 'app-user-management',
@@ -10,10 +10,10 @@ import {UserService} from "../../services/user.service";
   styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent {
-  user!: User;
+  user: User = new User();
   awsLinks: string[] = [];
-  newPossibleCoaches: User[] = [];
-  users: User[] = [];
+  newPossibleCoaches: User[] = new Array<User>();
+  users: User[] = new Array<User>();
 
   constructor(private http: HttpClient,
               private fileService: FileUploadService,

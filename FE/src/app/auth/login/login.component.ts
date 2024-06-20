@@ -9,7 +9,17 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent {
 
+  isPasswordFocused = false;
+
   constructor(private authService: AuthService, private router: Router) {
+  }
+
+  onFocus(isPassword: boolean) {
+    this.isPasswordFocused = isPassword;
+  }
+
+  onBlur() {
+    this.isPasswordFocused = false;
   }
 
   login(email: string, password: string): void {
@@ -25,17 +35,6 @@ export class LoginComponent {
       },
       error => {
         console.error('Login failed:', error);
-      }
-    );
-  }
-
-  logout(): void {
-    this.authService.logout().subscribe(
-      () => {
-        this.router.navigate(['register']);
-      },
-      error => {
-        console.error('Logout failed:', error);
       }
     );
   }
