@@ -1,1 +1,123 @@
-<p>menu-details works!</p>
+<div class="menu-details-container">
+  <h2 *ngIf="inProgress">Meniul e in curs de procesare!</h2>
+  <img *ngIf="inProgress" src="assets/loading-menu-details.gif" alt="processing" class="processing-gif">
+
+  <div *ngIf="menuGenerated" class="days-container">
+
+    <h3>{{'Daily intake' | translate}}</h3>
+    <div class="ingredient-container">
+      <p>{{'Proteins' | translate}}: {{ menu.daily_intake?.protein  | number: '1.2-2' }}</p>
+      <p>{{'Carbohydrates' | translate}}: {{ menu.daily_intake?.carbs | number: '1.2-2' }}</p>
+      <p>{{'Lipids' | translate}}: {{ menu.daily_intake?.fat | number: '1.2-2' }}</p>
+      <p>{{'Kcals per main meal' | translate}}: {{ menu.daily_intake?.kcalsPerMainMeal | number: '1.2-2' }}</p>
+      <p>{{'Kcals per snack meal' | translate}}: {{ menu.daily_intake?.kcalsPerSecondaryMeal | number: '1.2-2' }}</p>
+    </div>
+  </div>
+  <div *ngIf="menuGenerated || !inProgress" class="days-container">
+    <div *ngFor="let day; let dayIndex = index of menu?.meals" class="day-container">
+      <h3 (click)="toggleCollapse(collapsedDaysState ,dayIndex)">{{'Day' | translate}} {{ dayIndex }}</h3>
+      <div [ngClass]="{ 'collapsed': collapsedDaysState[dayIndex] }" class="day-container-content">
+        <div *ngFor="let meal; let mealIndex = index of day" class="meal-container">
+          <h4>{{ (meal.name.includes('sec') ? 'Snack' : 'Meal') | translate }} {{ mealIndex }}</h4>
+          <div *ngFor="let ingredient; let ingredientIndex = index of meal.ingredients" class="ingredient-container">
+            <div (click)="toggleCollapse(collapsedIngredientsState ,ingredientIndex)" class="header-container">
+              <h4>
+                {{'Ingredient' | translate}} {{ ingredientIndex }}</h4>
+              <div class="header-sub-container">
+                <button (click)="editIngredient(dayIndex, mealIndex, ingredientIndex)" *ngIf="!menuCompleted"><i
+                  class="fas fa-edit"></i></button>
+                <button (click)="deleteIngredient(dayIndex, mealIndex, ingredientIndex)" *ngIf="!menuCompleted"><i
+                  class="fas fa-trash"></i></button>
+              </div>
+            </div>
+            <div [ngClass]="{ 'collapsed': collapsedIngredientsState[ingredientIndex] }"
+                 class="ingredient-props-container">
+              <p>{{'Name' | translate}}: {{ getIngredientName(ingredient.name) | translate }}</p>
+              <p>{{'Quantity' | translate}}: {{ ingredient.name.split(" ")[0] }} {{ ingredient.name.split(" ")[1] }}</p>
+              <p>{{'Kcals' | translate}}: {{ ingredient.kcals | number: '1.2-2' }}</p>
+              <p>{{'Proteins' | translate}}: {{ ingredient.proteins | number: '1.2-2' }}g</p>
+              <p>{{'Carbohydrates' | translate}}: {{ ingredient.carbohydrates | number: '1.2-2' }}g</p>
+              <p>{{'Calcium' | translate}}: {{ ingredient.calcium | number: '1.2-2' }}g</p>
+              <p>{{'Magnesium' | translate}}: {{ ingredient.magnesium | number: '1.2-2' }}g</p>
+              <p>{{'Iron' | translate}}: {{ ingredient.iron | number: '1.2-2' }}g</p>
+              <p>{{'Sodium' | translate}}: {{ ingredient.sodium | number: '1.2-2' }}g</p>
+              <p>{{'Potassium' | translate}}: {{ ingredient.potassium | number: '1.2-2' }}g</p>
+              <p>{{'Phosphorus' | translate}}: {{ ingredient.phosphorus | number: '1.2-2' }}g</p>
+              <p>{{'Vitamin A' | translate}}: {{ ingredient.vitamin_A | number: '1.2-2' }}g</p>
+              <p>{{'Vitamin E' | translate}}: {{ ingredient.vitamin_E | number: '1.2-2' }}g</p>
+              <p>{{'Thiamine' | translate}}: {{ ingredient.thiamin | number: '1.2-2' }}g</p>
+              <p>{{'Riboflavin' | translate}}: {{ ingredient.riboflavin | number: '1.2-2' }}g</p>
+              <p>{{'Niacin' | translate}}: {{ ingredient.niacin | number: '1.2-2' }}g</p>
+              <p>{{'Vitamin B6' | translate}}: {{ ingredient.vitamin_B6 | number: '1.2-2' }}g</p>
+              <p>{{'Vitamin B12' | translate}}: {{ ingredient.vitamin_B12 | number: '1.2-2' }}g</p>
+              <p>{{'Vitamin C' | translate}}: {{ ingredient.vitamin_C | number: '1.2-2' }}g</p>
+              <p>{{'Vitamin K' | translate}}: {{ ingredient.vitamin_K | number: '1.2-2' }}g</p>
+              <p>{{'Vitamin D' | translate}}: {{ ingredient.vitamin_D | number: '1.2-2' }}g</p>
+              <p>{{'Sugar' | translate}}: {{ ingredient.sugar | number: '1.2-2' }}g</p>
+              <p>{{'Fiber' | translate}}: {{ ingredient.fiber | number: '1.2-2' }}g</p>
+            </div>
+          </div>
+          <select *ngIf="!menuCompleted" [(ngModel)]="foods[0]"
+                  (ngModelChange)="addIngredient($event,dayIndex, mealIndex)" class="select-elm"
+                  aria-label="Default select example">
+            <option *ngFor="let ingredient of foods" [ngValue]="ingredient">{{ getIngredientName(ingredient.name) | translate }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="buttons">
+      <button *ngIf="edited" class="button-s" (click)="saveEditing()">{{'Save changes' | translate}}</button>
+      <button *ngIf="edited" class="button-s bg-danger" (click)="closeEditing()">{{'Close' | translate}}</button>
+      <button *ngIf="menuGenerated && !menuCompleted" class="button-s bg-danger" (click)="delete()">{{'Delete menu' | translate}}</button>
+      <button *ngIf="noMenu" class="button-s" (click)="generateMenu()">{{'Generate menu' | translate}}</button>
+      <button *ngIf="menuGenerated && !menuCompleted && !edited" class="button-s" style="width: 300px" (click)="sendMenuToClient()">{{'Send menu to user' | translate}}
+      </button>
+      <h3 *ngIf="menuCompleted && isCoach" class="bg-danger">{{'Menu sent to user!' | translate}}</h3>
+    </div>
+  </div>
+
+
+</div>
+
+<div [ngClass]="{'modal-visible': modifyIngredient}" class="modal">
+  <div class="modal-content">
+    <h3>Modify ingredient</h3>
+    <div class="quantity-container">
+      <label for="floatingInput2">Quantity</label>
+      <input (ngModelChange)="modifyQuantity($event)" [(ngModel)]="modifiedIngredient.name.split(' ')[0]" type="text"
+             class="form-control" id="floatingInput2"
+             placeholder="200g" required>
+    </div>
+    <div class="ingredient-container ">
+      <p>
+        Name: {{ modifiedIngredient.name.toUpperCase() }}</p>
+      <p>Quantity: {{ modifiedIngredient.name.split(" ")[0] }} {{ modifiedIngredient.name.split(" ")[1] }}</p>
+      <p>Kcals: {{ modifiedIngredient.kcals | number: '1.2-2' }}</p>
+      <p>Proteins: {{ modifiedIngredient.proteins | number: '1.2-2' }}g</p>
+      <p>Carbohydrates: {{ modifiedIngredient.carbohydrates | number: '1.2-2' }}g</p>
+      <p>Calcium: {{ modifiedIngredient.calcium | number: '1.2-2' }}g</p>
+      <p>Magnesium: {{ modifiedIngredient.magnesium | number: '1.2-2' }}g</p>
+      <p>Iron: {{ modifiedIngredient.iron | number: '1.2-2' }}g</p>
+      <p>Sodium: {{ modifiedIngredient.sodium | number: '1.2-2' }}g</p>
+      <p>Potassium: {{ modifiedIngredient.potassium | number: '1.2-2' }}g</p>
+      <p>Phosphorus: {{ modifiedIngredient.phosphorus | number: '1.2-2' }}g</p>
+      <p>Vitamin A: {{ modifiedIngredient.vitamin_A | number: '1.2-2' }}g</p>
+      <p>Vitamin E: {{ modifiedIngredient.vitamin_E | number: '1.2-2' }}g</p>
+      <p>Thiamine: {{ modifiedIngredient.thiamin | number: '1.2-2' }}g</p>
+      <p>Riboflavin: {{ modifiedIngredient.riboflavin | number: '1.2-2' }}g</p>
+      <p>Niacin: {{ modifiedIngredient.niacin | number: '1.2-2' }}g</p>
+      <p>Vitamin B6: {{ modifiedIngredient.vitamin_B6 | number: '1.2-2' }}g</p>
+      <p>Vitamin B12: {{ modifiedIngredient.vitamin_B12 | number: '1.2-2' }}g</p>
+      <p>Vitamin C: {{ modifiedIngredient.vitamin_C | number: '1.2-2' }}g</p>
+      <p>Vitamin K: {{ modifiedIngredient.vitamin_K | number: '1.2-2' }}g</p>
+      <p>Vitamin D: {{ modifiedIngredient.vitamin_D | number: '1.2-2' }}g</p>
+      <p>Sugar: {{ modifiedIngredient.sugar | number: '1.2-2' }}g</p>
+      <p>Fiber: {{ modifiedIngredient.fiber | number: '1.2-2' }}g</p>
+    </div>
+
+    <div class="buttons-container">
+      <button class="button-s" (click)="saveModifiedIngredient()">Save changes</button>
+      <button class="button-s bg-danger" style="margin: 0" (click)="closeEditing()">Close</button>
+    </div>
+  </div>
+</div>
