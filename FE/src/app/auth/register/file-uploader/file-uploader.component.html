@@ -2,7 +2,7 @@
   <div class="row mt-5">
     <div class="col-md-4">
       <div class="mb-3">
-        <label for="formFile" class="form-label">Upload file example</label>
+        <label for="formFile" class="form-label">{{'Upload file' | translate}}</label>
         <input *ngIf="uploadMultipleFiles" (change)="onFileChange($event)" class="form-control" type="file" id="formFile" multiple name="file">
         <input *ngIf="!uploadMultipleFiles" ngModel (change)="onFileChange($event)" class="form-control" type="file" id="singleformFile"name="singleFile">
       </div>
