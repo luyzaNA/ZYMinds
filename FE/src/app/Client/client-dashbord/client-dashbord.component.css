@@ -1,6 +1,9 @@
 #application {
   margin-top: 200px;
   position: relative;
+  box-shadow: #4C34E2 1px 2px 4px;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .coach-card-container {
@@ -14,17 +17,20 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  padding: 7px;
+  border: #a10808 1px solid;
+  border-radius: 8px;
 }
 
 .close-button {
   font-size: 24px;
   margin-right: 5px;
-  color: red;
+  color: #a10808;
 }
 
 .close-text {
-  font-size: 13px;
-  color: red;
+  font-size: 18px;
+  color: #a10808;
 }
 
 a {

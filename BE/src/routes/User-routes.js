@@ -18,6 +18,45 @@ import {v4 as uuiv4} from 'uuid';
 
 const userRouter = express.Router();
 
+userRouter.post("/login",
+    [
+        body('email').
+        isEmail()
+            .withMessage('Email must be provided')
+            .normalizeEmail(),
+        body('password')
+            .notEmpty()
+            .withMessage('Password must be provided')
+    ],
+    validateRequest, async (req, res) => {
+        const { email, password } = req.body;
+
+        const existingUser = await User.findOne({ email });
+        try {
+            if (!existingUser) {
+                throw new BadRequestError("Invalid credentials");
+            }
+
+            const passwordMatch = await Password.compare(existingUser.password, password);
+            if (!passwordMatch) {
+                throw new BadRequestError();
+            }
+
+            const userJwt = jwt.sign({
+                    id: existingUser.id,
+                    email: existingUser.email,
+                    fullName: existingUser.fullName,
+                    phoneNumber: existingUser.phoneNumber,
+                    roles: existingUser.roles
+                },
+                process.env.JWT_SECRET
+            );
+            res.status(200).send({token: userJwt});
+        }catch(error) {
+            res.status(400).json({message: error.message});
+        }
+    });
+
 userRouter.post("/users/create", [
         body('email')
             .isEmail()

@@ -22,7 +22,7 @@
   <button routerLink="/login" *ngIf="!isLoggedIn" class="button-s"><i class="fa-regular fa-user"></i> {{'Sign in' |
     translate}}</button>
 
-  <button *ngIf="isLoggedIn" (click)="logOutUser()" class="button-s"><i class="fas fa-door-open"></i> {{'Sign out' |
-    translate}}</button>
+  <button *ngIf="isLoggedIn" (click)="logOutUser()" class="button-s" style="width: 200px"><i class="fas fa-door-open"></i> <p style="margin: 0">{{'Sign out' |
+    translate}} {{user.fullName}}</p></button>
 
 </div>

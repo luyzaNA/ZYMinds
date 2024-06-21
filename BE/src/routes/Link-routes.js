@@ -20,11 +20,15 @@ linkRouter.post("/connect/:coachId", currentUser, requireAuth, [
         if (role.name !== "CLIENT") {
             return res.status(403).json({message: "Access denied"});
         }
-
+        const links = await Link.find({clientId: req.currentUser.id});
+        for(const link of links){
+            if((await link).statusApplication === 'approved'){
+                return res.status(400).json({message: 'You already have a approved application'});
+            }
+        }
         const newLinkData = {
             clientId, coachId, statusApplication: 'pending', ...req.body
         };
-
         const newLink = new Link(newLinkData);
         await newLink.save();
 
@@ -42,45 +46,47 @@ linkRouter.get('/application/client', currentUser, requireAuth, async (req, res)
             return res.status(403).json({message: "Access denied"});
         }
 
-        const link = await Link.findOne({clientId: clientId});
-        if (!link) {
+        const link = await Link.find({clientId: clientId});
+        if (link.length === 0) {
             return res.status(404).json({message: 'Link not found'});
         }
+        let linkDetails = [];
+        for(const l of link){
+            const user = await User.findById(l.coachId);
+            const profile = await Profile.findOne({userId: l.coachId});
+            const photo = await File.findOne({userId: l.coachId, context: "PROFILE"});
 
-        const user = await User.findById(link.coachId);
-        const profile = await Profile.findOne({userId: link.coachId});
-        const photo = await File.findOne({userId: link.coachId, context: "PROFILE"});
+            if (!user || !profile || !photo) {
+                console.log('User, Profile or Photo not found');
+                continue;
+            }
 
-        if (!user || !profile || !photo) {
-            return res.status(404).json({message: 'User, Profile or Photo not found'});
+            const {statusApplication, id} = l
+            const {fullName} = user;
+            const {description, age, price, rating} = profile;
+            const {awsLink} = photo;
+            linkDetails.push({statusApplication, fullName, description, age, price, rating, awsLink, id});
         }
-
-        const {statusApplication, id} = link
-        const {fullName} = user;
-        const {description, age, price, rating} = profile;
-        const {awsLink} = photo;
-
-        res.json({statusApplication, fullName, description, age, price, rating, awsLink, id});
+        res.json(linkDetails);
     } catch (error) {
         console.error(error);
         res.status(500).json({message: 'Server error', error: error.message});
     }
 });
 
-linkRouter.delete("/delete/connection", currentUser, requireAuth, async (req, res) => {
+linkRouter.delete("/delete/connection/:id", currentUser, requireAuth, async (req, res) => {
     try {
-        const clientId = req.currentUser.id;
-        const {coachId} = req.params;
+        const {linkId} = req.params;
 
         const role = new RoleAuthorization(req.currentUser.roles);
         if (role.name !== "CLIENT") {
             return res.status(403).json({message: "Access denied"});
         }
-        const deleteConnection = await Link.findOneAndDelete({clientId: clientId});
+        const deleteConnection = await Link.findOneAndDelete({id: linkId});
         if (!deleteConnection) {
             return res.status(404).json({message: 'Link not found'});
         }
-        return res.status(200).json(deleteConnection);
+        return res.status(200).json({id: deleteConnection.id});
     } catch (error) {
         res.status(500).json({message: error.message});
     }

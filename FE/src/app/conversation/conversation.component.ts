@@ -88,6 +88,7 @@ export class ConversationComponent implements OnDestroy{
   selectConversation(conversation: Conversation) {
     this.viewInput = false;
     this.conversationId = conversation.id;
+    clearInterval(this.timer)
     this.pullMessages(conversation.otherParticipantEmail);
   }
 
@@ -126,6 +127,7 @@ export class ConversationComponent implements OnDestroy{
   //se reincarca toate conversatiile
   startConversation(firstMessage: string) {
     if (firstMessage.trim().length > 0) {
+      clearInterval(this.timer)
       this.pullMessages(this.selectedUserEmail)
       this.conversationService.initializeConversation(this.selectedUserEmail, firstMessage).subscribe((conversations: ConversationI) => {
           this.viewInput = false;

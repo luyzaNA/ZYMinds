@@ -38,16 +38,12 @@ export class EditProfileComponent {
     // Get current user
     this.authService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
-      console.log(this.currentUser)
-      console.log(this.currentUser.roles)
-      console.log(this.currentUser.id)
       this.profileInformation.userId = this.currentUser.id;
       this.profileInformation.fullName = this.currentUser.fullName;
       this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
 
       // Fetch profile data
     });
-console.log("IN EDIT",this.currentUser)
     this.profileInformation.userId = this.currentUser.id;
     this.profileInformation.fullName = this.currentUser.fullName;
     this.profileInformation.phoneNumber = this.currentUser.phoneNumber;
@@ -59,9 +55,6 @@ console.log("IN EDIT",this.currentUser)
         this.profileInformation.price = profile.price;
         this.profileInformation.rating = profile.rating;
         this.profileInformation.awsLink = profile.awsLink;
-        console.log("IN EFDIT PROFILE LINK UL ", this.profileInformation.age)
-        console.log("descrierea", this.profileInformation.description)
-
         this.profile._id = profile._id;
 
         // Fetch files
@@ -117,7 +110,6 @@ console.log("IN EDIT",this.currentUser)
     this.profileService.updateProfile(this.profile).subscribe(
       () => {
         // Update user information
-        console.log("ce vreau sa modific", this.profile)
 
         this.userService.updateUser(this.profileInformation.userId, this.currentUser.email,
           this.profileInformation.fullName, this.profileInformation.phoneNumber, this.currentUser.roles).subscribe(
@@ -160,6 +152,7 @@ console.log("IN EDIT",this.currentUser)
         (response: any) => {
           if (response.body) {
             this.profileInformation.awsLink = response.body.awsLink;
+            alert('Profile updated successfully!');
           }
         },
         (error: any) => {
@@ -167,7 +160,8 @@ console.log("IN EDIT",this.currentUser)
         }
       );
     } else {
-      console.log('No files to upload.'); // Changed from error to log
+      console.log('No files to upload.');
+      alert('Profile updated successfully!');// Changed from error to log
     }
   }
 }

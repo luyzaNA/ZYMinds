@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {UserService} from "../../shared/User/user.service";
 import {FileUploadService} from "../../services/upload.service";
-import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
+import {ProfileInformation, ProfileInformationI} from "../../shared/ProfileInformation/ProfileInformationI";
 
 @Component({
   selector: 'app-coach-list',
@@ -10,8 +10,7 @@ import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInforma
   styleUrls: ['./coach-list.component.css']
 })
 export class CoachListComponent {
-  profile! :{name:string, phone:string, age:number, price:number,
-  description:string, rating:number, awsLink:string, userId:string};
+  profile! :ProfileInformationI;
 
   users: ProfileInformation[] = [];
   constructor(private profileService: ProfileService,
@@ -44,6 +43,7 @@ export class CoachListComponent {
                     rating: profile.rating,
                     awsLink: photoUrl,
                     id: '',
+                    statusApplication: ''
                   };
                   this.users.push(userInformation);
                 },

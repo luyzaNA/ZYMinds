@@ -1,39 +1,38 @@
 <div class="container">
   <div id="application">
-    <h1>{{'Connections' | translate}}</h1>
+    <h1 style="border-bottom: #4C34E2 1px solid">{{ 'Connections' | translate }}</h1>
     <hr>
-    <div *ngIf="connection">
-      <h2>{{'You have applied for' | translate}}:</h2>
-      <div class="coach-card-container">
-        <app-coach-card [userProfileInformation]="profileInformation" [applied]="true"></app-coach-card>
-        <div *ngIf="statusRequest==='pending'">
-      <span class="close-container" (click)="revokeConnection()">
-        <span class="close-button">&times;</span>
-        <span class="close-text">{{'Abort connection' | translate}}</span>
-      </span>
+    <div *ngIf="profilesInformation.length > 0">
+      <h2>{{ 'You have applied for' | translate }}:</h2>
+      <div *ngFor="let profileInfo of profilesInformation" class="coach-card-container">
+        <app-coach-card [userProfileInformation]="profileInfo" [applied]="true"></app-coach-card>
+        <div *ngIf="profileInfo.statusApplication==='pending'">
+          <div class="close-container" (click)="revokeConnection(profileInfo.id ,profileInfo.statusApplication)">
+            <span class="close-text">{{ 'Abort connection' | translate }}</span>
+          </div>
         </div>
+        <div *ngIf="profileInfo.statusApplication==='approved'">
+          <button (click)="navigateToDetails(profileInfo.id)">{{ 'Details' | translate }}</button>
+        </div>
+        <h2>{{ 'Status' | translate }} : {{ profileInfo.statusApplication }}</h2>
       </div>
-      <h2>{{'Status' | translate}} : {{ statusRequest }}</h2>
     </div>
   </div>
-  <div *ngIf="!connection">
-    <h2>{{'You have no connections' | translate}}</h2>
-    <a routerLink='../../coach-list'>
-      {{'I want a coach!' | translate}}
-    </a>
-  </div>
-  <div *ngIf="statusRequest==='approved'">
-    <button (click)="navigateToDetails()">{{'Details' | translate}}</button>
+  <div *ngIf="profilesInformation.length === 0">
+    <h2>{{ 'You have no connections' | translate }}</h2>
+    <button class="button-s" routerLink='../../coach-list'>
+      {{ 'I want a coach!' | translate }}
+    </button>
   </div>
 
 
   <div class="dashboard-container" style="margin-top: 50px">
     <div class="option-container" routerLink="../conversation/1">
-      <h2>{{'Conversations' | translate}}</h2>
+      <h2>{{ 'Conversations' | translate }}</h2>
       <img src="assets/conversations-svg.svg" alt="conversations">
     </div>
     <div class="option-container" routerLink="../profile">
-      <h2>{{'Profile' | translate}}</h2>
+      <h2>{{ 'Profile' | translate }}</h2>
       <img src="assets/profile-svg.svg" alt="profile">
     </div>
   </div>

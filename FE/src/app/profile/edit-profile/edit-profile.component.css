@@ -30,6 +30,9 @@ img {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 0;
+  box-shadow: #4C34E2 1px 2px 4px;
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .vertical-line {
@@ -55,6 +58,7 @@ img {
 
 .edit-component {
   margin-top: 100px;
+  padding: 20px;
 }
 
 .profile-top-row .form-group.input-container {

@@ -1,10 +1,8 @@
 import express from 'express';
 import connectDB from './src/db/conn.js';
 import foodRoutes from './src/routes/Food-routes.js';
-import userRouter from './src/routes/Register-routes.js';
 import fileRouter from './src/routes/File-routes.js';
 import cors from 'cors';
-import userRouterLog from "./src/routes/Login-routes.js";
 import dotenv from 'dotenv';
 import errorHandler from "./src/middlewares/error-handler.js";
 import logOutRouter from "./src/routes/logout.js";
@@ -16,6 +14,7 @@ import conversationRouter from "./src/routes/Conversation-routes.js";
 import linkRouter from "./src/routes/Link-routes.js";
 import prerequisitesRouter from "./src/routes/Prerequisites-routes.js";
 import menuRouter from "./src/routes/Menu-routes.js";
+import userRouter from "./src/routes/User-routes.js";
 
 dotenv.config();
 
@@ -31,7 +30,6 @@ app.use(cors());
 app.use(foodRoutes);
 app.use(userRouter);
 app.use(fileRouter);
-app.use(userRouterLog);
 app.use(errorHandler);
 app.use(logOutRouter);
 app.use(meRouter);
