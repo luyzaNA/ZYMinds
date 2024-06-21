@@ -47,7 +47,7 @@ profileRouter.put('/profile/update/:_id', currentUser, requireAuth, async (req, 
     }
 });
 
-profileRouter.get('/profile/:userId', async (req, res) => {
+profileRouter.get('/profile/:userId',currentUser, requireAuth, async (req, res) => {
     const {userId} = req.params;
 
     try {
@@ -63,15 +63,14 @@ profileRouter.get('/profile/:userId', async (req, res) => {
     }
 });
 
-profileRouter.patch('/rating/update/:_id', currentUser, requireAuth, [
+profileRouter.patch('/rating/update/:coachId', currentUser, requireAuth, [
     param('_id').not().isEmpty().withMessage('Invalid profile ID'),
     body('rating').not().isEmpty().withMessage('Invalid rating')
 ], async (req, res) => {
-    const {_id} = req.params;
+    const {coachId} = req.params;
     const {rating} = req.body
-
     try {
-        const updateProfileRating = await Profile.findOneAndUpdate({_id: _id}, {rating}, {new: true});
+        const updateProfileRating = await Profile.findOneAndUpdate({userId: coachId}, {rating}, {new: true});
 
         if (!updateProfileRating) {
             return res.status(404).json({message: 'Profile not found'});

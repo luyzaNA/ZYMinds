@@ -19,6 +19,7 @@ export class CoachCardComponent {
 
   @Input() userProfileInformation!: ProfileInformation;
   @Input() applied: boolean = false;
+  @Input() evaluateCoach: boolean = false;
 
   constructor(private clientService: LinkService,
               protected authService: AuthService,

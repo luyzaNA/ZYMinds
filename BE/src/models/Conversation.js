@@ -9,7 +9,8 @@ const ConversationSchema = new mongoose.Schema({
         type: String,
         required: false
     }
-}, {collection: 'conversations'}, {
+}, {
+    collection: 'conversations',
     toJSON: {
         transform: (doc, ret) => {
             ret.id = ret._id;

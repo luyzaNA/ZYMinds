@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 })
 export class ClientDashbordComponent {
   profilesInformation: ProfileInformationI[] = [];
+  isConnectionApproved: boolean = false;
 
   constructor(private linkService: LinkService,
               private router: Router) {
@@ -22,6 +23,11 @@ export class ClientDashbordComponent {
         if(!profilesInfo) {
           return;}
         this.profilesInformation = profilesInfo;
+        this.profilesInformation.forEach(profile => {
+          if (profile.statusApplication === 'approved') {
+            this.isConnectionApproved = true;
+          }
+        });
       },
       (error) => {
         console.error('Eroare la crearea conexiunii:', error);

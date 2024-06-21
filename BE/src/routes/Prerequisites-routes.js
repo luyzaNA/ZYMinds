@@ -70,7 +70,6 @@ prerequisitesRouter.get('/prerequisites/:linkId', currentUser, requireAuth,[
 ], async (req, res) => {
     const {linkId} = req.params;
     try {
-        console.log(linkId);
         const prerequisites = await Prerequisites.findOne({linkId:linkId});
 
         if (!prerequisites) {

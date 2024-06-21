@@ -40,11 +40,11 @@ async function generateMenuAsync(prerequisites, mealCalories, macroNutrients) {
 //cu link id ul iau preconditiile
 menuRouter.post('/menu/:linkId', [
     param('linkId').not().isEmpty().withMessage('Invalid link id')
-], async (req, res) => {
+], currentUser, requireAuth, async (req, res) => {
     const linkId = req.params.linkId;
-    // if (req.currentUser.roles !== new RoleAuthorization('COACH').name) {
-    //     throw new NotAuthorizedError();
-    // }
+    if (req.currentUser.roles !== new RoleAuthorization('COACH').name) {
+        throw new NotAuthorizedError();
+    }
     const link = await Link.findById(linkId);
 
     if (!link) {
@@ -107,21 +107,6 @@ menuRouter.post('/menu/:linkId', [
         }
     });
 
-    if (userDRI) {
-        console.log("Valori DRI :", userDRI);
-
-    } else {
-        console.log("nu e dri.");
-    }
-    console.log("totalCaloricNeeds :", totalCaloricNeeds);
-    console.log("adjustedCaloricNeeds :", adjustedCaloricNeeds);
-    console.log("USER idealWeight:", idealWeight);
-    console.log("USER bmi:", bmi);
-    console.log("USER fatNeeds:", fatNeeds);
-    console.log("USER proteinNeeds:", proteinNeeds);
-    console.log("USER carbNeeds:", carbNeeds);
-    console.log("USER mealCalories:", mealCalories);
-
     const macroNutrients = {
         protein: proteinNeeds,
         fat: fatNeeds,
@@ -136,7 +121,7 @@ menuRouter.post('/menu/:linkId', [
         }, {new: true});
 
         if (!existingMenu) {
-            const existingMenu = new Menu({
+            existingMenu = new Menu({
                 linkId,
                 daily_intake: {...macroNutrients, ...mealCalories},
                 meals: [],

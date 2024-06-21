@@ -70,7 +70,7 @@
       <button *ngIf="edited" class="button-s bg-danger" (click)="closeEditing()">{{'Close' | translate}}</button>
       <button *ngIf="menuGenerated && !menuCompleted" class="button-s bg-danger" (click)="delete()">{{'Delete menu' | translate}}</button>
       <button *ngIf="noMenu" class="button-s" (click)="generateMenu()">{{'Generate menu' | translate}}</button>
-      <button *ngIf="menuGenerated && !menuCompleted && !edited" class="button-s" style="width: 300px" (click)="sendMenuToClient()">{{'Send menu to user' | translate}}
+      <button *ngIf="menuGenerated && !menuCompleted && !edited" class="button-s" style="width: 300px; margin-left: 10px" (click)="sendMenuToClient()">{{'Send menu to user' | translate}}
       </button>
       <h3 *ngIf="menuCompleted && isCoach" class="bg-danger">{{'Menu sent to user!' | translate}}</h3>
     </div>

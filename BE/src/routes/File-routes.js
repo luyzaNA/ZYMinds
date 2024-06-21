@@ -41,14 +41,12 @@ fileRouter.post('/upload', upload.single('file'), async (req, res) => {
             awsSecretKey: awsSecretKey
         });
 
-        console.log('Fișierul a fost încărcat cu succes:', newFile);
         res.status(201).json({
             message: 'Fișier încărcat cu succes!',
             fileId: newFile._id,
             awsLink: uploadedFile.Location
         });
     } catch (error) {
-        console.error('Eroare la încărcare fișier:', error);
         res.status(500).json({message: 'Eroare la încărcare fișier!'});
     }
 });
@@ -87,7 +85,9 @@ fileRouter.get('/files/:userId/:context',[
     }
 });
 
-fileRouter.put('/files/update/:id', upload.single('file'), currentUser, requireAuth, async (req, res) => {
+fileRouter.put('/files/update/:id', upload.single('file'), currentUser, requireAuth,[
+    param('id').not().isEmpty().withMessage('id invalid')
+], async (req, res) => {
     try {
         const _id = req.params.id;
         const {originalname, mimetype, buffer} = req.file;

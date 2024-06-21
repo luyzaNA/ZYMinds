@@ -5,7 +5,7 @@
     <div *ngIf="profilesInformation.length > 0">
       <h2>{{ 'You have applied for' | translate }}:</h2>
       <div *ngFor="let profileInfo of profilesInformation" class="coach-card-container">
-        <app-coach-card [userProfileInformation]="profileInfo" [applied]="true"></app-coach-card>
+        <app-coach-card [userProfileInformation]="profileInfo" [evaluateCoach]="isConnectionApproved" [applied]="true"></app-coach-card>
         <div *ngIf="profileInfo.statusApplication==='pending'">
           <div class="close-container" (click)="revokeConnection(profileInfo.id ,profileInfo.statusApplication)">
             <span class="close-text">{{ 'Abort connection' | translate }}</span>

@@ -51,7 +51,7 @@ export class ProfileService {
   }
 
   updateRating(profileId: string, rating: number): Observable<ProfileI> {
-    return this.http.put<ProfileI>(`${environment.apiUrl}/rating/update/${profileId}`, rating).pipe(
+    return this.http.patch<ProfileI>(`${environment.apiUrl}/rating/update/${profileId}`, {rating}).pipe(
       map(response => response),
       catchError(error => {
         this.errorService.errorSubject.next(error.error.message);

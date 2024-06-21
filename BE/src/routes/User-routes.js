@@ -1,6 +1,6 @@
 import express from 'express';
 import User from '../models/User.js';
-import {body, validationResult} from 'express-validator';
+import {body, param, validationResult} from 'express-validator';
 import {Password} from '../services/Password.js';
 import BadRequestError from '../errors/bad-request-error.js'
 import jwt from 'jsonwebtoken'
@@ -144,8 +144,6 @@ userRouter.post("/users/create", [
                         awsSecretKey: awsSecretKey
                     });
 
-                    console.log("PROFILUL CREAT PENTRU", savedUser.fullName + " " + newProfile);
-
                     const userJwt = jwt.sign({
                             id: newUser.id,
                             email: newUser.email,
@@ -187,7 +185,9 @@ userRouter.get('/users/:id', async (req, res) => {
     }
 });
 
-userRouter.patch('/users/new/:id', async (req, res) => {
+userRouter.patch('/users/new/:id', currentUser, requireAuth, [
+    param('id').not().isEmpty().withMessage('Invalid id')
+], async (req, res) => {
     try {
         const id = req.params.id;
         const newCoach = req.body;
@@ -228,7 +228,9 @@ userRouter.put('/users/:id', currentUser, requireAuth, async (req, res) => {
 });
 
 
-userRouter.delete('/users/:id', async (req, res) => {
+userRouter.delete('/users/:id', currentUser, requireAuth,[
+    param('id').not().isEmpty().withMessage('Invalid id')
+], async (req, res) => {
     try {
         const _id = req.params.id;
         const deleteUsers = await User.findByIdAndDelete({_id});
@@ -241,7 +243,9 @@ userRouter.delete('/users/:id', async (req, res) => {
     }
 });
 
-userRouter.get('/users/search/:email', async (req, res) => {
+userRouter.get('/users/search/:email',currentUser, requireAuth, [
+    param('email').not().isEmpty().withMessage('Invalid email')
+], async (req, res) => {
     try {
         const email = req.params.email;
         const users = await User.find({

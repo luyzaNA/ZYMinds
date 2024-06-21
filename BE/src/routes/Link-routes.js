@@ -65,7 +65,7 @@ linkRouter.get('/application/client', currentUser, requireAuth, async (req, res)
             const {fullName} = user;
             const {description, age, price, rating} = profile;
             const {awsLink} = photo;
-            linkDetails.push({statusApplication, fullName, description, age, price, rating, awsLink, id});
+            linkDetails.push({statusApplication, fullName, userId: user.id, description, age, price, rating, awsLink, id});
         }
         res.json(linkDetails);
     } catch (error) {
@@ -74,7 +74,9 @@ linkRouter.get('/application/client', currentUser, requireAuth, async (req, res)
     }
 });
 
-linkRouter.delete("/delete/connection/:id", currentUser, requireAuth, async (req, res) => {
+linkRouter.delete("/delete/connection/:id", currentUser, requireAuth,[
+    param('linkId').not().isEmpty().withMessage('Link id is required'),
+], async (req, res) => {
     try {
         const {linkId} = req.params;
 

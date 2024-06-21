@@ -46,9 +46,6 @@ export class PrerequisitesComponent implements OnInit {
     });
     this.authService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
-      console.log(this.currentUser)
-      console.log(this.currentUser.roles)
-      console.log(this.currentUser.id)
       this.getAgeFromProfile();
       this.prerequisites.linkId = this.route.snapshot.paramMap.get('id')!;
       this.getPrerequisitesSet();
@@ -76,9 +73,7 @@ export class PrerequisitesComponent implements OnInit {
         (response) => {
           this.prerequisites = response;
           this.getPrerequisitesSet()
-          console.log("Prerequisites updated successfully:", response);
           alert("Prerequisites updated successfully")
-          this.navRoute.navigate(['client', 'dashboard'])
         },
         (error) => {
           console.error("Error updating prerequisites:", error);
@@ -89,9 +84,7 @@ export class PrerequisitesComponent implements OnInit {
         (response) => {
           this.prerequisites = response;
           this.getPrerequisitesSet()
-          console.log("Prerequisites created successfully:", response);
           alert("Prerequisites created successfully")
-          this.navRoute.navigate(['client', 'dashboard'])
         },
         (error) => {
           console.error("Error creating prerequisites:", error);

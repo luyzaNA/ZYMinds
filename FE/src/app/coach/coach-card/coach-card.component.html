@@ -10,7 +10,7 @@
       </div>
       <div id="price">
         <h4>{{ userProfileInformation.price }} LEI</h4>
-        <app-rating [rating]="userProfileInformation.rating" [readonly]="true"></app-rating>
+        <app-rating [rating]="userProfileInformation.rating" [userId]="userProfileInformation.userId" [readonly]="!evaluateCoach"></app-rating>
       </div>
     </div>
     <div *ngIf="!applied">

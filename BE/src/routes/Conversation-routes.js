@@ -68,20 +68,16 @@ conversationRouter.post('/initialize/conversation', currentUser, requireAuth, [
 //se salveaza ultimul mesaj cu id ul conversatiei curent  si se sorteaza descrecator
 //se compune raspunsul
 //se push uie in array
-conversationRouter.get('/conversations', currentUser, requireAuth, [
-  param('id').not().isEmpty().withMessage('Invalid id')
-], async (req, res) => {
+conversationRouter.get('/conversations', currentUser, requireAuth, async (req, res) => {
     const userId = req.currentUser.id;
-
     try {
-        const conversations = await Conversation.find({participants: userId});
+        const conversations = await Conversation.find({ participants: { $in: [userId] } });
         const responseConversations = [];
 
         for (const conversation of conversations) {
             const {participants} = conversation;
             const otherParticipantId = participants.find(id => id.toString() !== userId.toString());
-            const otherParticipant = await User.findById(otherParticipantId);
-
+            const otherParticipant = await User.findOne({_id:otherParticipantId});
             const lastMessage = await Message.findOne({ conversationId: conversation.id }).sort({ createdAt: -1 });
             const date = new Date(lastMessage.createdAt);
 
