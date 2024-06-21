@@ -30,11 +30,14 @@ conversationRouter.post('/initialize/conversation', currentUser, requireAuth, [
         if (!receiver) {
             return res.status(404).json({message: `User with email ${email} not found`});
         }
+        if(senderId === receiver.id){
+           return res.status(400).json({message: 'You cannot send a message to yourself'});
+        }
 
         let conversation = await Conversation.findOne({
-            participants: {$all: [senderId, receiver.id]}
+            participants: {$all: [senderId, receiver._id]}
         });
-
+        console.log(conversation);
         if (!conversation) {
             conversation = new Conversation({
                 participants: [senderId, receiver.id]

@@ -5,13 +5,14 @@ import {Conversation, ConversationI} from "../shared/Conversation/ConversationI"
 import {AuthService} from "../services/auth.service";
 import {FileUploadService} from "../services/upload.service";
 import {User} from "../shared/User/UserI";
+import {ErrorServiceService} from "../services/error-service.service";
 
 @Component({
   selector: 'app-conversation',
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.css']
 })
-export class ConversationComponent implements OnDestroy{
+export class ConversationComponent implements OnDestroy {
   //folosit pt a stoca email ul cautat
   searchEmail: string = '';
 
@@ -48,7 +49,6 @@ export class ConversationComponent implements OnDestroy{
   constructor(private userService: UserService,
               private conversationService: ConversationService,
               private auth: AuthService) {
-
     this.auth.getCurrentUser().subscribe(user => {
       this.currentUser = user;
     });
@@ -114,6 +114,7 @@ export class ConversationComponent implements OnDestroy{
     this.messageText = ''
 
   }
+
   pullMessages(email: string) {
     this.timer = setInterval(() => {
       this.getMessages(email);
@@ -128,13 +129,18 @@ export class ConversationComponent implements OnDestroy{
   startConversation(firstMessage: string) {
     if (firstMessage.trim().length > 0) {
       clearInterval(this.timer)
-      this.pullMessages(this.selectedUserEmail)
-      this.conversationService.initializeConversation(this.selectedUserEmail, firstMessage).subscribe((conversations: ConversationI) => {
-          this.viewInput = false;
-          this.getMessages(this.selectedUserEmail);
-          this.getAllConversations()
+      this.conversationService.initializeConversation(this.selectedUserEmail, firstMessage).subscribe((conversation: ConversationI) => {
+          if (conversation) {
+            this.pullMessages(this.selectedUserEmail)
+            this.getMessages(this.selectedUserEmail);
+            this.getAllConversations()
+            this.viewInput = false;
+          }
         },
-        error => console.log(error));
+        error => {
+        this.selectedUserEmail = '';
+        this.viewInput = false;
+        console.log(error)});
     } else {
       alert('Message content is empty. Please provide a valid message.');
     }
@@ -150,14 +156,13 @@ export class ConversationComponent implements OnDestroy{
         .subscribe(users => {
           this.users = users;
         }, error => {
-          alert("Users not found")
           this.users = [];
-          this.closeSearchResults()
         });
     } else {
       this.users = [];
     }
   }
+
   ngOnDestroy() {
     clearInterval(this.timer);
   }
