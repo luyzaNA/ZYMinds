@@ -1,6 +1,6 @@
 <div class="messenger-container">
   <div class="left-panel">
-    <div class="search-bar">
+    <div>
       <input type="text" [placeholder]="'Search by email' | translate" class="search-input" [(ngModel)]="searchEmail"
              (input)="searchUsers()"/>
       <div class="suggestions" *ngIf="users.length > 0">
@@ -15,7 +15,7 @@
         <button class="close-btn" *ngIf="users.length > 0" (click)="closeSearchResults()">x</button>
         <div *ngIf="viewInput" class="message-input">
           <input type="text" [(ngModel)]="firstMessage" name="content" placeholder="Type your message...">
-          <button (click)="startConversation(firstMessage)" class="sendMess">Send</button>
+          <button (click)="startConversation(firstMessage)" class="sendMess">{{'Send' | translate}}</button>
         </div>
       </div>
     </div>

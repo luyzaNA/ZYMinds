@@ -3,9 +3,14 @@ header {
 }
 
 .container {
-  max-width: 800px;
+  width: 90%;
   margin: 20px auto;
   padding: 0px 20px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 8px;
 }
 body{
   padding-top: 50px;
@@ -17,4 +22,12 @@ img{
 
 p {
   line-height: 1.6;
+}
+
+.container-content{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+
 }

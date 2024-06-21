@@ -13,6 +13,7 @@
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .user-list li {
@@ -22,6 +23,7 @@
 
 .user-list li:hover {
   background-color: rgba(161, 158, 204, 0.8);
+  width: 100%;
 }
 
 hr {
@@ -53,12 +55,12 @@ a {
 
 .messenger-container {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1.5fr 2fr;
   width: 100%;
   overflow: hidden;
   height: 100%;
   margin-top: 150px;
-  gap: 105px;
+  gap: 30px;
 }
 
 #mail {
@@ -83,6 +85,9 @@ a {
   cursor: pointer;
   padding: 10px;
   border-bottom: 1px solid #ccc;
+}
+.conversation-list{
+  cursor: pointer;
 }
 
 .conversation-list p:hover {
@@ -129,7 +134,7 @@ a {
 }
 
 .message-input {
-  width: 560px;
+  width: 40%;
 }
 
 input {
@@ -162,6 +167,7 @@ span {
 .left-panel {
   overflow: hidden;
   margin: 10px;
+  min-width: 60%;
 }
 
 #selectedEmail {
@@ -199,3 +205,5 @@ span {
 .conv-header-container{
   padding-bottom: 20px;
 }
+
+

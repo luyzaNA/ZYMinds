@@ -6,6 +6,7 @@ import ContextFileAuthorization from "../models/file-context.js";
 import {v4 as uuiv4} from 'uuid';
 import currentUser from "../middlewares/current-user.js";
 import requireAuth from "../middlewares/require-auth.js";
+import {param} from "express-validator";
 
 
 const fileRouter = express.Router();
@@ -61,7 +62,10 @@ fileRouter.get('/upload', currentUser, requireAuth, async (req, res) => {
     }
 });
 
-fileRouter.get('/files/:userId/:context', currentUser, requireAuth, async (req, res) => {
+fileRouter.get('/files/:userId/:context',[
+    param('userId').isMongoId().withMessage('userId invalid'),
+    param('context').isString().withMessage('context invalid')
+], async (req, res) => {
     try {
         const {userId, context} = req.params;
 

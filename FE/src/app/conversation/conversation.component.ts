@@ -88,11 +88,7 @@ export class ConversationComponent implements OnDestroy{
   selectConversation(conversation: Conversation) {
     this.viewInput = false;
     this.conversationId = conversation.id;
-    this.timer = setInterval(() => {
-      this.getMessages(conversation.otherParticipantEmail);
-      this.closeSearchResults()
-    }, 1000);
-
+    this.pullMessages(conversation.otherParticipantEmail);
   }
 
   //returneaza lista cu toate mesajele +data + cine le a trimis in functie de mail ul selectat
@@ -117,6 +113,12 @@ export class ConversationComponent implements OnDestroy{
     this.messageText = ''
 
   }
+  pullMessages(email: string) {
+    this.timer = setInterval(() => {
+      this.getMessages(email);
+      this.closeSearchResults()
+    }, 1000);
+  }
 
   //se incepe o conversatie cu email ul setat dupa verificare daca exista sau nu o conversatie
   //se trimite mesajul din input ca parametru
@@ -124,6 +126,7 @@ export class ConversationComponent implements OnDestroy{
   //se reincarca toate conversatiile
   startConversation(firstMessage: string) {
     if (firstMessage.trim().length > 0) {
+      this.pullMessages(this.selectedUserEmail)
       this.conversationService.initializeConversation(this.selectedUserEmail, firstMessage).subscribe((conversations: ConversationI) => {
           this.viewInput = false;
           this.getMessages(this.selectedUserEmail);
@@ -139,6 +142,7 @@ export class ConversationComponent implements OnDestroy{
 //cautarea email ului dupa valoarea din input
   //cautarea incepe dupa ce se introduc 2 caractere
   searchUsers() {
+    clearInterval(this.timer)
     if (this.searchEmail.length >= 2) {
       this.userService.searchUsersByEmail(this.searchEmail)
         .subscribe(users => {

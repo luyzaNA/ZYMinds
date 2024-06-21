@@ -25,9 +25,6 @@ export class CoachCardComponent {
               private router: Router) {
     this.authService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
-      if (this.currentUser.roles !== 'CLIENT') {
-        this.isApplyButtonVisible = false;
-      }
     });
   }
 
