@@ -77,6 +77,8 @@ export class PrerequisitesComponent implements OnInit {
           this.prerequisites = response;
           this.getPrerequisitesSet()
           console.log("Prerequisites updated successfully:", response);
+          alert("Prerequisites updated successfully")
+          this.navRoute.navigate(['client', 'dashboard'])
         },
         (error) => {
           console.error("Error updating prerequisites:", error);
@@ -88,6 +90,8 @@ export class PrerequisitesComponent implements OnInit {
           this.prerequisites = response;
           this.getPrerequisitesSet()
           console.log("Prerequisites created successfully:", response);
+          alert("Prerequisites created successfully")
+          this.navRoute.navigate(['client', 'dashboard'])
         },
         (error) => {
           console.error("Error creating prerequisites:", error);

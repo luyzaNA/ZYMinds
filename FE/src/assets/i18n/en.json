@@ -192,5 +192,7 @@
   "Users": "Users",
   "File": "File",
   "Role": "Role",
-  "Delete": "Delete"
+  "Delete": "Delete",
+  "You have no connections" : "You have no connections",
+  "Name": "Name"
 }
