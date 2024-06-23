@@ -29,7 +29,7 @@ const menuGenerator = {
         return ingredient[0];
     },
     async generateMenuForDays(prerequisites, kcalsPerMeal, macroNutrients) {
-        const numberOfDays = 1;
+        const numberOfDays = 30;
         let menu = [];
 
         for (let i = 0; i < numberOfDays; i++) {
@@ -82,13 +82,11 @@ const menuGenerator = {
 
     },
     async dayMenuPostProcessing(dayMenu, kcalsPerMeal, macroNutrients) {
-        //retrieve available combinations of ingredients
         const combination = this.getCategoriesMatchedCombinations()
         for (let index = 0; index < dayMenu.length; index++) {
             let meal = dayMenu[index];
             const totalCaloriesNeededPerMeal = meal.name.startsWith("mainMeal") ? kcalsPerMeal.kcalsPerMainMeal : kcalsPerMeal.kcalsPerSecondaryMeal;
 
-            // adjust meal ingredients to match the required calories
             while (!this.isMealCaloriesOk(dayMenu[index], totalCaloriesNeededPerMeal)) {
                 let mealKcals = 0;
                 let forceModifyQuantity = false;
@@ -112,7 +110,6 @@ const menuGenerator = {
                         const mainIngredient = this.getMainIngredient(meal.ingredients);
                         let matchedCategories = [];
                         if (mainIngredient) {
-                            //
                             if (meal.ingredients.length === 1) {
                                 const comb = combination.find(elm => elm.main === mainIngredient.category);
                                 if (!comb) {
@@ -126,7 +123,6 @@ const menuGenerator = {
                                 if (numberOfMainIngredients === numberOfSecIngredients) {
                                     combination.forEach(elm => {
                                         if (mainIngredient.category === 'lipids' && elm.main === 'carbohydrates') {
-                                            // matchedCategories.push(elm.main);
                                             console.log("LIPIDS")
                                         } else {
                                             if (elm.main !== mainIngredient.category) {
@@ -197,10 +193,7 @@ const menuGenerator = {
             }
         }
 
-        // adjust day menu to match the required proteins, lipids and carbohydrates intake
-        // vegetalele alimentele secundare trebuie sa creasca in cantitate pana la maxim 300g fiind secundara vegetalele daca depasesc sa creasca principalul
-        // pune sucurile la snack doar
-        //
+
         function getActualMenuMacronutrients() {
             let proteins = 0;
             let lipids = 0;

@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../shared/environment";
-import {User, UserI} from "../shared/User/UserI";
 import {BehaviorSubject, catchError, Observable, throwError} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
 import {map} from "rxjs/operators";
 import {Menu, MenuI} from "../shared/Menu/MenuI";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 import {ErrorServiceService} from "./error-service.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class MenuServiceService {
+export class MenuService {
 
   private baseUrl = environment.apiUrl;
   menuSubject = new BehaviorSubject<Menu>(new Menu());
@@ -21,8 +18,7 @@ export class MenuServiceService {
   foodsSubject = new BehaviorSubject<[]>([]);
   foods$: Observable<[]> = this.foodsSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router, private errorService: ErrorServiceService ) {
-
+  constructor(private http: HttpClient,  private errorService: ErrorServiceService ) {
   }
 
   getMenu(linkId: string): Observable<void> {

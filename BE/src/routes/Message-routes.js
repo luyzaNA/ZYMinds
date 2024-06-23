@@ -8,12 +8,6 @@ import requireAuth from "../middlewares/require-auth.js";
 import {param} from "express-validator";
 const messageRouter = express.Router();
 
-//se cauta o converstia dupa id ul user ului curent
-//se determina id ul celeilalte persoane din comversatie
-//se compune un mesaj
-//se salveaza mesajul
-//se seteaza ultimul mesaj al conversatiei ca find mesajul tocmai salvat
-//se returneaza raspunsul
 messageRouter.post('/message/:conversationId', currentUser, requireAuth,[
     param('conversationId').isMongoId().withMessage('Invalid conversation ID'),
 ], async (req, res) => {
@@ -54,13 +48,6 @@ messageRouter.post('/message/:conversationId', currentUser, requireAuth,[
     }
 });
 
-
-//se cauta user ul cu email ul dat ca param
-//se cauta conversatia user ului cu id ul dat si a user ului curent
-//se cauta mesajele pe conversatia respectiva
-//se parcurge fiecare mesaj pentru a se formata raspunsul
-//se push uie in array ul trimis ca raspuns fiecare mesaj
-//se trimite raspunsul
 messageRouter.get('/messagesByEmail/:email', currentUser, async (req, res) => {
     const userEmail = req.params.email;
     const userId = req.currentUser.id;

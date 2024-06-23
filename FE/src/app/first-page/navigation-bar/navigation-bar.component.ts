@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {User} from "../../shared/User/UserI";
-import {pipe} from "rxjs";
-import {map} from "rxjs/operators";
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({
@@ -11,13 +9,15 @@ import {TranslateService} from "@ngx-translate/core";
   templateUrl: './navigation-bar.component.html',
   styleUrls: ['./navigation-bar.component.css']
 })
+
 export class NavigationBarComponent implements OnInit {
   isLoggedIn!: boolean;
   user: User = new User();
   currentLanguage: string = 'ro';
 
-
-  constructor(private authService: AuthService, private router: Router, private translateService: TranslateService) {
+  constructor(private authService: AuthService,
+              private router: Router,
+              private translateService: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -36,11 +36,9 @@ export class NavigationBarComponent implements OnInit {
             console.error('Error fetching user:', error);
           }
         );
-
       }
     })
   }
-
 
   logOutUser(): void {
     this.authService.logout().subscribe(
@@ -63,9 +61,9 @@ export class NavigationBarComponent implements OnInit {
       this.router.navigate(['/admin/management-clients'])
     }
   }
-
   changeLanguage(value: any) {
     const language = value.target.value;
     this.translateService.use(language);
   }
 }
+

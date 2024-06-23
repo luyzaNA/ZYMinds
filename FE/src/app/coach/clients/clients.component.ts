@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {LinkService} from "../../shared/Link/link.service";
-import {Coach} from "../../shared/Coach/CoachI";
 import {Link, LinkI} from "../../shared/Link/LinkI";
-import {ActivatedRoute, Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-clients',

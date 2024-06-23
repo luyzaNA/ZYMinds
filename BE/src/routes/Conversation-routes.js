@@ -9,14 +9,6 @@ import {body, param} from "express-validator";
 
 const conversationRouter = express.Router();
 
-//initiere convesatie dupa email ul primit in corpul cerererii si userId ul utilizatorului curent
-//se cauta un user cu email ul dat
-//se cauta o confersatie cu participantii : user curet + user cu email ul dat
-//daca nu se gaseste se creeaza una
-//se creeaza un mesaj cu id urile paricipantilor, content ul din corpul cererii  si id ul conversatiei create
-//se steaza ultimul mesja ca find mesjaul tocmai creat
-//se salveaza conversatia
-//se formateeaza raspunsul
 conversationRouter.post('/initialize/conversation', currentUser, requireAuth, [
     body('email').isEmail().withMessage('Email must be valid'),
     body('content').not().isEmpty().withMessage('Content is required')
@@ -66,11 +58,6 @@ conversationRouter.post('/initialize/conversation', currentUser, requireAuth, [
     }
 });
 
-//se cauta conversatiile cu id ul utilizatorului curent
-//se parcurge fiecare conversatie si se extrage id ul celuilalt participant
-//se salveaza ultimul mesaj cu id ul conversatiei curent  si se sorteaza descrecator
-//se compune raspunsul
-//se push uie in array
 conversationRouter.get('/conversations', currentUser, requireAuth, async (req, res) => {
     const userId = req.currentUser.id;
     try {
@@ -96,10 +83,6 @@ conversationRouter.get('/conversations', currentUser, requireAuth, async (req, r
     }
 });
 
-//se cauta un user cu email ul dat ca parametru
-//se cauta conversatia cu particapantii : user curent si user cu email dat
-//se extrage ultimul mesaj
-//se returneaza conversatia cu datele ei
 conversationRouter.get('/conversation/:email', currentUser, requireAuth,[
     param('email').isEmail().withMessage('Email must be valid')
 ], async (req, res) => {

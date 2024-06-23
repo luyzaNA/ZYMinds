@@ -78,7 +78,6 @@ userRouter.post("/users/create", [
     ],
     validateRequest,
     async (req, res) => {
-        const errors = validationResult(req);
         const {email, fullName, phoneNumber, password} = req.body;
         try {
 
@@ -115,53 +114,51 @@ userRouter.post("/users/create", [
             }
 
             fs.readFile(path.join(__dirname, 'src', 'utlis', 'assets', 'img.jpeg'),
-                async (err, data) => {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
+           async (err, data) => {
+                 if (err) {
+                    console.error(err);
+                    return;
+                }
 
-                    const buffer = data;
+                const buffer = data;
+                const originalname = 'img.jpeg';
+                const mimetype = 'image/jpeg';
+                const awsSecretKey = uuiv4();
+                const params = {
+                    Bucket: 'zyminds-upload-files',
+                    Key: awsSecretKey,
+                    Body: buffer,
+                };
 
-                    const originalname = 'img.jpeg';
-                    const mimetype = 'image/jpeg';
-                    const awsSecretKey = uuiv4();
-                    const params = {
-                        Bucket: 'zyminds-upload-files',
-                        Key: awsSecretKey,
-                        Body: buffer,
-                    };
+                const uploadedFile = await s3.upload(params).promise();
+                await File.create({
+                    userId: savedUser.id,
+                    awsLink: uploadedFile.Location,
+                    filename: originalname,
+                    mimetype: mimetype,
+                    size: buffer.length,
+                    context: "PROFILE",
+                    awsSecretKey: awsSecretKey
+                });
+                const userJwt = jwt.sign({
+                        id: newUser.id,
+                        email: newUser.email,
+                        fullName: newUser.fullName,
+                        phoneNumber: newUser.phoneNumber,
+                        roles: newUser.roles,
+                        newCoach: newUser.newCoach
+                    },
+                    process.env.JWT_SECRET)
 
-                    const uploadedFile = await s3.upload(params).promise();
-
-                    const newFile = await File.create({
-                        userId: savedUser.id,
-                        awsLink: uploadedFile.Location,
-                        filename: originalname,
-                        mimetype: mimetype,
-                        size: buffer.length,
-                        context: "PROFILE",
-                        awsSecretKey: awsSecretKey
-                    });
-
-                    const userJwt = jwt.sign({
-                            id: newUser.id,
-                            email: newUser.email,
-                            fullName: newUser.fullName,
-                            phoneNumber: newUser.phoneNumber,
-                            roles: newUser.roles,
-                            newCoach: newUser.newCoach
-                        },
-                        process.env.JWT_SECRET)
-
-                    res.status(201).send({id:newUser.id, token: userJwt});
-                })
+                res.status(201).send({id:newUser.id, token: userJwt});
+            })
 
         } catch (error) {
             res.status(400).json({message: error.message});
         }
     }
 );
+
 
 userRouter.get('/users', async (req, res) => {
     try {

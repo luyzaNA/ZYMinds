@@ -9,13 +9,6 @@ import {body, param} from "express-validator";
 
 const prerequisitesRouter = express.Router();
 
-//creez endpoint de post pentru prerequisites
-//din body iau datele necesare
-//verific daca sunt logata ca si client
-//caut link id ul adica conexiunea antrenor-client dupa user id ul curent care e clientUser
-//pt ca doar un client isi introduce datele
-//caut profilul dupa clientUser si extrag varsta
-//creez un nou obiect de tipul schemei si ii setez datele colectate
 prerequisitesRouter.post('/create/prerequisites', currentUser,requireAuth,[
     body('weight').not().isEmpty().withMessage('Weight is required'),
     body('height').not().isEmpty().withMessage('Height is required'),
@@ -59,12 +52,6 @@ prerequisitesRouter.post('/create/prerequisites', currentUser,requireAuth,[
     }
 })
 
-//astept ca parametru id-ul legaturii intre client si antrenor
-//verific daca sunt logata ca si client
-//caut prerequisites cu link id ul returnat
-//caut link-ul cu id-ul dat  pt a afla userId-ul
-//caut profilul cu userId ul gasit si extrag varsta
-//compun return ul
 prerequisitesRouter.get('/prerequisites/:linkId', currentUser, requireAuth,[
     param('linkId').not().isEmpty().withMessage('Invalid link ID'),
 ], async (req, res) => {
@@ -94,13 +81,6 @@ prerequisitesRouter.get('/prerequisites/:linkId', currentUser, requireAuth,[
     }
 })
 
-//id ul prerequisites pe care vreau sa modific se extrage din param
-//din payload iau valorile campurilor pe care le vreau updatate
-//caut prerequisites dupa id ul din param si fac update cu datele din payload
-//caut profilul dupa userId care e current user id =>
-//doar un user isi poate modifica prerequisites deci current user ul
-//fac update daca e necesar la profil
-//compun raspunul si l returnez
 prerequisitesRouter.put('/update/prerequisites/:id', currentUser,requireAuth, [
     param('id').not().isEmpty().withMessage('Invalid prerequisites ID'),
     body('weight').not().isEmpty().withMessage('Weight is required'),

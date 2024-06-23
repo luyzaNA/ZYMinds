@@ -12,7 +12,6 @@ export class MenuComponent {
   constructor(private prerequisitesService: PrerequisitesService, private route: ActivatedRoute){
     this.getPrerequisitesSet();
   }
-
   linkId!: string;
 
   getPrerequisitesSet() {
@@ -27,5 +26,4 @@ export class MenuComponent {
         this.noPrerequisites = true;
       })
   }
-
 }

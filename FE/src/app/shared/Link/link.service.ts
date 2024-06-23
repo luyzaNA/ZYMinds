@@ -3,9 +3,7 @@ import {catchError, Observable} from "rxjs";
 import {environment} from "../environment";
 import {LinkI} from "./LinkI";
 import {HttpClient} from "@angular/common/http";
-import {ProfileI} from "../Profile";
-import {ProfileInformation, ProfileInformationI} from "../ProfileInformation/ProfileInformationI";
-import {CoachI} from "../Coach/CoachI";
+import { ProfileInformationI} from "../ProfileInformation/ProfileInformationI";
 import {map} from "rxjs/operators";
 import {ErrorServiceService} from "../../services/error-service.service";
 

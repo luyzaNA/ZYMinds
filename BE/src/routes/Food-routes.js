@@ -21,9 +21,6 @@ foodRouter.get('/foods', currentUser, requireAuth, async (req, res) => {
 });
 
 foodRouter.get('/populate-foods', currentUser, requireAuth, async (req, res) => {
-    //se preiau datele despre alimentul dat ca parametru folosind API ul Edamam Nutrion Analysis
-    //daca alimentul nu contine datele nutrionale se returneaza null
-    //daca exista se extrag nutrientii din raspuns si se mapeaza la campurile din schema
     const fetchNutrients = async (aliment) => {
         try {
             const response = await fetch(`https://api.edamam.com/api/nutrition-data?app_id=${APP_ID}&app_key=${APP_KEY}&ingr=${encodeURIComponent(aliment)}`);
@@ -40,15 +37,6 @@ foodRouter.get('/populate-foods', currentUser, requireAuth, async (req, res) => 
         }
     };
 
-    //se cauta daca exista deja in db un aliment cu numele respectiv
-    //daca exista se returneaza null
-    //daca nu exista se verifica daca este un tip de mancare compus, format din mai multe ingrediente
-    //daca e adevarat se parcurge fieacre ingredient din campul de ingrediente
-    //se descopune din fiecare element al array ului de ingrediente numele si gramajul
-    //se apeleaza funcia care preiad datele despre fiecare aliment
-    //daca exista date primite ca raspuns dupa request ul catre API se parcurge fiecare nutrient din raspuns
-    //daca un nutrient nu exista deja in totalNutrients atunci se adauga, daca exista doar i se actualizeaza valoarea
-    //daca alimentul nu e compus se obtin datele nutrionale pe acel aliment
     const processAliment = async (aliment) => {
         try {
             const existingFood = await Food.findOne({name: aliment.name});
@@ -94,8 +82,6 @@ foodRouter.get('/populate-foods', currentUser, requireAuth, async (req, res) => 
         }
     };
 
-    //se parcurge array ul de alimente si pt fiecare aliment se face procesare si sa creeaza un nou aliment
-    //alimentul se salveaza in baza de date
     for (const aliment of alimentsData) {
         const result = await processAliment(aliment);
         if (result) {

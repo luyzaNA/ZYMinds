@@ -18,8 +18,12 @@ const ProfileSchema = new mongoose.Schema({
         required: false
     },
     rating: {
-        type: Number,
+        type: [Number],
         required: true
+    },
+    averageRating: {
+        type: Number,
+        default: 5
     }
 });
 

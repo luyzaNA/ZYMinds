@@ -4,7 +4,7 @@ import { ProfileService } from "../../services/profile.service";
 import { UserService } from "../../shared/User/user.service";
 import { FileI } from "../../shared/file";
 import { FileUploadService } from "../../services/upload.service";
-import { ProfileI } from "../../shared/Profile";
+import {Profile, ProfileI} from "../../shared/Profile";
 import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
 import {User} from "../../shared/User/UserI";
 
@@ -18,15 +18,7 @@ export class EditProfileComponent {
   currentUser:User = new User();
   files!: File;
   fileId = '';
-  profile: ProfileI = {
-    _id: '',
-    age: 0,
-    description: '',
-    price: 0,
-    rating: 0,
-    userId: '',
-    awsLink: ''
-  };
+  profile: Profile = new Profile();
 
   profileInformation: ProfileInformation = new ProfileInformation();
   constructor(
@@ -161,7 +153,7 @@ export class EditProfileComponent {
       );
     } else {
       console.log('No files to upload.');
-      alert('Profile updated successfully!');// Changed from error to log
+      alert('Profile updated successfully!');
     }
   }
 }

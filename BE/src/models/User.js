@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import {Password} from "../services/Password.js";
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -39,12 +38,5 @@ const UserSchema = new mongoose.Schema({
     });
 
 const User = mongoose.model('User', UserSchema);
-UserSchema.pre('save', async function(done) {
-    if(this.isModified('password')) {
-        const hashed = await Password.toHash(this.get('password'));
-        this.set('password', hashed);
-    }
-    done();
-});
 
 export default User;

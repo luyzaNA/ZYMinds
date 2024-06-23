@@ -6,7 +6,6 @@ import {FileI} from "../../shared/file";
 import {UserService} from "../../shared/User/user.service";
 import {User, UserI} from "../../shared/User/UserI";
 import {Router} from "@angular/router";
-import {relative} from "@angular/compiler-cli";
 import {take} from "rxjs";
 
 @Component({
@@ -21,6 +20,7 @@ export class RegisterComponent implements OnInit {
   private userId: string = '';
   selectedRole: boolean = false;
   isPasswordFocused = false;
+  userData: User = new User()
 
   onFocus(isPassword: boolean) {
     this.isPasswordFocused = isPassword;
@@ -30,14 +30,10 @@ export class RegisterComponent implements OnInit {
     this.isPasswordFocused = false;
   }
 
-  userData: User = new User()
-
   constructor(private authService: AuthService,
               private fileService: FileUploadService,
               private userService: UserService,
-              private router: Router
-  ) {
-  }
+              private router: Router) {}
 
   ngOnInit() {
     this.authService.currentUser$.pipe(take(3)).subscribe((user: UserI) => {
@@ -75,20 +71,14 @@ export class RegisterComponent implements OnInit {
         this.fileService.uploadFile(file, fileData).subscribe(
           (response: any) => {
             this.userService.updateUserStatus(this.userData, true).subscribe(
-              (response: Object) => {
-                console.log(
-                  "AICI INTRA si user id ", this.userData.id
-                );
-              },
+              (response: Object) => {},
               (error: any) => {
                 console.log("Cannot update user status", error);
-              }
-            );
+              });
           },
           (error: any) => {
             console.error('Eroare la încărcarea fișierului:', error);
-          }
-        );
+          });
       });
     } else {
       console.error('Nu există fișiere de încărcat.');

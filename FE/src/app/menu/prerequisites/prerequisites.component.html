@@ -32,7 +32,6 @@
       <option value=2>2</option>
     </select>
   </div>
-
   <div class="form-group">
     <label for="meals">{{'Number of main meals' | translate}}:</label>
     <select class="form-control" id="meals"    [disabled]="!isClient" name="meal" [(ngModel)]="prerequisites.mainMealsCount" required>
@@ -40,7 +39,6 @@
       <option value=3>3</option>
     </select>
   </div>
-
   <div class="form-group">
     <label for="target">{{'Target' | translate}}:</label>
     <select class="form-control" id="target"  [disabled]="!isClient" name="target" [(ngModel)]="prerequisites.target" required>

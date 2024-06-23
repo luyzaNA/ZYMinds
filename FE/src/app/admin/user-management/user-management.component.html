@@ -30,7 +30,7 @@
           </div>
           <div class="input-container" *ngIf="awsLinks.length > 0">
             <label>Role</label>
-            <select class="form-control" name="coach" required [(ngModel)]="user.roles">
+            <select class="form-control" name="coach" required [(ngModel)]="user.roles" style="height: 40px">
               <option value="CLIENT">{{'Client' | translate}}</option>
               <option value="COACH">{{'Coach' | translate}}</option>
             </select>
@@ -66,16 +66,13 @@
       <td>{{ user.phoneNumber }}</td>
       <td>{{ user.newCoach ? "new" : "old" }}</td>
       <td>
-
         <button type="button" class="button-s" style="margin-right: 10px" (click)="setUser(user)">Edit</button>
         <button type="button" (click)="setDelete(user.id)">Delete</button>
       </td>
     </tr>
-
     </tbody>
   </table>
 </div>
-
 <div class="users-container">
   <h2>{{'Users' | translate}}</h2>
   <table class="table">
@@ -98,7 +95,6 @@
         <button style="color: white" class="" type="button" (click)="setDelete(user.id)">{{'Delete' | translate}}</button>
       </td>
     </tr>
-
     </tbody>
   </table>
 </div>

@@ -18,7 +18,6 @@ export class ConversationService {
     return this.http.get<ConversationI[]>(`${environment.apiUrl}/conversations`);
   }
 
-
     sendMessage(conversationId: string, content: string): Observable<ConversationI> {
       return this.http.post<ConversationI>(`${environment.apiUrl}/message/${conversationId}`, { content: content});
     }
@@ -33,12 +32,7 @@ export class ConversationService {
     );
     }
 
-    getConversationByEmail(email:string): Observable<string>{
-    return this.http.get<string>(`${environment.apiUrl}/conversation/${email}`);
-    }
-
     getMessagesByEmail(email:string): Observable<ConversationI[]>{
     return this.http.get<ConversationI[]>(`${environment.apiUrl}/messagesByEmail/${email}`);
     }
-
 }

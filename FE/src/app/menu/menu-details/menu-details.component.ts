@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {MenuServiceService} from "../../services/menu-service.service";
+import {MenuService} from "../../services/menu-service.service";
 import {Menu, MenuI} from "../../shared/Menu/MenuI";
 import {AuthService} from "../../services/auth.service";
 
@@ -29,7 +29,7 @@ export class MenuDetailsComponent implements OnInit, OnDestroy {
   foods: any[] = [];
   isCoach: boolean = false;
 
-  constructor(private menuService: MenuServiceService, private route: ActivatedRoute, private authService: AuthService) {
+  constructor(private menuService: MenuService, private route: ActivatedRoute, private authService: AuthService) {
     this.linkId = this.route.snapshot.paramMap.get('id')!;
   }
 
@@ -251,7 +251,6 @@ export class MenuDetailsComponent implements OnInit, OnDestroy {
 
     if (match) {
       let result = match[2].trim();
-      // Capitalize the first character
       return result.charAt(0).toUpperCase() + result.slice(1);
     } else {
       return "No match found";

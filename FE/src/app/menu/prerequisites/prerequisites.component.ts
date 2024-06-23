@@ -5,7 +5,7 @@ import {ProfileService} from "../../services/profile.service";
 import {Prerequisites} from "../../shared/Prerequisites/PrerequisitesI";
 import {PrerequisitesService} from "../../shared/Prerequisites/prerequisites.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MenuServiceService} from "../../services/menu-service.service";
+import {MenuService} from "../../services/menu-service.service";
 
 @Component({
   selector: 'app-prerequisites',
@@ -14,16 +14,9 @@ import {MenuServiceService} from "../../services/menu-service.service";
 })
 export class PrerequisitesComponent implements OnInit {
 
-  //user ul curent pentru a obtine rolul si varsta de pe profil cu user.id
   currentUser: User = new User();
-
-  //setul de prerequisite pentru userul curent
   prerequisites: Prerequisites = new Prerequisites();
-
-  //in functie de ea se face update/create prerequisites
   prerequisitesLoaded: boolean = false;
-
-  //activeaza/dezactiveaza form ul in functie de rolul utilizatorului curent
   isClient: boolean = true;
   foods: any;
 
@@ -32,12 +25,9 @@ export class PrerequisitesComponent implements OnInit {
               private prerequisitesService: PrerequisitesService,
               private route: ActivatedRoute,
               private navRoute: Router,
-              private menuService: MenuServiceService){
+              private menuService: MenuService){
   }
 
-  //obtin user ul curent  si verific rolul lui
-  //obtin varsta user ului curent si setez linkId ul de pe url
-  //fac cerere de get pt setul de prerequisites
   ngOnInit(): void {
     this.menuService.getFoods().subscribe(() => {
     });
@@ -56,7 +46,6 @@ export class PrerequisitesComponent implements OnInit {
     this.getPrerequisitesSet();
   }
 
-  //cu user id ul fac get de profil pt a obtine varsta
   getAgeFromProfile() {
     this.profileService.getProfile(this.currentUser.id).subscribe(profile => {
       this.prerequisites.age = profile.age;
@@ -65,8 +54,6 @@ export class PrerequisitesComponent implements OnInit {
     });
   }
 
-  //daca exista id salvat in prerequisites inseamna ca exista un set creat si se va face update dupa id
-  //daca nu exista se va face create
   setPrerequisitesSet() {
     if (this.prerequisites.id) {
       this.prerequisitesService.updatePrerequisites(this.prerequisites.id, this.prerequisites).subscribe(
@@ -93,8 +80,6 @@ export class PrerequisitesComponent implements OnInit {
     }
   }
 
-  //se obtine setul de prerequisites dupa link id
-  //in caz de eroare ma redirectioneaza catre dashboard
   getPrerequisitesSet() {
     this.prerequisitesService.getPrerequisitesByLink(this.prerequisites.linkId).subscribe(
       (response) => {
@@ -103,7 +88,6 @@ export class PrerequisitesComponent implements OnInit {
       },
       (error) => {
         if (!this.prerequisites.id && !this.isClient) {
-          alert('Formularul nu a fost inca incarcat de client');
           this.navRoute.navigate(['/coach/clients'])
         }
       })
@@ -111,12 +95,10 @@ export class PrerequisitesComponent implements OnInit {
 
   getIngredientName(name: string) {
     let regex = /\d+\s*(g|ml|kg|l)\s*(.*)/i;
-
     let match = name.match(regex);
 
     if (match) {
       let result = match[2].trim();
-      // Capitalize the first character
       return result.charAt(0).toUpperCase() + result.slice(1);
     } else {
       return "No match found";

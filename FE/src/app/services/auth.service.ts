@@ -3,7 +3,6 @@ import {HttpClient} from '@angular/common/http';
 import {map, switchMap, tap} from 'rxjs/operators';
 import {environment} from "../shared/environment"
 import {BehaviorSubject, catchError, Observable, of, throwError} from "rxjs";
-import {Router} from "@angular/router";
 import {User, UserI} from "../shared/User/UserI";
 import {ErrorServiceService} from "./error-service.service";
 
@@ -17,8 +16,8 @@ export class AuthService {
   currentUserSubject = new BehaviorSubject<User>(new User());
   currentUser$: Observable<UserI> = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router, private errorService: ErrorServiceService) {
-
+  constructor(private http: HttpClient,
+              private errorService: ErrorServiceService) {
   }
 
   registerUser(userData: User): Observable<string> {

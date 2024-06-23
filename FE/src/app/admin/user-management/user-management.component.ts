@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {FileUploadService} from "../../services/upload.service";
 import {UserService} from "../../shared/User/user.service";
 import {User} from "../../shared/User/UserI";
@@ -15,10 +14,9 @@ export class UserManagementComponent {
   newPossibleCoaches: User[] = new Array<User>();
   users: User[] = new Array<User>();
 
-  constructor(private http: HttpClient,
-              private fileService: FileUploadService,
+  constructor(private fileService: FileUploadService,
               private userService: UserService) {
-    this.user = {email: '', fullName: '', phoneNumber: '', roles: '', id: '', password: '', newCoach: false};
+    this.user =new User();
     this.getAllUsers();
   }
 
@@ -36,7 +34,6 @@ export class UserManagementComponent {
   }
 
   setUser(userData: User) {
-
     this.user.email = userData.email;
     this.user.fullName = userData.fullName;
     this.user.phoneNumber = userData.phoneNumber;
@@ -49,8 +46,7 @@ export class UserManagementComponent {
       },
       (error: any) => {
         console.error('Cannot set user');
-      }
-    )
+      })
     console.log("USER ID UL E", this.user.id);
 
     this.awsLinks = [];
@@ -68,8 +64,7 @@ export class UserManagementComponent {
       },
       (error) => {
         console.error('Eroare la obținerea linkurilor AWS:', error);
-      }
-    );
+      });
   }
 
   updateRecords() {

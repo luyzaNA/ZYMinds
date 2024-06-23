@@ -15,9 +15,6 @@ import {param} from "express-validator";
 
 const menuRouter = express.Router();
 
-
-//iau cu linkId ul link ul din care extrag client id ul
-//cu lcient id ul extrag profile id ul din care mi aiu varsta
 async function generateMenuAsync(prerequisites, mealCalories, macroNutrients) {
     try {
         const menus = await menuGenerator.generateMenuForDays(prerequisites, mealCalories, macroNutrients);
@@ -36,8 +33,6 @@ async function generateMenuAsync(prerequisites, mealCalories, macroNutrients) {
     }
 }
 
-
-//cu link id ul iau preconditiile
 menuRouter.post('/menu/:linkId', [
     param('linkId').not().isEmpty().withMessage('Invalid link id')
 ], currentUser, requireAuth, async (req, res) => {
@@ -70,33 +65,23 @@ menuRouter.post('/menu/:linkId', [
     } = prerequisites;
     const {age} = clientProfile;
 
-    //calculez bmr ul
     const bmr = NutritionCalculator.calculateBMR(gender, weight, height, age);
 
-    //calculez total de calorii dupa activitate
     const totalCaloricNeeds = NutritionCalculator.calculateTotalCaloricNeeds(bmr, activityLevel);
 
-    //calculez necesarul de calorii in functie de target
     const adjustedCaloricNeeds = NutritionCalculator.calculateAdjustedCaloricNeeds(totalCaloricNeeds, target);
 
-    //calculez pt a l informa pe user despre starea lui de sanatate:
-    //reguattea ideala
 
     const idealWeight = NutritionCalculator.calculateIdealWeight(gender, height, age);
 
-    //calculez bmi
     const bmi = NutritionCalculator.calculateBMI(weight, height);
 
-    //calculez necesarul de grasimi
     const fatNeeds = NutritionCalculator.calculateFatNeeds(adjustedCaloricNeeds);
 
-    //calculez necesarul de proteine
     const proteinNeeds = NutritionCalculator.calculateProteinNeeds(adjustedCaloricNeeds, target);
 
-    //calculez necesarul de carbohidrati
     const carbNeeds = NutritionCalculator.calculateCarbNeeds(adjustedCaloricNeeds, proteinNeeds, fatNeeds);
 
-    //calculez necesarul de calorii pentru fiecare masa
     const mealCalories = NutritionCalculator.calculateMealCalories(mainMealsCount, secondaryMealsCount, adjustedCaloricNeeds);
 
     let userDRI = null;
@@ -137,7 +122,6 @@ menuRouter.post('/menu/:linkId', [
         console.error("Error generating menu:", error);
         return res.status(500).json({message: 'Error generating menu'});
     }
-
 })
 
 
@@ -153,7 +137,6 @@ menuRouter.get('/menu/:linkId', currentUser, requireAuth, [
         throw error;
     }
 });
-
 
 menuRouter.put('/menu/:linkId', currentUser, requireAuth, [
     param('linkId').not().isEmpty().withMessage('Invalid link id'),

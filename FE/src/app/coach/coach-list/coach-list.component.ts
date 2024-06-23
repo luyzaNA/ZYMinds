@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {UserService} from "../../shared/User/user.service";
 import {FileUploadService} from "../../services/upload.service";
-import {ProfileInformation, ProfileInformationI} from "../../shared/ProfileInformation/ProfileInformationI";
+import {ProfileInformation} from "../../shared/ProfileInformation/ProfileInformationI";
 
 @Component({
   selector: 'app-coach-list',
@@ -10,16 +10,14 @@ import {ProfileInformation, ProfileInformationI} from "../../shared/ProfileInfor
   styleUrls: ['./coach-list.component.css']
 })
 export class CoachListComponent {
-  profile! :ProfileInformationI;
+  profile :ProfileInformation = new ProfileInformation();
 
-  users: ProfileInformation[] = [];
+  usersInfo: ProfileInformation[] = [];
   constructor(private profileService: ProfileService,
               private userService: UserService,
               private fileService:  FileUploadService) {
     this.initialize()
-    console.log(this.users)
   }
-
 
   initialize(): void {
     this.profileService.getProfiles().subscribe(
@@ -28,7 +26,6 @@ export class CoachListComponent {
           this.userService.getUserById(profile.userId).subscribe(
             (user) => {
               this.fileService.getFiles(user.id, "PROFILE").subscribe(
-
                 (files) => {
                   const photoUrl = files.length > 0 ? files[0].awsLink : 'defaultPhotoUrl'; // Use a default photo URL if no files found
 
@@ -45,7 +42,7 @@ export class CoachListComponent {
                     id: '',
                     statusApplication: ''
                   };
-                  this.users.push(userInformation);
+                  this.usersInfo.push(userInformation);
                 },
                 (error) => {
                   console.error('Eroare la obținerea fișierelor:', error);
@@ -63,5 +60,4 @@ export class CoachListComponent {
       }
     );
   }
-
 }

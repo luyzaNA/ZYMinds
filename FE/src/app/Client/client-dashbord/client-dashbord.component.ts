@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./client-dashbord.component.css']
 })
 export class ClientDashbordComponent {
-  profilesInformation: ProfileInformationI[] = [];
+  coachProfiles: ProfileInformation[] = [];
   isConnectionApproved: boolean = false;
 
   constructor(private linkService: LinkService,
@@ -22,8 +22,8 @@ export class ClientDashbordComponent {
       (profilesInfo: [ProfileInformationI]) => {
         if(!profilesInfo) {
           return;}
-        this.profilesInformation = profilesInfo;
-        this.profilesInformation.forEach(profile => {
+        this.coachProfiles = profilesInfo;
+        this.coachProfiles.forEach(profile => {
           if (profile.statusApplication === 'approved') {
             this.isConnectionApproved = true;
           }
@@ -40,7 +40,7 @@ export class ClientDashbordComponent {
       this.linkService.deleteConnection(linkId).subscribe(
         (response) => {
           if(!response){return;}
-          this.profilesInformation = this.profilesInformation.filter(profile => profile.id !== response.id);
+          this.coachProfiles = this.coachProfiles.filter(profile => profile.id !== response.id);
           alert("Cererea de conectare a fost incheieta cu succes");
         },
         (error) => {

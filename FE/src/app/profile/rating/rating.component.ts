@@ -1,6 +1,5 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {faStar} from '@fortawesome/free-solid-svg-icons/faStar';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ProfileService} from "../../services/profile.service";
 
 @Component({
@@ -8,7 +7,7 @@ import {ProfileService} from "../../services/profile.service";
   templateUrl: './rating.component.html',
   styleUrls: ['./rating.component.css']
 })
-export class RatingComponent {
+export class RatingComponent implements  OnInit{
   faStar = faStar;
 
   constructor(private profileService: ProfileService) {
@@ -20,9 +19,26 @@ export class RatingComponent {
 
   setRating(value: number) {
     if (this.readonly) return;
-    this.rating = value;
-    console.log(this.rating);
-    this.profileService.updateRating(this.userId, this.rating).subscribe(response => {});
 
+    const confirmUpdate = confirm("Sigur vrei să actualizezi evaluarea?");
+    if (confirmUpdate) {
+      this.rating = value;
+      console.log(this.rating);
+      this.profileService.updateRating(this.userId, this.rating).subscribe(response => {
+        alert("Actualizarea s-a efectuat cu succes");
+        this.loadRating()
+      });
+    }
+  }
+
+  ngOnInit() {
+    this.loadRating();
+  }
+
+  loadRating() {
+    console .log("USER ID", this.userId)
+    this.profileService.getRating(this.userId).subscribe(response => {
+      this.rating = parseFloat(response.ratings.toString());
+    });
   }
 }

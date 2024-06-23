@@ -1,20 +1,21 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../services/profile.service";
 import {FileUploadService} from "../services/upload.service";
 import {AuthService} from "../services/auth.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import { Router} from "@angular/router";
 import {User} from "../shared/User/UserI";
+import {Profile} from "../shared/Profile";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
+export class ProfileComponent{
 
   currentUser: User = new User();
   isEditing: boolean = false;
-
+  profileI: Profile = new Profile();
   constructor(public profileService: ProfileService,
               private fileService: FileUploadService,
               private authService: AuthService,
@@ -22,7 +23,6 @@ export class ProfileComponent {
     this.authService.getCurrentUser().subscribe(user => {
       this.currentUser = user;
     })
-console.log(this.currentUser)
     this.fileService.getFiles(this.currentUser.id, "PROFILE").subscribe(
       (response) => {
         this.profileService.photoUrl = response[0].awsLink;
@@ -30,12 +30,10 @@ console.log(this.currentUser)
     );
     this.profileService.getProfile(this.currentUser.id).subscribe(
       (profile) => {
-        this.profileService.profileI = profile;
+        this.profileI = profile;
       }
     )
-
   }
-
 
   toToEdit(): void {
     this.isEditing = true;
@@ -43,9 +41,4 @@ console.log(this.currentUser)
     this.router.navigate(this.currentUser.roles === 'COACH' ?
       ['coach', 'edit-profile'] : ['client', 'edit-profile']);
   }
-
-  cancelEdit(): void {
-    this.isEditing = false;
-  }
-
 }

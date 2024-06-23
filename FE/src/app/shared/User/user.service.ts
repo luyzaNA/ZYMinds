@@ -18,7 +18,6 @@ export class UserService {
     return this.http.delete(environment.apiUrl + '/users/' + id);
   }
 
-
   updateUser(id: string, email: string, fullName: string, phoneNumber: string, roles: String): Observable<{updateUser: UserI, token: string}> {
     const payload = {
       email: email,

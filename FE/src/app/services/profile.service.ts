@@ -1,28 +1,17 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {ProfileI} from "../shared/Profile";
+import {Profile, ProfileI} from "../shared/Profile";
 import {environment} from "../shared/environment";
 import {catchError, Observable} from "rxjs";
 import {AuthService} from "./auth.service";
 import {ProfileInformationI} from "../shared/ProfileInformation/ProfileInformationI";
 import {map} from "rxjs/operators";
-import {resolve} from "@angular/compiler-cli";
 import {ErrorServiceService} from "./error-service.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
-
-  profileI: ProfileI = {
-    _id: '',
-    age: 0,
-    description: '',
-    price: 0,
-    rating: 0,
-    userId: '',
-    awsLink: ''
-  }
 
   photoUrl: string = ''
 
@@ -39,7 +28,6 @@ export class ProfileService {
     );
   }
 
-
   getProfile(id: string): Observable<ProfileI> {
     return this.http.get<ProfileI>(`${environment.apiUrl}/profile/${id}`).pipe(
       map(response => response),
@@ -50,14 +38,8 @@ export class ProfileService {
     );
   }
 
-  updateRating(profileId: string, rating: number): Observable<ProfileI> {
-    return this.http.patch<ProfileI>(`${environment.apiUrl}/rating/update/${profileId}`, {rating}).pipe(
-      map(response => response),
-      catchError(error => {
-        this.errorService.errorSubject.next(error.error.message);
-        throw new Error('Rating not updated');
-      })
-    );
+  updateRating(profileId: string, rating: number): Observable<any> {
+    return this.http.patch<any>(`${environment.apiUrl}/rating/update/${profileId}`, { rating });
   }
 
   getProfiles(): Observable<ProfileInformationI[]> {
@@ -70,5 +52,8 @@ export class ProfileService {
     );
   }
 
+  getRating(userId: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/rating/${userId}`);
+  }
 
 }

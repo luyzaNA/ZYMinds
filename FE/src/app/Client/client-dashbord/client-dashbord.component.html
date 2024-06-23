@@ -1,10 +1,9 @@
 <div class="container">
   <div id="application">
-    <h1 style="border-bottom: #4C34E2 1px solid">{{ 'Connections' | translate }}</h1>
-    <hr>
-    <div *ngIf="profilesInformation.length > 0">
+    <h1 style="border-bottom: #4C34E2 1px solid">{{ 'Connections' | translate }}</h1><hr>
+    <div *ngIf="coachProfiles.length > 0">
       <h2>{{ 'You have applied for' | translate }}:</h2>
-      <div *ngFor="let profileInfo of profilesInformation" class="coach-card-container">
+      <div *ngFor="let profileInfo of coachProfiles" class="coach-card-container">
         <app-coach-card [userProfileInformation]="profileInfo" [evaluateCoach]="isConnectionApproved" [applied]="true"></app-coach-card>
         <div *ngIf="profileInfo.statusApplication==='pending'">
           <div class="close-container" (click)="revokeConnection(profileInfo.id ,profileInfo.statusApplication)">
@@ -18,14 +17,12 @@
       </div>
     </div>
   </div>
-  <div *ngIf="profilesInformation.length === 0">
+  <div *ngIf="coachProfiles.length === 0">
     <h2>{{ 'You have no connections' | translate }}</h2>
     <button class="button-s" routerLink='../../coach-list'>
       {{ 'I want a coach!' | translate }}
     </button>
   </div>
-
-
   <div class="dashboard-container" style="margin-top: 50px">
     <div class="option-container" routerLink="../conversation/1">
       <h2>{{ 'Conversations' | translate }}</h2>
